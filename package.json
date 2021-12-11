@@ -14,7 +14,10 @@
   "dependencies": {
     "@nuxtjs/pwa": "^3.3.5",
     "core-js": "^3.15.1",
+    "hooper": "^0.3.4",
+    "hopper": "^0.2.0",
     "nuxt": "^2.15.7",
+    "vue-slicksort": "^1.2.0",
     "vuetify": "^2.5.5"
   },
   "devDependencies": {
