@@ -5,7 +5,7 @@ export const state = () => ({
   nowPlayingSong: {
     color: '#1F7087',
     sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-    title: 'Supermodel - Foster the People - Karaoke - KingKaraoke',
+    title: 'Supermodel - Foster the People - SingKaraoke',
     artist: 'Foster the People'
   }
 })

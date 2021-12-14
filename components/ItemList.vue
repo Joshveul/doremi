@@ -5,13 +5,13 @@
     </h4>
     <hooper style="height: auto;" :items-to-show="1.1">
       <slide>
-        <SongList />
+        <song-list />
       </slide>
       <slide>
-        <SongList />
+        <song-list />
       </slide>
       <slide>
-        <SongList />
+        <song-list />
       </slide>
     </hooper>
   </v-container>

@@ -1,7 +1,10 @@
 <template>
-  <v-container class="mini-player">
+  <v-layout class="mini-player">
     <v-card
+      to="/queue"
+      class="ml-1"
       :color="nowPlayingSong.color"
+      :ripple="false"
     >
       <div
         class="d-flex flex-nowrap"
@@ -15,43 +18,42 @@
         </v-avatar>
         <div>
           <v-card-subtitle
-            class="pl-0 pt-2 pb-0"
+            class="px-0 pt-2 pb-0"
           >
-            <overflow-marquee>
-              {{ nowPlayingSong.title }}
-            </overflow-marquee>
+            <overflow-marquee :text="nowPlayingSong.title" />
           </v-card-subtitle>
           <v-card-subtitle
             class="pl-0 py-0"
           >
-            <overflow-marquee>
-              {{ nowPlayingSong.artist }}
-            </overflow-marquee>
+            <overflow-marquee :text="nowPlayingSong.artist" />
           </v-card-subtitle>
         </div>
         <v-card-actions class="flex-grow-1">
           <v-btn
             ref="playpause"
             icon
+            @click.prevent=""
           >
             <v-icon>mdi-skip-previous</v-icon>
           </v-btn>
           <v-btn
             ref="next"
             icon
+            @click.prevent=""
           >
             <v-icon>mdi-play</v-icon>
           </v-btn>
           <v-btn
             ref="prev"
             icon
+            @click.prevent=""
           >
             <v-icon>mdi-skip-next</v-icon>
           </v-btn>
         </v-card-actions>
       </div>
     </v-card>
-  </v-container>
+  </v-layout>
 </template>
 
 <script>
@@ -67,8 +69,8 @@ export default {
 </script>
 
 <style>
-.container.mini-player {
+.layout.mini-player {
   position: fixed;
-  bottom: 40px;
+  bottom: 54px;
 }
 </style>

@@ -1,23 +1,37 @@
 <template>
-  <v-layout ref="overflow" class="marquee-overflow">
-    <slot />
-  </v-layout>
+  <div ref="marqueeParent" class="marquee-parent">
+    <span ref="marqueeChild" class="marquee-child" :class="{'marquee': isOverflowing}">{{ text }}<span /></span>
+  </div>
 </template>
 
 <script>
 export default {
-
+  props: {
+    text: {
+      type: String,
+      default: ''
+    }
+  },
+  data () {
+    return {
+      isOverflowing: false
+    }
+  },
+  watch: {
+    text () {
+      this.isOverflowing = this.isTextOverflowing(this.$refs.overflow)
+    }
+  },
   mounted () {
     this.$nextTick(() => {
-      const element = this.$refs.overflow
-
-      if (this.isElementOverflowing(element)) {
-        this.wrapContentsInMarquee(element)
-      }
+      const availableSpace = document.body.clientWidth - 74 - 140 - 23 + 'px'
+      this.$refs.marqueeParent.style.width = availableSpace
+      this.$refs.marqueeChild.style.width = availableSpace
+      this.isOverflowing = this.isTextOverflowing(this.$refs.marqueeChild)
     })
   },
   methods: {
-    isElementOverflowing (element) {
+    isTextOverflowing (element) {
       const overflowX = element.offsetWidth < element.scrollWidth
       const overflowY = element.offsetHeight < element.scrollHeight
 
@@ -35,10 +49,27 @@ export default {
 }
 </script>
 
-<style scoped>
-.marquee-overflow {
-  white-space: nowrap;
-  max-width: 15em;
+<style>
+.marquee-parent {
   overflow: hidden;
 }
+
+.marquee-child {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.marquee {
+  animation-name: bounce;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes bounce {
+  0% { transform: translateX(5%); }
+  50% { transform: translateX(-200%); }
+  100% { transform: translateX(5%); }
+}
+
 </style>

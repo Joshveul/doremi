@@ -13,11 +13,6 @@ import ItemList from '~/components/ItemList.vue'
 export default {
   components: {
     ItemList
-  },
-  mounted () {
-    this.$nextTick(() => {
-      document.getElementsByClassName('v-main')[0].style.padding = '56px 0px 118px 0px'
-    })
   }
 }
 </script>
