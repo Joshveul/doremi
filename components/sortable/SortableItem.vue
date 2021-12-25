@@ -3,7 +3,6 @@
     :disabled="simple"
     :index="index"
   >
-    <!-- <v-divider v-if="divider" /> -->
     <v-list-item
       :key="title"
       class="px-2"
@@ -23,10 +22,40 @@
       </v-list-item-content>
       <v-icon
         v-if="!simple"
+        class="mr-1"
+        @click="remove = true"
       >
         mdi-playlist-remove
       </v-icon>
     </v-list-item>
+    <v-dialog
+      v-model="remove"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="text-h6">
+          Confirm
+        </v-card-title>
+        <v-card-text>Do you want to remove this song from the queue?</v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="green darken-1"
+            text
+            @click="remove = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="remove = false"
+          >
+            Remove
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </slick-item>
 </template>
 <script>
@@ -70,7 +99,8 @@ export default {
   },
   data () {
     return {
-      colors
+      colors,
+      remove: false
     }
   },
   computed: {
