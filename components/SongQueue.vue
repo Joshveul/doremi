@@ -81,13 +81,6 @@ export default {
       get () { return this.queueOpen }
     }
   },
-  mounted () {
-    // this.$nextTick(() => {
-    //   console.log(this.$refs)
-    //   const availableSpace = document.body.clientHeight - 56 + 'px'
-    //   this.$refs.queueContent.style.height = availableSpace
-    // })
-  },
   methods: {
     swipeDown () {
       if (this.sorting === false && this.scrollPosition === 0) {
@@ -95,7 +88,6 @@ export default {
       }
     },
     onScroll (e) {
-      console.log('scroll')
       this.scrollPosition = e.target.scrollTop
     },
     sortStart () {
@@ -107,23 +99,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-/* .queue-content {
-  height: 300px;
-  top: 56px;
-  position: absolute;
-}
-
-.header-bar {
-  position: fixed;
-  width: 100%;
-}
-
-.sort-container {
-  overflow: scroll;
-  top: 200px;
-  position: revert;
-  height: 200px;
-} */
-</style>
