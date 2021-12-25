@@ -14,13 +14,18 @@
         >
           <v-img :src="selectedSong.sqThumb" />
         </v-avatar>
-        <div>
-          <v-card-title
-            class="pl-0"
-            v-text="selectedSong.title"
-          />
+        <div class="flex-grow-1">
+          <dynamic-marquee
+            direction="row"
+            reverse
+            :speed="{type: 'pps', number: 40}"
+            style="height: 50px;"
+            class="text-h6 pt-3 pr-3"
+          >
+            {{ selectedSong.title }}
+          </dynamic-marquee>
           <v-card-subtitle
-            class="pl-0"
+            class="pl-0 pt-0"
             v-text="selectedSong.artist"
           />
         </div>
@@ -60,7 +65,10 @@
 
 <script>
 import { mapState } from 'vuex'
+import DynamicMarquee from 'vue-dynamic-marquee'
+
 export default {
+  components: { DynamicMarquee },
   computed: {
     ...mapState({ songOptionsOpen: 'songOptionsOpen', selectedSong: 'selectedSong' }),
     isOpen: {

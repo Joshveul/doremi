@@ -1,7 +1,12 @@
 export const state = () => ({
   activeUsers: [],
   songOptionsOpen: false,
-  selectedSong: {},
+  selectedSong: {
+    color: '#1F7087',
+    sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
+    title: 'One big boi tile song yes :) - Sing Song Karaoke',
+    artist: 'One'
+  },
   nowPlayingSong: {
     color: '#1F7087',
     sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',

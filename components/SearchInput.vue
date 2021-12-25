@@ -4,6 +4,9 @@
     :search="search"
     placeholder="Search"
     aria-label="Search"
+    :get-result-value="getResultValue"
+    auto-select
+    @submit="selected"
   >
     <template #result="{ result, props }">
       <li
@@ -120,6 +123,16 @@ export default {
         return item.title.toLowerCase()
           .includes(input.toLowerCase())
       })
+    },
+    getResultValue (result) {
+      return result.title
+    },
+    selected (result) {
+      if (typeof result !== 'object') {
+        return
+      }
+      this.$store.commit('setSelectedSong', result)
+      this.$store.commit('setSongOptionsOpen', true)
     }
   }
 }
