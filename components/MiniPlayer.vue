@@ -1,10 +1,12 @@
 <template>
-  <v-layout class="mini-player">
+  <v-layout class="mini-player" style="width: 100%;">
     <v-card
-      to="/queue"
-      class="ml-1"
-      :color="nowPlayingSong.color"
+      v-touch="{
+        up: () => openQueue()
+      }"
+      class="ml-1 flex-grow-1"
       :ripple="false"
+      @click="openQueue"
     >
       <div
         class="d-flex flex-nowrap"
@@ -16,7 +18,7 @@
         >
           <v-img :src="nowPlayingSong.sqThumb" />
         </v-avatar>
-        <div>
+        <div class="flex-grow-1">
           <v-card-subtitle
             class="px-0 pt-2 pb-0"
           >
@@ -28,7 +30,7 @@
             <overflow-marquee :text="nowPlayingSong.artist" />
           </v-card-subtitle>
         </div>
-        <v-card-actions class="flex-grow-1">
+        <v-card-actions>
           <v-btn
             ref="playpause"
             icon
@@ -64,6 +66,11 @@ export default {
   components: { OverflowMarquee },
   computed: {
     ...mapState({ nowPlayingSong: 'nowPlayingSong' })
+  },
+  methods: {
+    openQueue () {
+      this.$store.commit('setQueueOpen', true)
+    }
   }
 }
 </script>

@@ -1,11 +1,34 @@
 <template>
-  <div ref="marqueeParent" class="marquee-parent">
-    <span ref="marqueeChild" class="marquee-child" :class="{'marquee': isOverflowing}">{{ text }}<span /></span>
+  <div
+    ref="marqueeParent"
+    class="marquee-parent"
+  >
+    <div
+      v-show="!isOverflowing"
+      ref="marqueeChild"
+      class="marquee-child"
+    >
+      {{ text }}
+    </div>
+    <dynamic-marquee
+      v-show="isOverflowing"
+      class="marquee-child"
+      direction="row"
+      reverse
+      :speed="{type: 'pps', number: 40}"
+      style="height: 20px;"
+      :repeat="false"
+    >
+      {{ text }}
+    </dynamic-marquee>
   </div>
 </template>
 
 <script>
+import DynamicMarquee from 'vue-dynamic-marquee'
+
 export default {
+  components: { DynamicMarquee },
   props: {
     text: {
       type: String,
@@ -19,23 +42,22 @@ export default {
   },
   watch: {
     text () {
-      this.isOverflowing = this.isTextOverflowing(this.$refs.overflow)
+      this.isOverflowing = this.isTextOverflowing(this.$refs.marqueeChild)
     }
   },
   mounted () {
-    this.$nextTick(() => {
-      const availableSpace = document.body.clientWidth - 74 - 140 - 23 + 'px'
-      this.$refs.marqueeParent.style.width = availableSpace
-      this.$refs.marqueeChild.style.width = availableSpace
-      this.isOverflowing = this.isTextOverflowing(this.$refs.marqueeChild)
-    })
+    const availableSpace = document.body.clientWidth - 74 - 140 - 23 + 'px'
+    this.$refs.marqueeParent.style.width = availableSpace
+    this.$refs.marqueeChild.style.width = availableSpace
+    this.isTextOverflowing(this.$refs.marqueeChild)
   },
   methods: {
     isTextOverflowing (element) {
-      const overflowX = element.offsetWidth < element.scrollWidth
-      const overflowY = element.offsetHeight < element.scrollHeight
-
-      return (overflowX || overflowY)
+      setTimeout(() => {
+        const overflowX = element.offsetWidth < element.scrollWidth
+        const overflowY = element.offsetHeight < element.scrollHeight
+        this.isOverflowing = (overflowX || overflowY)
+      }, 100)
     },
     wrapContentsInMarquee (element) {
       const marquee = document.createElement('marquee')
@@ -58,18 +80,4 @@ export default {
   display: inline-block;
   white-space: nowrap;
 }
-
-.marquee {
-  animation-name: bounce;
-  animation-duration: 10s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-}
-
-@keyframes bounce {
-  0% { transform: translateX(5%); }
-  50% { transform: translateX(-200%); }
-  100% { transform: translateX(5%); }
-}
-
 </style>

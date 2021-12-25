@@ -3,15 +3,15 @@
     :disabled="simple"
     :index="index"
   >
-    <v-divider v-if="divider" />
+    <!-- <v-divider v-if="divider" /> -->
     <v-list-item
       :key="title"
-      class="pl-0"
+      class="px-2"
     >
       <v-icon
         v-if="!simple"
         v-handle
-        class="pr-1"
+        class="pr-1 handle"
       >
         mdi-drag-horizontal-variant
       </v-icon>
@@ -80,3 +80,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.handle {
+  height: 55px;
+  width: 30px;
+}
+</style>

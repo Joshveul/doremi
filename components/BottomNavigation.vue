@@ -9,15 +9,15 @@
         <span>Home</span>
         <v-icon>mdi-home</v-icon>
       </v-btn>
-      <v-btn to="/queue">
-        <span>Queue</span>
-        <v-icon>mdi-playlist-music</v-icon>
-      </v-btn>
-      <v-btn>
+      <v-btn to="/my-songs">
         <span>My songs</span>
         <v-icon>mdi-star-outline</v-icon>
       </v-btn>
-      <v-btn>
+      <v-btn to="/sessions">
+        <span>Sessions</span>
+        <v-icon>mdi-history</v-icon>
+      </v-btn>
+      <v-btn to="/profile">
         <span>Profile</span>
         <v-icon>mdi-account-circle-outline</v-icon>
       </v-btn>

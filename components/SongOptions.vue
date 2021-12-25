@@ -28,7 +28,7 @@
           icon
           class="ml-auto mt-2 mr-2"
         >
-          <v-icon>mdi-heart-outline</v-icon>
+          <v-icon>mdi-star-outline</v-icon>
         </v-btn>
       </v-card>
       <v-btn
@@ -64,12 +64,10 @@ export default {
   computed: {
     ...mapState({ songOptionsOpen: 'songOptionsOpen', selectedSong: 'selectedSong' }),
     isOpen: {
-      get () {
-        return this.songOptionsOpen
-      },
       set (newValue) {
         this.$store.commit('setSongOptionsOpen', newValue)
-      }
+      },
+      get () { return this.songOptionsOpen }
     }
   }
 }

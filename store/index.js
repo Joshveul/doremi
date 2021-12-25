@@ -5,9 +5,12 @@ export const state = () => ({
   nowPlayingSong: {
     color: '#1F7087',
     sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-    title: 'Supermodel - Foster the People - SingKaraoke',
-    artist: 'Foster the People'
-  }
+    title: 'One big boi tile song yes :) - Sing Song Karaoke',
+    artist: 'One'
+  },
+  selectedSessionOpen: false,
+  selectedSession: {},
+  queueOpen: false
 })
 
 export const mutations = {
@@ -16,6 +19,15 @@ export const mutations = {
   },
   setSelectedSong (state, songData) {
     state.selectedSong = songData
+  },
+  setSelectedSessionOpen (state, isOpen) {
+    state.selectedSessionOpen = isOpen
+  },
+  setSelectedSession (state, songData) {
+    state.selectedSession = songData
+  },
+  setQueueOpen (state, isOpen) {
+    state.queueOpen = isOpen
   },
   setNowPlayingSong (state, songData) {
     state.NowPlayingSong = songData

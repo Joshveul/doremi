@@ -19,16 +19,20 @@
     <mini-player />
     <bottom-navigation />
     <song-options />
+    <selected-session-dialog />
+    <song-queue />
   </v-app>
 </template>
 
 <script>
 import BottomNavigation from '~/components/BottomNavigation.vue'
+import SelectedSessionDialog from '~/components/sessions/SelectedSessionDialog.vue'
 import MiniPlayer from '~/components/MiniPlayer.vue'
 import SongOptions from '~/components/SongOptions.vue'
 import SearchInput from '~/components/SearchInput.vue'
+import SongQueue from '~/components/SongQueue.vue'
 
 export default {
-  components: { BottomNavigation, SongOptions, MiniPlayer, SearchInput }
+  components: { BottomNavigation, SongOptions, MiniPlayer, SearchInput, SelectedSessionDialog, SongQueue }
 }
 </script>
