@@ -41,9 +41,19 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    'nuxt-socket-io',
+    '~/modules/mongodb.js'
   ],
-
+  io: {
+    // module options
+    sockets: [{
+      name: 'main',
+      default: true,
+      path: '/',
+      url: 'http://localhost:3000/'
+    }]
+  },
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
@@ -69,8 +79,18 @@ export default {
       }
     }
   },
+  serverMiddleware: [
+    {
+      path: '/download',
+      handler: '~/api/download.js'
+    },
+    {
+      path: '/search',
+      handler: '~/api/search.js'
+    }
+  ],
   server: {
-    host: '192.168.188.75' // default: localhost
+    // host: '192.168.188.75' // default: localhost
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
