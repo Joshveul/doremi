@@ -1,5 +1,6 @@
 <template>
   <autocomplete
+    ref="searchBox"
     class="flex-grow-1"
     :search="search"
     placeholder="Search"
@@ -7,6 +8,7 @@
     :get-result-value="getResultValue"
     auto-select
     @submit="selected"
+    @focus="navigateToSearch"
   >
     <template #result="{ result, props }">
       <li
@@ -116,7 +118,18 @@ export default {
       ]
     }
   },
+  mounted () {
+    if (this.$router.currentRoute.name === 'search') {
+      console.log(this.$refs.searchBox.$el.querySelector('input.autocomplete-input').focus())
+      this.$refs.searchBox.$el.focus()
+    }
+  },
   methods: {
+    navigateToSearch () {
+      if (this.$router.currentRoute.name !== 'search') {
+        this.$router.push('/search')
+      }
+    },
     search (input) {
       if (input.length < 1) { return [] }
       return this.items.filter((item) => {

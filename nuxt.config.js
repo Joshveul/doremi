@@ -81,12 +81,16 @@ export default {
   },
   serverMiddleware: [
     {
-      path: '/download',
+      path: '/api/download',
       handler: '~/api/download.js'
     },
     {
-      path: '/search',
+      path: '/api/search',
       handler: '~/api/search.js'
+    },
+    {
+      path: '/api/suggestions',
+      handler: '~/api/suggestions.js'
     }
   ],
   server: {

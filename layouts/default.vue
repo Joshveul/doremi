@@ -1,7 +1,7 @@
 <template>
   <v-app id="default">
     <v-app-bar app>
-      <search-input class="flex-grow-1" />
+      <search-input class="flex-grow-1" @focus="navigateToSearch" />
 
       <v-btn icon>
         <v-icon>mdi-dots-vertical</v-icon>
