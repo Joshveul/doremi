@@ -1,8 +1,6 @@
 <template>
   <v-app id="default">
-    <v-app-bar
-      app
-    >
+    <v-app-bar app>
       <search-input class="flex-grow-1" />
 
       <v-btn icon>
@@ -33,6 +31,13 @@ import SearchInput from '~/components/SearchInput.vue'
 import SongQueue from '~/components/SongQueue.vue'
 
 export default {
-  components: { BottomNavigation, SongOptions, MiniPlayer, SearchInput, SelectedSessionDialog, SongQueue }
+  components: {
+    BottomNavigation,
+    SongOptions,
+    MiniPlayer,
+    SearchInput,
+    SelectedSessionDialog,
+    SongQueue
+  }
 }
 </script>

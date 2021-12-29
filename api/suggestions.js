@@ -9,18 +9,9 @@ function getQueryParam (url, param) {
 }
 
 module.exports = function (req = new IncomingMessage(), res = new ServerResponse(), next) {
-  console.log('Incoming search request with params: ', req.url)
-  const currentCount = getQueryParam(req.url, 'currentcount')
-  const normalizedCount = currentCount === '' ? 0 : currentCount
-
-  console.log('Initiating pyshell ', { args: [getQueryParam(req.url, 'q'), normalizedCount] })
-
-  const pyshell = new PythonShell(
-    './scripts/ytsearch.py',
-    { args: [getQueryParam(req.url, 'q'), normalizedCount] })
-  console.log('Executed pyshell, waiting for response...')
+  const pyshell = new PythonShell('./scripts/ytsuggestions.py', { args: [getQueryParam(req.url, 'q')] })
   pyshell.on('message', (message) => {
-    console.log('Message is: ', message)
+    console.log(message)
     res.statusCode = 200
     res.statusMessage = 'Success'
     res.end(message)
@@ -33,9 +24,8 @@ module.exports = function (req = new IncomingMessage(), res = new ServerResponse
     res.end()
   })
   pyshell.on('close', () => {
-    console.log('Connection closed unexpectedly...')
-    res.statusCode = 200
-    res.statusMessage = 'Success'
+    res.statusCode = 400
+    res.statusMessage = 'Unknown'
     res.end()
   })
 }

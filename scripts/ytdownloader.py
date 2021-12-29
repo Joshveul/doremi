@@ -29,4 +29,5 @@ mydict = { "id": sys.argv[1], "title": hqStream.title, 'location': downloadPath 
 mycol.insert_one(mydict)
 print('Record stored: ', mydict)
 print('done')
+
 exit()

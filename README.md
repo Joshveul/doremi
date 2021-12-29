@@ -1,5 +1,17 @@
 # doremi
 
+## Dependencies
+
+- MongoDB
+- Python 3.10
+
+Python Libraries:
+```
+pip install pytube
+pip install pymongo
+```
+python-shell 2.0.3
+
 ## Build Setup
 
 ```bash
