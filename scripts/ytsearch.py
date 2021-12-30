@@ -54,16 +54,21 @@ def secToHours(seconds):
   return d
 
 def getSongObject(ytObject):
-  artistAndTitle = getArtistAndTitle(ytObject.title, ytObject.author)
-  return {
-    "title": artistAndTitle["title"],
-    "artist": artistAndTitle["artist"],
-    "channel": ytObject.author,
-    "duration": secToHours(ytObject.length),
-    "views": ytObject.views
-  }
+  print('getting data')
+  # artistAndTitle = getArtistAndTitle(ytObject.title, ytObject.author)
+  # print('done.')
+  return [
+    # ytObject.vid_info["videoDetails"]["videoId"],
+    # "title": artistAndTitle["title"],
+    # "artist": artistAndTitle["artist"],
+    # ytObject.title,
+    # ytObject.title,
+    # ytObject.author,
+    # ytObject.length,
+  ]
 
 s = Search(searchQuery)
+print('search done.')
 results = []
 
 for x in s.results:

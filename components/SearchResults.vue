@@ -1,7 +1,7 @@
 <template>
   <v-list three-line>
     <song-item
-      v-for="(item, i) in items"
+      v-for="(item, i) in ytSearchResults"
       :key="i"
       :color="item.color"
       :thumbnail="item.thumbnail"
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import SongItem from '~/components/SongItem.vue'
 
 export default {
@@ -25,6 +26,9 @@ export default {
         return []
       }
     }
+  },
+  computed: {
+    ...mapState({ ytSearchResults: 'searchResults' })
   }
 }
 </script>

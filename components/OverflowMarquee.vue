@@ -46,7 +46,7 @@ export default {
     }
   },
   mounted () {
-    const availableSpace = document.body.clientWidth - 74 - 140 - 23 + 'px'
+    const availableSpace = document.body.clientWidth - 74 - 140 - 53 + 'px'
     this.$refs.marqueeParent.style.width = availableSpace
     this.$refs.marqueeChild.style.width = availableSpace
     this.isTextOverflowing(this.$refs.marqueeChild)

@@ -5,9 +5,6 @@
     <v-row justify="center" align="center">
       <v-col cols="12" sm="8" md="6">
         <song-list />
-        <song-list />
-        <song-list />
-        <song-list />
       </v-col>
     </v-row>
   </v-container>

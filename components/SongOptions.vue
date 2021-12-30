@@ -12,7 +12,7 @@
           size="105"
           tile
         >
-          <v-img :src="selectedSong.sqThumb" />
+          <v-img :src="selectedSong.thumbnail" />
         </v-avatar>
         <div class="flex-grow-1">
           <dynamic-marquee
@@ -22,7 +22,9 @@
             style="height: 50px;"
             class="text-h6 pt-3 pr-3"
           >
-            {{ selectedSong.title }}
+            <v-card-title>
+              {{ selectedSong.title }}
+            </v-card-title>
           </dynamic-marquee>
           <v-card-subtitle
             class="pl-0 pt-0"

@@ -1,134 +1,64 @@
 <template>
-  <autocomplete
+  <v-text-field
     ref="searchBox"
+    v-model="searchModel"
     class="flex-grow-1"
-    :search="search"
     placeholder="Search"
     aria-label="Search"
-    :get-result-value="getResultValue"
-    auto-select
-    @submit="selected"
+    clearable
+    prepend-icon="mdi-magnify"
+    solo
+    flat
+    hide-details
+    background-color="transparent"
     @focus="navigateToSearch"
-  >
-    <template #result="{ result, props }">
-      <li
-        v-bind="props"
-        class="autocomplete-result wiki-result"
-      >
-        <div class="wiki-title">
-          {{ result.title }}
-        </div>
-        <div class="wiki-snippet">
-          {{ result.artist }}
-        </div>
-      </li>
-    </template>
-  </autocomplete>
+    @blur="unfocus"
+    @submit="search"
+  />
 </template>
 
 <script>
-import Autocomplete from '@trevoreyre/autocomplete-vue'
-import '@trevoreyre/autocomplete-vue/dist/style.css'
+import { mapState } from 'vuex'
 
 export default {
-  components: { Autocomplete },
+  components: { },
+  props: {
+    focused: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
-      searchString: '',
-      isUpdating: false,
-      items: [
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        },
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        },
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        },
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        },
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        },
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        },
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        },
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        },
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        },
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        },
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        },
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        },
-        {
-          color: '#1F7087',
-          sqThumb: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
-          title: 'Supermodel',
-          artist: 'Foster the People'
-        }
-      ]
+      searchString: ''
+    }
+  },
+  computed: {
+    ...mapState({ searchTerm: 'searchTerm' }),
+    searchModel: {
+      set (newValue) {
+        this.$store.commit('setSearchTerm', newValue)
+      },
+      get () { return this.searchTerm }
+    },
+    inSearchPage () {
+      return this.$router.currentRoute.name === 'search'
     }
   },
   mounted () {
-    if (this.$router.currentRoute.name === 'search') {
-      console.log(this.$refs.searchBox.$el.querySelector('input.autocomplete-input').focus())
-      this.$refs.searchBox.$el.focus()
+    if (this.inSearchPage) {
+      this.$refs.searchBox.$el.querySelector('input').focus()
     }
   },
   methods: {
     navigateToSearch () {
+      this.$emit('focus')
       if (this.$router.currentRoute.name !== 'search') {
         this.$router.push('/search')
       }
+    },
+    unfocus () {
+      this.$emit('blur')
     },
     search (input) {
       if (input.length < 1) { return [] }
@@ -150,38 +80,3 @@ export default {
   }
 }
 </script>
-<style>
-.autocomplete-input {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  border: none;
-  background-color: initial;
-}
-
-.autocomplete-input:focus,
-.autocomplete-input[aria-expanded=true] {
-  border-color: initial;
-  background-color: initial;
-  box-shadow: none;
-}
-
-.wiki-result {
-  border-top: 1px solid #eee;
-  padding: 16px;
-  background: transparent;
-}
-
-.wiki-title {
-  font-size: 20px;
-  margin-bottom: 8px;
-}
-
-.wiki-snippet {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.54);
-}
-
-.autocomplete .autocomplete-result-list {
-  padding-left: 0;
-}
-</style>

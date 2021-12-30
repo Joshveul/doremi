@@ -5,9 +5,7 @@
     ripple
     @click="onClick"
   >
-    <v-list-item-avatar rounded="lg" size="60">
-      <v-img :src="sqThumb" />
-    </v-list-item-avatar>
+    <v-img max-width="120" class="mr-2" :src="thumbnail" />
 
     <v-list-item-content>
       <v-list-item-title v-text="title" />
@@ -24,7 +22,7 @@ export default {
       type: String,
       default: ''
     },
-    sqThumb: {
+    thumbnail: {
       type: String,
       default: ''
     },
@@ -41,7 +39,7 @@ export default {
     onClick () {
       this.$store.commit('setSelectedSong', {
         title: this.title,
-        sqThumb: this.sqThumb,
+        thumbnail: this.thumbnail,
         artist: this.artist
       })
       this.$store.commit('setSongOptionsOpen', true)

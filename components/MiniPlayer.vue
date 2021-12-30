@@ -12,13 +12,7 @@
       <div
         class="d-flex flex-nowrap"
       >
-        <v-avatar
-          class="ma-3"
-          size="50"
-          tile
-        >
-          <v-img :src="nowPlayingSong.sqThumb" />
-        </v-avatar>
+        <v-img class="ma-2" width="80" :src="nowPlayingSong.thumbnail" />
         <div class="flex-grow-1">
           <v-card-subtitle
             class="px-0 pt-2 pb-0"

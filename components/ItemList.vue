@@ -4,14 +4,8 @@
       {{ title }}
     </h4>
     <hooper style="height: auto;" :items-to-show="1.1">
-      <slide>
-        <song-list />
-      </slide>
-      <slide>
-        <song-list />
-      </slide>
-      <slide>
-        <song-list />
+      <slide v-for="(e, i) in splitItems" :key="i">
+        <song-list :items="e" />
       </slide>
     </hooper>
   </v-container>
@@ -32,6 +26,47 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    items: {
+      type: Array,
+      default () {
+        return [{
+          color: '#1F7087',
+          thumbnail: 'https://i.ytimg.com/vi/enmHYsoCMkQ/hq720.jpg?sqp=-oaymwEjCOgCEMoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLAuNn05YAA8gcFHKl8UjuS7z4r6Yg',
+          title: 'Supermodel',
+          artist: 'Foster the People'
+        }, {
+          color: '#1F7087',
+          thumbnail: 'https://i.ytimg.com/vi/enmHYsoCMkQ/hq720.jpg?sqp=-oaymwEjCOgCEMoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLAuNn05YAA8gcFHKl8UjuS7z4r6Yg',
+          title: 'Supermodel',
+          artist: 'Foster the People'
+        }, {
+          color: '#1F7087',
+          thumbnail: 'https://i.ytimg.com/vi/enmHYsoCMkQ/hq720.jpg?sqp=-oaymwEjCOgCEMoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLAuNn05YAA8gcFHKl8UjuS7z4r6Yg',
+          title: 'Supermodel',
+          artist: 'Foster the People'
+        }]
+      }
+    },
+    listSize: {
+      type: Number,
+      default: 3
+    }
+  },
+  computed: {
+    splitItems () {
+      const result = this.items.reduce((resultArray, item, index) => {
+        const chunkIndex = Math.floor(index / this.listSize)
+
+        if (!resultArray[chunkIndex]) {
+          resultArray[chunkIndex] = []
+        }
+
+        resultArray[chunkIndex].push(item)
+
+        return resultArray
+      }, [])
+      return result
     }
   }
 }

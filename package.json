@@ -24,7 +24,9 @@
     "vue-dynamic-marquee": "^0.1.7",
     "vue-slicksort": "^1.1.3",
     "vuetify": "^2.5.5",
-    "youtube-search": "^1.1.6"
+    "youtube-search": "^1.1.6",
+    "youtube-search-api": "^1.0.11",
+    "youtube-search-without-api-key": "^1.0.7"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",

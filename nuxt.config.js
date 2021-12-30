@@ -94,7 +94,7 @@ export default {
     }
   ],
   server: {
-    // host: '192.168.188.75' // default: localhost
+    host: '192.168.188.75' // default: localhost
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
