@@ -12,17 +12,17 @@
       <div
         class="d-flex flex-nowrap"
       >
-        <v-img class="ma-2" width="80" :src="nowPlayingSong.thumbnail" />
+        <v-img class="ma-2" width="80" :src="nowPlayingSong.thumbnails[0].url" />
         <div class="flex-grow-1">
           <v-card-subtitle
             class="px-0 pt-2 pb-0"
           >
-            <overflow-marquee :text="nowPlayingSong.title" />
+            <marquee-text :text="nowPlayingSong.title" :max-width="maxTextSpace" />
           </v-card-subtitle>
           <v-card-subtitle
             class="pl-0 py-0"
           >
-            <overflow-marquee :text="nowPlayingSong.artist" />
+            <marquee-text :text="nowPlayingSong.artist" :max-width="maxTextSpace" />
           </v-card-subtitle>
         </div>
         <v-card-actions>
@@ -55,12 +55,22 @@
 
 <script>
 import { mapState } from 'vuex'
-import OverflowMarquee from '~/components/OverflowMarquee.vue'
+import MarqueeText from '~/components/MarqueeText.vue'
 
 export default {
-  components: { OverflowMarquee },
+  components: { MarqueeText },
+  data () {
+    return {
+      maxTextSpace: 0
+    }
+  },
   computed: {
     ...mapState({ nowPlayingSong: 'nowPlayingSong' })
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.maxTextSpace = document.body.clientWidth - 74 - 140 - 46
+    })
   },
   methods: {
     openQueue () {
@@ -73,6 +83,6 @@ export default {
 <style>
 .layout.mini-player {
   position: fixed;
-  bottom: 54px;
+  bottom: 55px;
 }
 </style>

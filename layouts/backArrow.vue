@@ -24,9 +24,9 @@
           large
           dark
           bottom
-          absolute
           right
-          class="mb-10 mr-4"
+          fixed
+          class="mb-16 mr-2"
           @click="focusSearch"
         >
           <v-icon>mdi-magnify</v-icon>

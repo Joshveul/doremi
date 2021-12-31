@@ -12,20 +12,15 @@
           size="105"
           tile
         >
-          <v-img :src="selectedSong.thumbnail" />
+          <v-img :src="selectedSong.thumbnails[0].url" />
         </v-avatar>
-        <div class="flex-grow-1">
-          <dynamic-marquee
-            direction="row"
-            reverse
-            :speed="{type: 'pps', number: 40}"
-            style="height: 50px;"
-            class="text-h6 pt-3 pr-3"
-          >
-            <v-card-title>
-              {{ selectedSong.title }}
-            </v-card-title>
-          </dynamic-marquee>
+        <div class="">
+          <v-card-title class="px-0">
+            <marquee-text
+              :text="selectedSong.title"
+              :max-width="maxTextSpace"
+            />
+          </v-card-title>
           <v-card-subtitle
             class="pl-0 pt-0"
             v-text="selectedSong.artist"
@@ -67,10 +62,15 @@
 
 <script>
 import { mapState } from 'vuex'
-import DynamicMarquee from 'vue-dynamic-marquee'
+import MarqueeText from '~/components/MarqueeText.vue'
 
 export default {
-  components: { DynamicMarquee },
+  components: { MarqueeText },
+  data () {
+    return {
+      maxTextSpace: 193
+    }
+  },
   computed: {
     ...mapState({ songOptionsOpen: 'songOptionsOpen', selectedSong: 'selectedSong' }),
     isOpen: {
@@ -79,6 +79,11 @@ export default {
       },
       get () { return this.songOptionsOpen }
     }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.maxTextSpace = document.body.clientWidth - 205
+    })
   }
 }
 </script>

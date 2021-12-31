@@ -3,11 +3,22 @@
     <song-item
       v-for="(item, i) in ytSearchResults"
       :key="i"
-      :color="item.color"
-      :thumbnail="item.thumbnail"
-      :title="item.title"
-      :artist="item.artist"
+      :item="item"
     />
+    <v-card
+      v-if="hasYtResults"
+      class="d-flex justify-space-around mt-2"
+      flat
+    >
+      <v-progress-circular
+        v-intersect="{
+          handler: onIntersect,
+          threshold: 1
+        }"
+        indeterminate
+        color="primary"
+      />
+    </v-card>
   </v-list>
 </template>
 
@@ -28,7 +39,17 @@ export default {
     }
   },
   computed: {
-    ...mapState({ ytSearchResults: 'searchResults' })
+    ...mapState({ ytSearchResults: 'ytSearchResults' }),
+    hasYtResults () {
+      return this.ytSearchResults.length
+    }
+  },
+  methods: {
+    onIntersect () {
+      if (this.hasYtResults) {
+        this.$store.dispatch('fetchNextYouTubePage')
+      }
+    }
   }
 }
 </script>

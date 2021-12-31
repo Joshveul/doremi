@@ -3,10 +3,7 @@
     <song-item
       v-for="(item, i) in items"
       :key="i"
-      :color="item.color"
-      :thumbnail="item.thumbnail"
-      :title="item.title"
-      :artist="item.artist"
+      :item="item"
     />
   </v-list>
 </template>

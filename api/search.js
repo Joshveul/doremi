@@ -61,7 +61,18 @@ function getArtistAndTitle (title, channel) {
 
 module.exports = async function (req = new IncomingMessage(), res = new ServerResponse(), next) {
   console.log('Incoming search request with params: ', req.url)
-  const videos = await yt.GetListByKeyword(getQueryParam(req.url, 'q'))
+
+  const nextPageParam = getQueryParam(req.url, 'nextPage')
+  const query = getQueryParam(req.url, 'q')
+  const nextPage = nextPageParam === '' ? null : JSON.parse(nextPageParam)
+
+  let videos
+
+  if (nextPage === null) {
+    videos = await yt.GetListByKeyword(query)
+  } else {
+    videos = await yt.NextPage(nextPage)
+  }
 
   const entries = videos.items.map((element) => {
     const { artist, title } = getArtistAndTitle(element.title, element.channelTitle)

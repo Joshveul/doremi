@@ -11,9 +11,10 @@
     flat
     hide-details
     background-color="transparent"
+    type="search"
     @focus="navigateToSearch"
     @blur="unfocus"
-    @submit="search"
+    @keyup.enter="search"
   />
 </template>
 
@@ -30,7 +31,8 @@ export default {
   },
   data () {
     return {
-      searchString: ''
+      searchString: '',
+      newSearchQuery: true
     }
   },
   computed: {
@@ -43,6 +45,13 @@ export default {
     },
     inSearchPage () {
       return this.$router.currentRoute.name === 'search'
+    }
+  },
+  watch: {
+    searchModel (newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.newSearchQuery = true
+      }
     }
   },
   mounted () {
@@ -60,12 +69,12 @@ export default {
     unfocus () {
       this.$emit('blur')
     },
-    search (input) {
-      if (input.length < 1) { return [] }
-      return this.items.filter((item) => {
-        return item.title.toLowerCase()
-          .includes(input.toLowerCase())
-      })
+    search () {
+      if (this.newSearchQuery === true) {
+        this.newSearchQuery = false
+        this.$store.dispatch('searchYoutube', this.searchModel)
+      }
+      this.$el.querySelector('input[type="search"]').blur()
     },
     getResultValue (result) {
       return result.title

@@ -2,36 +2,72 @@
 export default {
   name: 'MarqueeText',
   props: {
-    duration: {
-      type: Number,
-      default: 0.5
-    },
-    repeat: {
-      type: Number,
-      default: 5,
-      validator (val) {
-        return val > 0
-      }
-    },
-    paused: {
-      type: Boolean,
-      default: false
-    },
     reverse: {
       type: Boolean,
       default: false
+    },
+    maxWidth: {
+      type: Number,
+      default: 100
+    },
+    text: {
+      type: String,
+      default: ''
+    }
+  },
+  data () {
+    return {
+      paused: true,
+      repeat: 1
+    }
+  },
+  computed: {
+    duration () {
+      if (this.paused) {
+        return 0
+      }
+      return 150
+    }
+  },
+  watch: {
+    text () {
+      this.repeat = 1
+      this.paused = true
+      const textEl = this.$el.querySelector('.text')
+      textEl.classList.remove('text')
+      this.calculateValues()
+      textEl.classList.add('text')
+    }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.calculateValues()
+    })
+  },
+  methods: {
+    calculateValues () {
+      setTimeout(() => {
+        const wrapper = this.$el.querySelector('.content')
+        if (wrapper.offsetWidth < wrapper.scrollWidth) {
+          this.repeat = 20
+          this.paused = false
+        } else {
+          this.paused = true
+        }
+      }, 100)
     }
   },
   render (h) {
-    return h('div', { class: 'wrap' }, [
+    return h('div', { class: 'wrap', style: `maxWidth: ${this.maxWidth}px` }, [
       h('div', {
         class: [
           this.paused
             ? 'paused'
             : undefined,
           'content'
-        ]
-      }, Array(this.repeat).fill(
+        ],
+        style: `width: ${this.maxWidth}px`
+      }, [
         h('div', {
           class: 'text',
           style: {
@@ -40,8 +76,8 @@ export default {
               ? 'reverse'
               : undefined
           }
-        }, this.$slots.default)
-      ))
+        }, (this.text + '⠀').repeat(this.repeat))
+      ])
     ])
   }
 }
@@ -52,14 +88,11 @@ export default {
   overflow: hidden;
 }
 
-.content {
-  width: 100000px;
-}
-
 .text {
   animation-name: animation;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  white-space: nowrap;
   float: left;
 }
 
