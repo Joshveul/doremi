@@ -10,9 +10,30 @@
 
 <script>
 import ItemList from '~/components/ItemList.vue'
+
 export default {
   components: {
     ItemList
+  },
+  mounted () {
+    this.socket = this.$nuxtSocket({
+      name: 'main'
+    })
+    /* Listen for events: */
+    console.log(this.socket)
+    this.socket
+      .on('connect', (msg, cb) => {
+        console.log('connected' + msg)
+      })
+    this.socket
+      .on('progress', (msg, cb) => {
+        console.log(msg)
+      })
+
+      .on('mongoStream', (msg, cb) => {
+        console.log('From mongo:', msg)
+      })
+    this.socket.emit('fn3', { id: 'abc123' })
   }
 }
 </script>

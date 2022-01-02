@@ -4,7 +4,7 @@ import pymongo
 
 myclient = pymongo.MongoClient("mongodb://localhost:37017/")
 mydb = myclient["doremi"]
-mycol = mydb["appstate"]
+mycol = mydb["songs"]
 
 videoDocQuery = { "id": sys.argv[1] }
 
@@ -25,7 +25,7 @@ downloadPath = 'static/archive'
 hqStream.download('./' + downloadPath, fileName)
 print('Download complete')
 
-mydict = { "id": sys.argv[1], "title": hqStream.title, 'location': downloadPath + '/' + fileName}
+mydict = { "videoId": sys.argv[1], "title": hqStream.title, 'location': downloadPath + '/' + fileName}
 mycol.insert_one(mydict)
 print('Record stored: ', mydict)
 print('done')

@@ -74,17 +74,20 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
     videos = await yt.NextPage(nextPage)
   }
 
-  const entries = videos.items.map((element) => {
-    const { artist, title } = getArtistAndTitle(element.title, element.channelTitle)
-    return {
-      videoId: element.id,
-      title,
-      artist,
-      thumbnails: element.thumbnail.thumbnails,
-      channel: element.channelTitle,
-      duration: element.length.simpleText
+  const entries = videos.items.reduce((result, element) => {
+    if (element.type === 'video') {
+      const { artist, title } = getArtistAndTitle(element.title, element.channelTitle)
+      result.push({
+        videoId: element.id,
+        title,
+        artist,
+        thumbnail: element.thumbnail.thumbnails[0].url,
+        channel: element.channelTitle,
+        duration: element.length.simpleText
+      })
     }
-  })
+    return result
+  }, [])
 
   res.statusCode = 200
   res.statusMessage = 'Success'

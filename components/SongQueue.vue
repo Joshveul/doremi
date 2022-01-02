@@ -13,6 +13,7 @@
       <v-toolbar
         class="header-bar"
         dark
+        max-height="100px"
         color="primary"
       >
         <v-btn
@@ -31,25 +32,12 @@
         <sortable-container
           ref="sortContainer"
           v-scroll.self="onScroll"
+          :items="queue"
           class="sort-container"
           style="max-height: 90vh; overflow: scroll;"
           @sort-start="sortStart"
           @sort-end="sortEnd"
-        >
-          <sortable-item :divider="false" :index="0" />
-          <sortable-item :index="1" />
-          <sortable-item :index="2" />
-          <sortable-item :index="3" />
-          <sortable-item :index="4" />
-          <sortable-item :index="5" />
-          <sortable-item :index="6" />
-          <sortable-item :index="7" />
-          <sortable-item :index="8" />
-          <sortable-item :index="9" />
-          <sortable-item :index="10" />
-          <sortable-item :index="11" />
-          <sortable-item :index="12" />
-        </sortable-container>
+        />
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -57,12 +45,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import SortableItem from '~/components/sortable/SortableItem.vue'
 import SortableContainer from '~/components/sortable/SortableContainer.vue'
 
 export default {
   components: {
-    SortableItem,
     SortableContainer
   },
   data () {
@@ -73,7 +59,7 @@ export default {
     }
   },
   computed: {
-    ...mapState({ queueOpen: 'queueOpen' }),
+    ...mapState({ queueOpen: 'queueOpen', queue: 'queue' }),
     isOpen: {
       set (newValue) {
         this.$store.commit('setQueueOpen', newValue)

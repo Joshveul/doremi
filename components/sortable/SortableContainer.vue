@@ -1,26 +1,40 @@
 <template>
   <slick-list
-    v-model="taskList"
+    v-model="list"
     lock-axis="y"
     use-drag-handle
     helper-class="helper-class"
     @sort-start="sortStart"
     @sort-end="sortEnd"
   >
-    <slot />
+    <sortable-item v-for="(e, i) in list" :key="i" :item="e" :divider="i !== 0" :index="i" />
   </slick-list>
 </template>
 <script>
-import colors from 'vuetify/es5/util/colors'
 import { SlickList } from 'vue-slicksort'
+import SortableItem from '~/components/sortable/SortableItem.vue'
+
 export default {
   components: {
-    SlickList
+    SlickList,
+    SortableItem
   },
-  data () {
-    return {
-      colors,
-      taskList: []
+  props: {
+    items: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
+  },
+  computed: {
+    list: {
+      set (val) {
+        this.$store.commit('updateQueue', val)
+      },
+      get () {
+        return this.items
+      }
     }
   },
   methods: {

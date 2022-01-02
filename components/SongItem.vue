@@ -5,7 +5,7 @@
     ripple
     @click="onClick"
   >
-    <v-img max-width="120" class="mr-2" :src="item.thumbnails[0].url" />
+    <v-img max-width="120" class="mr-2" :src="item.thumbnail" />
 
     <v-list-item-content>
       <v-list-item-title v-text="item.title" />
@@ -18,16 +18,20 @@
 <script>
 export default {
   props: {
+    source: {
+      type: String,
+      default: ''
+    },
     item: {
       type: Object,
       default () {
-        return { videoId: 'BP7ji1dQ-lA', title: 'WHEN WE WERE YOUNG - Adele (KARAOKE PIANO VERSION)', artist: 'WHEN WE WERE YOUNG - Adele (KARAOKE PIANO VERSION)', thumbnails: [{ url: 'https://i.ytimg.com/vi/BP7ji1dQ-lA/hqdefault.jpg?sqp=-oaymwEjCOADEI4CSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBqQf3TRLZMykoCqnIHWy7BSi0yrA', width: 480, height: 270 }], channel: 'CoversPH', duration: '5:14' }
+        return { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' }
       }
     }
   },
   methods: {
     onClick () {
-      this.$store.commit('setSelectedSong', this.item)
+      this.$store.commit('setSelectedSong', { ...this.item, source: this.source })
       this.$store.commit('setSongOptionsOpen', true)
     }
   }

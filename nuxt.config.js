@@ -51,7 +51,7 @@ export default {
       name: 'main',
       default: true,
       path: '/',
-      url: 'http://localhost:3000/'
+      url: 'http://192.168.188.75:3000/'
     }]
   },
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -91,6 +91,10 @@ export default {
     {
       path: '/api/suggestions',
       handler: '~/api/suggestions.js'
+    },
+    {
+      path: '/api/getSong',
+      handler: '~/api/getSong.js'
     }
   ],
   server: {

@@ -12,7 +12,7 @@
       <div
         class="d-flex flex-nowrap"
       >
-        <v-img class="ma-2" width="80" :src="nowPlayingSong.thumbnails[0].url" />
+        <v-img class="ma-2" width="80" :src="nowPlayingSong.thumbnail" />
         <div class="flex-grow-1">
           <v-card-subtitle
             class="px-0 pt-2 pb-0"

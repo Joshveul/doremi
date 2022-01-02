@@ -12,7 +12,7 @@
           size="105"
           tile
         >
-          <v-img :src="selectedSong.thumbnails[0].url" />
+          <v-img :src="selectedSong.thumbnail" />
         </v-avatar>
         <div class="">
           <v-card-title class="px-0">
@@ -38,7 +38,7 @@
         block
         large
         color="primary"
-        @click="isOpen = !isOpen"
+        @click="addToQueue"
       >
         <v-icon left>
           mdi-playlist-plus
@@ -49,7 +49,7 @@
         class="my-2 text-left"
         block
         text
-        @click="isOpen = !isOpen"
+        @click="playNext"
       >
         <v-icon left>
           mdi-playlist-play
@@ -84,6 +84,16 @@ export default {
     this.$nextTick(() => {
       this.maxTextSpace = document.body.clientWidth - 205
     })
+  },
+  methods: {
+    addToQueue () {
+      this.$store.dispatch('addToQueue', { item: this.selectedSong })
+      this.isOpen = false
+    },
+    playNext () {
+      this.$store.dispatch('addToQueue', { item: this.selectedSong, playNext: true })
+      this.isOpen = false
+    }
   }
 }
 </script>
