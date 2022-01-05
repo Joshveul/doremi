@@ -12,8 +12,7 @@
     >
       <v-progress-circular
         v-intersect="{
-          handler: onIntersect,
-          threshold: 1
+          handler: onIntersect
         }"
         indeterminate
         color="primary"

@@ -11,6 +11,7 @@ function getQueryParam (url, param) {
 }
 
 module.exports = async function (req = new IncomingMessage(), res = new ServerResponse(), next) {
+  console.info('Starting getSong request...')
   const result = { count: 0, results: [] }
   const id = getQueryParam(req.url, 'id')
 
@@ -20,7 +21,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
     result.count = result.results.length
   }
 
-  console.log(result)
+  console.log('getSong result: ', result)
 
   res.statusCode = 200
   res.statusMessage = 'success'

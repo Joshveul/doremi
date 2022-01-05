@@ -81,7 +81,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
         videoId: element.id,
         title,
         artist,
-        thumbnail: element.thumbnail.thumbnails[0].url,
+        thumbnail: encodeURIComponent(element.thumbnail.thumbnails[0].url),
         channel: element.channelTitle,
         duration: element.length.simpleText
       })

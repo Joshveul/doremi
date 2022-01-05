@@ -14,7 +14,7 @@
       >
         mdi-drag-horizontal-variant
       </v-icon>
-      <v-img :src="item.thumbnail" max-width="100" />
+      <v-img :src="thumbnail" max-width="100" />
       <v-list-item-content class="ml-2 item-content">
         <v-list-item-title v-text="item.title" />
         <v-list-item-subtitle v-text="item.artist" />
@@ -27,6 +27,35 @@
       >
         mdi-playlist-remove
       </v-icon>
+      <v-overlay
+        :absolute="true"
+        :opacity=".8"
+        :value="item.downloading"
+      >
+        <v-row
+          class="fill-height"
+          align-content="center"
+          justify="center"
+        >
+          <v-col
+            class="text-subtitle-1 text-center pb-0"
+            cols="12"
+          >
+            Downloading...
+          </v-col>
+          <v-col
+            cols="12"
+            class="pt-0"
+          >
+            <v-progress-linear
+              color="blue lighten-2"
+              indeterminate
+              rounded
+              height="6"
+            />
+          </v-col>
+        </v-row>
+      </v-overlay>
     </v-list-item>
     <v-dialog
       v-model="remove"
@@ -98,6 +127,9 @@ export default {
   computed: {
     lineClamp () {
       return this.simple ? 2 : 0
+    },
+    thumbnail () {
+      return decodeURIComponent(this.item.thumbnail)
     }
   }
 }

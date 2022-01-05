@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
+import { URL } from 'url'
 import { PythonShell } from 'python-shell'
-import client from '../api/mongo'
 
 function getQueryParam (url, param) {
   const rx = new RegExp('[?&]' + param + '=([^&]+).*$')
@@ -10,7 +10,24 @@ function getQueryParam (url, param) {
 }
 
 module.exports = function (req = new IncomingMessage(), res = new ServerResponse(), next) {
-  const pyshell = new PythonShell('./scripts/ytdownloader.py', { args: [getQueryParam(req.url, 'id')] })
+  const baseURL = 'http://' + req.headers.host + '/'
+  const url = new URL(req.url, baseURL)
+  const query = new URLSearchParams(url.search)
+  console.log(`incoming download request... ${query.get('item')}`)
+  const item = JSON.parse(decodeURI(query.get('item')))
+  console.log(item)
+  const user = getQueryParam(req.url, 'user')
+  const pyshell = new PythonShell('./scripts/ytdownloader.py', {
+    args: [
+      user,
+      item.videoId,
+      item.title,
+      item.artist,
+      decodeURIComponent(item.thumbnail),
+      item.channel,
+      item.duration
+    ]
+  })
   pyshell.on('message', (message) => {
     console.log(message)
     if (message.includes('exists')) {

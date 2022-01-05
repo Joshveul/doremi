@@ -5,7 +5,7 @@
     ripple
     @click="onClick"
   >
-    <v-img max-width="120" class="mr-2" :src="item.thumbnail" />
+    <v-img max-width="120" class="mr-2" :src="thumbnail" />
 
     <v-list-item-content>
       <v-list-item-title v-text="item.title" />
@@ -27,6 +27,11 @@ export default {
       default () {
         return { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' }
       }
+    }
+  },
+  computed: {
+    thumbnail () {
+      return decodeURIComponent(this.item.thumbnail)
     }
   },
   methods: {

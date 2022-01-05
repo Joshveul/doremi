@@ -1,5 +1,8 @@
+import { downloadVideo, getVideoData } from '~/modules/utils'
+
 export const state = () => ({
   activeUsers: [],
+  userData: { name: 'Josh', avatar: 'https://pps.whatsapp.net/v/t61.24694-24/121236150_887827375081777_7618963702791770178_n.jpg?ccb=11-4&oh=9380814569e8a8b9b66d13aa1e7a04fb&oe=61D84016' },
   songOptionsOpen: false,
   selectedSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
   nowPlayingSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
@@ -12,6 +15,7 @@ export const state = () => ({
   queueOpen: false,
   queue: [],
   queueState: {
+    addingToQueue: false,
     currentSongIndex: 0,
     playing: false
   }
@@ -48,8 +52,20 @@ export const mutations = {
   addYtSearchResults (state, results) {
     state.ytSearchResults.push(...results)
   },
-  updateQueue (state, queue) {
-    state.queue = queue
+  addToQueue (state, payload) {
+    if (state.queue.length > 0 && 'playNext' in payload && payload.playNext) {
+      state.queue.splice(state.queueState.currentSongIndex + 1, 0, payload.item)
+    } else {
+      state.queue.push(payload.item)
+    }
+  },
+  setVideoDownloaded (state, video) {
+    const item = state.queue.find(el => el.videoId === video.videoId)
+    item.downloading = false
+    Object.assign(state.queue, state.queue)
+  },
+  addingToQueue (state, isAddingToqueue) {
+    state.queueState.addingToQueue = isAddingToqueue
   }
 }
 
@@ -69,14 +85,19 @@ export const actions = {
     const results = await (await fetch(`http://192.168.188.75:3000/api/search?nextPage=${JSON.stringify(state.ytNextPage)}`)).json()
     commit('addYtSearchResults', results.entries)
   },
-  addToQueue ({ commit, state }, options) {
-    const queue = state.queue.slice()
-    if (queue.length > 0 && 'playNext' in options && options.playNext) {
-      queue.splice(state.queueState.currentSongIndex + 1, 0, options.item)
-    } else {
-      queue.push(options.item)
+  async addToQueue ({ commit, state }, payload) {
+    commit('addingToQueue', true)
+
+    const videoData = await getVideoData(payload.item.videoId)
+    payload.item.downloading = videoData === false
+
+    commit('addToQueue', payload)
+
+    if (!videoData) {
+      const result = await downloadVideo(payload.item, state.userData.name)
+      console.info('downloaded maybe?: ' + result)
     }
-    console.log(queue)
-    commit('updateQueue', queue)
+
+    commit('setVideoDownloaded', payload.item)
   }
 }
