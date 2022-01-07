@@ -1,4 +1,4 @@
-import { downloadVideo, getVideoData } from '~/modules/utils'
+import { downloadVideo, getVideoData, hashString } from '~/modules/utils'
 const host = process.env.HOST
 
 export const state = () => ({
@@ -61,12 +61,17 @@ export const mutations = {
     }
   },
   setVideoDownloaded (state, video) {
-    const item = state.queue.find(el => el.videoId === video.videoId)
-    item.downloading = false
-    Object.assign(state.queue, state.queue)
+    video.downloading = false
+    const existsAtIndex = state.queue.findIndex(el => el.hash === video.hash)
+    const newItem = { ...state.queue[existsAtIndex] }
+    state.queue[existsAtIndex] = newItem
+    state.queue = [...state.queue]
   },
   addingToQueue (state, isAddingToqueue) {
     state.queueState.addingToQueue = isAddingToqueue
+  },
+  updateQueue (state, queue) {
+    state.queue = queue
   }
 }
 
@@ -91,12 +96,12 @@ export const actions = {
 
     const videoData = await getVideoData(payload.item.videoId)
     payload.item.downloading = videoData === false
+    payload.item.hash = hashString(payload.item.videoId)
 
     commit('addToQueue', payload)
 
     if (!videoData) {
-      const result = await downloadVideo(payload.item, state.userData.name)
-      console.info('downloaded maybe?: ' + result)
+      await downloadVideo(payload.item, state.userData.name)
     }
 
     commit('setVideoDownloaded', payload.item)

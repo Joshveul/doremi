@@ -29,21 +29,21 @@
           <v-btn
             ref="playpause"
             icon
-            @click.prevent=""
+            @click.stop.prevent=""
           >
             <v-icon>mdi-skip-previous</v-icon>
           </v-btn>
           <v-btn
             ref="next"
             icon
-            @click.prevent=""
+            @click.stop.prevent=""
           >
             <v-icon>mdi-play</v-icon>
           </v-btn>
           <v-btn
             ref="prev"
             icon
-            @click.prevent=""
+            @click.stop.prevent=""
           >
             <v-icon>mdi-skip-next</v-icon>
           </v-btn>

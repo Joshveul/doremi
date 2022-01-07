@@ -32,7 +32,7 @@ module.exports = function (req = new IncomingMessage(), res = new ServerResponse
       res.statusCode = 200
       res.statusMessage = 'Archived'
       res.end()
-    }, 10000)
+    }, 5000)
   } else {
     const pyshell = new PythonShell('./scripts/ytdownloader.py', {
       args: shellArgs

@@ -28,9 +28,10 @@
         mdi-playlist-remove
       </v-icon>
       <v-overlay
+        transition="scroll-x-transition"
         :absolute="true"
         :opacity=".8"
-        :value="item.downloading"
+        :value="localData.downloading"
       >
         <v-row
           class="fill-height"
@@ -121,7 +122,8 @@ export default {
   data () {
     return {
       colors,
-      remove: false
+      remove: false,
+      localData: this.item
     }
   },
   computed: {
@@ -130,6 +132,9 @@ export default {
     },
     thumbnail () {
       return decodeURIComponent(this.item.thumbnail)
+    },
+    isDownloading () {
+      return this.localData.downloading
     }
   }
 }
@@ -139,5 +144,6 @@ export default {
 .handle {
   height: 55px;
   width: 30px;
+  z-index: 6;
 }
 </style>
