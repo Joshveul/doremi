@@ -1,5 +1,12 @@
 import colors from 'vuetify/es5/util/colors'
 
+const host = process.env.HOST
+
+if (process.env.MODE === 'offline') {
+  // eslint-disable-next-line no-console
+  console.info('Development MODE is set to OFFLINE, conections to YouTube and MongoDB will be mocked')
+}
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -42,6 +49,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/dotenv',
     'nuxt-socket-io',
     '~/modules/mongodb.js'
   ],
@@ -51,7 +59,7 @@ export default {
       name: 'main',
       default: true,
       path: '/',
-      url: 'http://192.168.188.75:3000/'
+      url: `http://${host}:3000/`
     }]
   },
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -98,7 +106,7 @@ export default {
     }
   ],
   server: {
-    host: '192.168.188.75' // default: localhost
+    host // default: localhost
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

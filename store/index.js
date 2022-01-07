@@ -1,4 +1,5 @@
 import { downloadVideo, getVideoData } from '~/modules/utils'
+const host = process.env.HOST
 
 export const state = () => ({
   activeUsers: [],
@@ -77,12 +78,12 @@ export const getters = {
 
 export const actions = {
   async searchYoutube ({ commit }, query) {
-    const results = await (await fetch(`http://192.168.188.75:3000/api/search?q=${query}`)).json()
+    const results = await (await fetch(`http://${host}:3000/api/search?q=${query}`)).json()
     commit('setYtSearchResults', results.entries)
     commit('setYtNextPage', results.nextPageToken)
   },
   async fetchNextYouTubePage ({ commit, state }) {
-    const results = await (await fetch(`http://192.168.188.75:3000/api/search?nextPage=${JSON.stringify(state.ytNextPage)}`)).json()
+    const results = await (await fetch(`http://${host}:3000/api/search?nextPage=${JSON.stringify(state.ytNextPage)}`)).json()
     commit('addYtSearchResults', results.entries)
   },
   async addToQueue ({ commit, state }, payload) {
