@@ -4,8 +4,8 @@
       v-touch="{
         up: () => openQueue()
       }"
-      color="primary"
-      class="mx-1 flex-grow-1"
+      dark
+      class="mx-1 flex-grow-1 bg bg-gradient"
       :ripple="false"
       @click="openQueue"
     >

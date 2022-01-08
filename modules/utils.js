@@ -9,12 +9,10 @@ export const getVideoData = async function getVideoData (videoId) {
 }
 
 export const downloadVideo = async function downloadVideo (item, user) {
-  console.info('starting downloadVideo request...')
   const uri = `http://${host}:3000/api/download?` +
     `item=${encodeURI(JSON.stringify(item))}` +
     `&user=${user}`
   const result = await fetch(uri)
-  console.info('download Video result: ', result)
   if (result.ok) {
     return true
   }

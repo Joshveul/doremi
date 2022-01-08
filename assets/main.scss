@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:ital,wght@0,500;1,400&display=swap");
+
+$font-family: "Open Sans";
+
+.v-application {
+  [class*="text-"] {
+    color: #36405a;
+    font-family: $font-family, sans-serif !important;
+  }
+
+  font-family: $font-family, sans-serif !important;
+}

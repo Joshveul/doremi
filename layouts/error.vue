@@ -15,6 +15,7 @@
 <script>
 export default {
   layout: 'empty',
+  middleware: ['auth'],
   props: {
     error: {
       type: Object,

@@ -25,6 +25,8 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    // SCSS file in the project
+    '@/assets/main.scss'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -51,6 +53,7 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/dotenv',
     'nuxt-socket-io',
+    'cookie-universal-nuxt',
     '~/modules/mongodb.js'
   ],
   io: {
@@ -110,6 +113,5 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-  }
+  build: { }
 }

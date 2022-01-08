@@ -11,10 +11,9 @@
       class="d-flex flex-column"
     >
       <v-toolbar
-        class="header-bar"
+        class="header-bar bg bg-gradient"
         dark
         max-height="100px"
-        color="primary"
       >
         <v-btn
           icon

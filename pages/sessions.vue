@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <session-list
-      :items="items"
-    />
+    <session-list :items="items" />
   </v-container>
 </template>
 

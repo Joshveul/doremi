@@ -3,7 +3,7 @@ const host = process.env.HOST
 
 export const state = () => ({
   activeUsers: [],
-  userData: { name: 'Josh', avatar: 'https://pps.whatsapp.net/v/t61.24694-24/121236150_887827375081777_7618963702791770178_n.jpg?ccb=11-4&oh=9380814569e8a8b9b66d13aa1e7a04fb&oe=61D84016' },
+  userData: { name: 'Josh', avatar: 'https://static-cdn.jtvnw.net/jtv_user_pictures/8081d396-3470-4717-abe0-b04c1fabd5ea-profile_image-300x300.png' },
   songOptionsOpen: false,
   selectedSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
   nowPlayingSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
@@ -72,6 +72,9 @@ export const mutations = {
   },
   updateQueue (state, queue) {
     state.queue = queue
+  },
+  setUser (state, payload) {
+    state.userData = Object.assign(state.userData, payload)
   }
 }
 
@@ -82,6 +85,10 @@ export const getters = {
 }
 
 export const actions = {
+  login ({ commit }, userName) {
+    // See if user exists in DB, otherwise add it
+    commit('setUser', { name: userName })
+  },
   async searchYoutube ({ commit }, query) {
     const results = await (await fetch(`http://${host}:3000/api/search?q=${query}`)).json()
     commit('setYtSearchResults', results.entries)
@@ -97,13 +104,13 @@ export const actions = {
     const videoData = await getVideoData(payload.item.videoId)
     payload.item.downloading = videoData === false
     payload.item.hash = hashString(payload.item.videoId)
+    payload.item.user = state.userData.name
 
     commit('addToQueue', payload)
 
     if (!videoData) {
       await downloadVideo(payload.item, state.userData.name)
+      commit('setVideoDownloaded', payload.item)
     }
-
-    commit('setVideoDownloaded', payload.item)
   }
 }

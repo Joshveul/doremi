@@ -18,7 +18,7 @@
       <v-list-item-content class="ml-2 item-content">
         <v-list-item-title v-text="item.title" />
         <v-list-item-subtitle v-text="item.artist" />
-        <v-list-item-subtitle v-text="`Added by: ${user}`" />
+        <v-list-item-subtitle v-text="`Added by: ${item.user}`" />
       </v-list-item-content>
       <v-icon
         v-if="!simple"
@@ -109,10 +109,6 @@ export default {
     item: {
       type: Object,
       default: null
-    },
-    user: {
-      type: String,
-      default: 'default user'
     },
     index: {
       type: Number,

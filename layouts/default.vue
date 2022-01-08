@@ -38,6 +38,7 @@ export default {
     SearchInput,
     SelectedSessionDialog,
     SongQueue
-  }
+  },
+  middleware: ['auth']
 }
 </script>

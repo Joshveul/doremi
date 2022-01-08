@@ -3,16 +3,15 @@
     <v-list>
       <v-list-item>
         <v-list-item-avatar>
-          <v-img src="https://cdn.vuetifyjs.com/images/john.png" />
+          <v-img :src="userData.avatar" />
         </v-list-item-avatar>
       </v-list-item>
 
       <v-list-item link>
         <v-list-item-content>
           <v-list-item-title class="text-h6">
-            John Leider
+            {{ userData.name }}
           </v-list-item-title>
-          <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
         </v-list-item-content>
 
         <v-list-item-action>
@@ -47,7 +46,9 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
+  layout: 'default',
   data: () => ({
     selectedItem: 0,
     items: [
@@ -57,6 +58,9 @@ export default {
       { text: 'Uploads', icon: 'mdi-upload' },
       { text: 'Backups', icon: 'mdi-cloud-upload' }
     ]
-  })
+  }),
+  computed: {
+    ...mapState(['userData'])
+  }
 }
 </script>
