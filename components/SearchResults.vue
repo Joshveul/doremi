@@ -1,5 +1,5 @@
 <template>
-  <v-list three-line>
+  <v-list>
     <song-item
       v-for="(item, i) in ytSearchResults"
       :key="i"

@@ -14,8 +14,9 @@ module.exports = function (req = new IncomingMessage(), res = new ServerResponse
   const action = getQueryParam(req.url, 'action')
 
   switch (action) {
-    case 'addToPlaylist':
-    case 'removeFromPlaylist':
+    case 'updateQueue':
+      console.log('Updating queue complete...')
+      break
     case 'play':
     case 'pause':
     case 'currentSong':

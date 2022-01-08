@@ -106,6 +106,10 @@ export default {
     {
       path: '/api/getSong',
       handler: '~/api/getSong.js'
+    },
+    {
+      path: '/api/appState',
+      handler: '~/api/appState.js'
     }
   ],
   server: {

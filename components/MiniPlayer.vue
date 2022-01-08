@@ -12,7 +12,7 @@
       <div
         class="d-flex flex-nowrap"
       >
-        <v-img class="ma-2" width="80" :src="nowPlayingSong.thumbnail" />
+        <v-img class="ma-2" width="80" :src="thumbnail" />
         <div class="flex-grow-1">
           <v-card-subtitle
             class="px-0 pt-2 pb-0"
@@ -20,7 +20,7 @@
             <marquee-text :text="nowPlayingSong.title" :max-width="maxTextSpace" />
           </v-card-subtitle>
           <v-card-subtitle
-            class="pl-0 py-0"
+            class="px-0 py-0"
           >
             <marquee-text :text="nowPlayingSong.artist" :max-width="maxTextSpace" />
           </v-card-subtitle>
@@ -65,7 +65,10 @@ export default {
     }
   },
   computed: {
-    ...mapState({ nowPlayingSong: 'nowPlayingSong' })
+    ...mapState({ nowPlayingSong: 'nowPlayingSong' }),
+    thumbnail () {
+      return decodeURIComponent(this.nowPlayingSong.thumbnail)
+    }
   },
   mounted () {
     this.$nextTick(() => {

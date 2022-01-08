@@ -58,7 +58,7 @@ export default {
     }
   },
   render (h) {
-    return h('div', { class: 'wrap', style: `maxWidth: ${this.maxWidth}px` }, [
+    return h('div', { class: 'wrap', style: `maxWidth: ${this.maxWidth + 21}px` }, [
       h('div', {
         class: [
           this.paused

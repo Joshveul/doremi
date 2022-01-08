@@ -79,7 +79,7 @@
           <v-btn
             color="green darken-1"
             text
-            @click="remove = false"
+            @click="removeFromQueue"
           >
             Remove
           </v-btn>
@@ -131,6 +131,11 @@ export default {
     },
     isDownloading () {
       return this.localData.downloading
+    }
+  },
+  methods: {
+    removeFromQueue () {
+      this.$store.dispatch('removeFromQueue', this.item)
     }
   }
 }

@@ -1,4 +1,4 @@
-import { downloadVideo, getVideoData, hashString } from '~/modules/utils'
+import { downloadVideo, getVideoData, hashString, updateRemoteQueue } from '~/modules/utils'
 const host = process.env.HOST
 
 export const state = () => ({
@@ -58,7 +58,15 @@ export const mutations = {
       state.queue.splice(state.queueState.currentSongIndex + 1, 0, payload.item)
     } else {
       state.queue.push(payload.item)
+      if (state.queue.length === 1) {
+        state.nowPlayingSong = state.queue[0]
+      }
     }
+  },
+  removeFromQueue (state, video) {
+    const existsAtIndex = state.queue.findIndex(el => el.hash === video.hash)
+    state.queue.splice(existsAtIndex, 1)
+    state.queue = [...state.queue]
   },
   setVideoDownloaded (state, video) {
     video.downloading = false
@@ -99,18 +107,22 @@ export const actions = {
     commit('addYtSearchResults', results.entries)
   },
   async addToQueue ({ commit, state }, payload) {
-    commit('addingToQueue', true)
-
     const videoData = await getVideoData(payload.item.videoId)
     payload.item.downloading = videoData === false
     payload.item.hash = hashString(payload.item.videoId)
     payload.item.user = state.userData.name
 
     commit('addToQueue', payload)
+    await updateRemoteQueue(state.queue)
 
     if (!videoData) {
       await downloadVideo(payload.item, state.userData.name)
       commit('setVideoDownloaded', payload.item)
+      await updateRemoteQueue(state.queue)
     }
+  },
+  removeFromQueue ({ commit, state }, video) {
+    commit('removeFromQueue', video)
+    updateRemoteQueue(state.queue)
   }
 }

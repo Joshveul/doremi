@@ -12,7 +12,7 @@
           size="105"
           tile
         >
-          <v-img :src="selectedSong.thumbnail" />
+          <v-img :src="thumbnail" />
         </v-avatar>
         <div class="">
           <v-card-title class="px-0">
@@ -78,6 +78,9 @@ export default {
         this.$store.commit('setSongOptionsOpen', newValue)
       },
       get () { return this.songOptionsOpen }
+    },
+    thumbnail () {
+      return decodeURIComponent(this.selectedSong.thumbnail)
     }
   },
   mounted () {
