@@ -25,7 +25,7 @@
 <script>
 import BottomNavigation from '~/components/BottomNavigation.vue'
 import SelectedSessionDialog from '~/components/sessions/SelectedSessionDialog.vue'
-import MiniPlayer from '~/components/MiniPlayer.vue'
+import MiniPlayer from '~/components/player/MiniPlayer.vue'
 import SongOptions from '~/components/SongOptions.vue'
 import SearchInput from '~/components/SearchInput.vue'
 import SongQueue from '~/components/SongQueue.vue'

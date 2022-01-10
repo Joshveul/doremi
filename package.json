@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@nuxtjs/dotenv": "^1.4.1",
+    "@nuxtjs/ngrok": "^2.0.0",
     "@nuxtjs/pwa": "^3.3.5",
     "@trevoreyre/autocomplete-vue": "^2.2.0",
     "cookie-universal-nuxt": "^2.1.5",

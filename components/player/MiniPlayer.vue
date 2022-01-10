@@ -25,29 +25,7 @@
             <marquee-text :text="nowPlayingSong.artist" :max-width="maxTextSpace" />
           </v-card-subtitle>
         </div>
-        <v-card-actions>
-          <v-btn
-            ref="playpause"
-            icon
-            @click.stop.prevent=""
-          >
-            <v-icon>mdi-skip-previous</v-icon>
-          </v-btn>
-          <v-btn
-            ref="next"
-            icon
-            @click.stop.prevent=""
-          >
-            <v-icon>mdi-play</v-icon>
-          </v-btn>
-          <v-btn
-            ref="prev"
-            icon
-            @click.stop.prevent=""
-          >
-            <v-icon>mdi-skip-next</v-icon>
-          </v-btn>
-        </v-card-actions>
+        <player-controls />
       </div>
     </v-card>
   </v-layout>
@@ -56,9 +34,10 @@
 <script>
 import { mapState } from 'vuex'
 import MarqueeText from '~/components/MarqueeText.vue'
+import PlayerControls from '~/components/player/PlayerControls.vue'
 
 export default {
-  components: { MarqueeText },
+  components: { MarqueeText, PlayerControls },
   data () {
     return {
       maxTextSpace: 0

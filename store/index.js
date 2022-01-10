@@ -1,4 +1,4 @@
-import { downloadVideo, getVideoData, hashString, updateRemoteQueue } from '~/modules/utils'
+import { convertTimeToSeconds, downloadVideo, getVideoData, hashString, updateRemoteQueue } from '~/modules/utils'
 const host = process.env.HOST
 
 export const state = () => ({
@@ -18,7 +18,8 @@ export const state = () => ({
   queueState: {
     addingToQueue: false,
     currentSongIndex: 0,
-    playing: false
+    playing: false,
+    time: 0
   }
 })
 
@@ -62,11 +63,13 @@ export const mutations = {
         state.nowPlayingSong = state.queue[0]
       }
     }
+    state.queueState.time += convertTimeToSeconds(payload.item.duration)
   },
   removeFromQueue (state, video) {
     const existsAtIndex = state.queue.findIndex(el => el.hash === video.hash)
     state.queue.splice(existsAtIndex, 1)
     state.queue = [...state.queue]
+    state.queueState.time -= convertTimeToSeconds(video.duration)
   },
   setVideoDownloaded (state, video) {
     video.downloading = false
@@ -82,6 +85,10 @@ export const mutations = {
     state.queue = queue
   },
   setUser (state, payload) {
+    this.app.$cookies.set('username', state.userData.name, {
+      path: '/',
+      maxAge: 60 * 60 * 5
+    })
     state.userData = Object.assign(state.userData, payload)
   }
 }
