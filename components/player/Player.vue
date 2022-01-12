@@ -19,11 +19,13 @@
       min="0"
       hide-details
     />
-    <v-container class="pt-0 text-caption">
-      <span class="float-left">00:00</span>
-      <span class="float-right">{{ nowPlayingSong.duration }}</span>
+    <v-container class="py-0 d-flex justify-space-between text-caption">
+      <span class="justify-start">00:00</span>
+      <span class="justify-end">{{ nowPlayingSong.duration || '00:00' }}</span>
     </v-container>
-    <player-controls class="justify-center" />
+    <v-container class="py-0">
+      <player-controls class="justify-center pt-0" />
+    </v-container>
   </v-card>
 </template>
 

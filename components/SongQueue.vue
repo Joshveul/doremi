@@ -13,7 +13,7 @@
       <v-toolbar
         class="header-bar bg bg-gradient"
         dark
-        max-height="100px"
+        max-height="15vh"
       >
         <v-btn
           icon
@@ -24,17 +24,19 @@
         </v-btn>
         <v-toolbar-title>Song Queue</v-toolbar-title>
       </v-toolbar>
-      <v-container>
+      <v-container style="max-height: 30vh;">
         <player />
         <v-divider />
-        <div class="mx-2 mb-1">
-          <v-icon size="18">
-            mdi-playlist-play
-          </v-icon>
-          <span class="text-caption">
-            {{ queue.length }} song{{ queue.length !== 1 ? 's' : '' }} in queue
-          </span>
-          <div class="float-right">
+        <v-container class="py-1 d-flex justify-space-between">
+          <div class="justify-start">
+            <v-icon size="18">
+              mdi-playlist-play
+            </v-icon>
+            <span class="text-caption">
+              {{ queue.length }} song{{ queue.length !== 1 ? 's' : '' }} in queue
+            </span>
+          </div>
+          <div class="d-flex align-center justify-end">
             <v-icon size="15">
               mdi-timer-outline
             </v-icon>
@@ -42,19 +44,20 @@
               {{ listDuration }}
             </span>
           </div>
-        </div>
+        </v-container>
         <v-divider />
       </v-container>
       <v-card-text
         ref="queueContent"
         class="queue-content px-0"
+        style="max-height: 55vh;"
       >
         <sortable-container
           ref="sortContainer"
           v-scroll.self="onScroll"
           :items="queue"
           class="sort-container"
-          style="max-height: 90vh; overflow: scroll;"
+          style="max-height: 54vh; overflow: scroll;"
           @sort-start="sortStart"
           @sort-end="sortEnd"
         />
