@@ -24,7 +24,7 @@
         </v-btn>
         <v-toolbar-title>Song Queue</v-toolbar-title>
       </v-toolbar>
-      <v-container style="max-height: 30vh;">
+      <v-container style="max-height: 35vh;">
         <player />
         <v-divider />
         <v-container class="py-1 d-flex justify-space-between">
@@ -50,7 +50,7 @@
       <v-card-text
         ref="queueContent"
         class="queue-content px-0"
-        style="max-height: 55vh;"
+        style="max-height: 50vh;"
       >
         <sortable-container
           ref="sortContainer"
@@ -85,12 +85,18 @@ export default {
     }
   },
   computed: {
-    ...mapState({ queueOpen: 'queueOpen', queue: 'queue', queueState: 'queueState' }),
+    ...mapState({
+      queueOpen: 'queueOpen',
+      queue: 'queue',
+      queueState: 'queueState'
+    }),
     isOpen: {
       set (newValue) {
         this.$store.commit('setQueueOpen', newValue)
       },
-      get () { return this.queueOpen }
+      get () {
+        return this.queueOpen
+      }
     },
     listDuration () {
       return convertSecondsToTime(this.queueState.time)

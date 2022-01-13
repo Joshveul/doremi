@@ -1,4 +1,5 @@
 import { convertTimeToSeconds, downloadVideo, getVideoData, hashString, updateRemoteQueue } from '~/modules/utils'
+import { videoArray } from '~/modules/mock'
 const host = process.env.HOST
 
 export const state = () => ({
@@ -9,7 +10,7 @@ export const state = () => ({
   nowPlayingSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
   searchTerm: '',
   mongoSearchResults: [],
-  ytSearchResults: [],
+  ytSearchResults: videoArray,
   ytNextPage: {},
   selectedSessionOpen: false,
   selectedSession: {},
@@ -110,7 +111,14 @@ export const actions = {
     commit('setYtNextPage', results.nextPageToken)
   },
   async fetchNextYouTubePage ({ commit, state }) {
-    const results = await (await fetch(`http://${host}:3000/api/search?nextPage=${JSON.stringify(state.ytNextPage)}`)).json()
+    let results
+    try {
+      const result = await fetch(`http://${host}:3000/api/search?nextPage=${JSON.stringify(state.ytNextPage)}`)
+      results = await result.json()
+    } catch (e) {
+      throw new Error('An error ocurred while requesting Youtube Next Page')
+    }
+
     commit('addYtSearchResults', results.entries)
   },
   async addToQueue ({ commit, state }, payload) {

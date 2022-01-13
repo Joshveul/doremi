@@ -10,7 +10,7 @@
         <v-icon>mdi-home</v-icon>
       </v-btn>
       <v-btn to="/my-songs">
-        <span>My songs</span>
+        <span>Favorites</span>
         <v-icon>mdi-star-outline</v-icon>
       </v-btn>
       <v-btn to="/sessions">

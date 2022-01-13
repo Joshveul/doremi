@@ -67,11 +67,18 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
   const nextPage = nextPageParam === '' ? null : JSON.parse(nextPageParam)
 
   let videos
-
-  if (nextPage === null) {
-    videos = await yt.GetListByKeyword(query)
-  } else {
-    videos = await yt.NextPage(nextPage)
+  try {
+    if (nextPage === null) {
+      videos = await yt.GetListByKeyword(query)
+    } else {
+      videos = await yt.NextPage(nextPage)
+    }
+  } catch (error) {
+    console.log('Unable to fetch results from YT: ', error)
+    res.statusCode = 500
+    res.statusMessage = 'Internal server error'
+    res.end()
+    return
   }
 
   const entries = videos.items.reduce((result, element) => {

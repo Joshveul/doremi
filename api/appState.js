@@ -15,6 +15,8 @@ module.exports = function (req = new IncomingMessage(), res = new ServerResponse
 
   switch (action) {
     case 'updateQueue':
+      // TODO DB Update
+      // Request body = { queue: [] }
       console.log('Updating queue complete...')
       break
     case 'play':

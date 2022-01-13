@@ -14,11 +14,25 @@
       >
         mdi-drag-horizontal-variant
       </v-icon>
-      <v-img :src="thumbnail" max-width="100" />
+      <v-img
+        :src="thumbnail"
+        max-width="100"
+      />
       <v-list-item-content class="ml-2 item-content">
         <v-list-item-title v-text="item.title" />
         <v-list-item-subtitle v-text="item.artist" />
-        <v-list-item-subtitle v-text="`Added by: ${item.user}`" />
+        <v-list-item-subtitle>
+          <v-icon size="15">
+            mdi-timer-outline
+          </v-icon>
+          <span>
+            {{ item.duration }}
+          </span>
+          <v-icon size="15">
+            mdi-account
+          </v-icon>
+          {{ item.user }}
+        </v-list-item-subtitle>
       </v-list-item-content>
       <v-icon
         v-if="!simple"

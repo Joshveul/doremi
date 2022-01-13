@@ -8,9 +8,18 @@
       sm="8"
       md="6"
     >
-      <ItemList title="Favorites" />
-      <ItemList title="Favorites" />
-      <ItemList title="Favorites" />
+      <ItemList
+        title="Some of your favorites"
+        :items="$store.state.ytSearchResults"
+      />
+      <ItemList
+        title="From past sessions"
+        :items="$store.state.ytSearchResults"
+      />
+      <ItemList
+        title="Played in previous sessions with you"
+        :items="$store.state.ytSearchResults"
+      />
     </v-col>
   </v-row>
 </template>
@@ -29,10 +38,9 @@ export default {
     })
     /* Listen for events: */
     console.log(this.socket)
-    this.socket
-      .on('connect', (msg, cb) => {
-        console.log('connected' + msg)
-      })
+    this.socket.on('connect', (msg, cb) => {
+      console.log('connected' + msg)
+    })
     this.socket
       .on('progress', (msg, cb) => {
         console.log(msg)
