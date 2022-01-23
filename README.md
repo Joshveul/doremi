@@ -12,6 +12,8 @@ pip install pymongo
 ```
 python-shell 2.0.3
 
+**IMPORTANT: Don't update to python-shell 3.x!, shell process was made async which currently breaks the downnload flow**
+
 ## Build Setup
 
 ```bash
@@ -79,3 +81,15 @@ More information about the usage of this directory in [the documentation](https:
 This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+
+### `api`
+
+This directory contains the handled of API endpoints.
+
+To add an endopoint, create a file with an HTTP Request handler function and add its path in `nuxt.config.js` serverMiddleware
+
+### `server`
+
+This directory contains the WebSocket definition, the configuration object can be found in `nuxt.config.js` io
+
+More information about the usage of this in [Nuxt Socket IO](https://nuxt-socket-io.netlify.app/).

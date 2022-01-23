@@ -29,14 +29,15 @@
               flat
               max-width="400"
             >
-              <v-card-title>
+              <v-card-title class="text-h4 font-weight-black" style="color: #fff;">
                 <v-icon
                   large
                   left
+                  dark
                 >
                   mdi-music
                 </v-icon>
-                <span class="text-h5 font-weight-light">A&amp;J Doremi Karaoke</span>
+                A&amp;J's B&amp;B Karaoke
               </v-card-title>
 
               <v-card-text class="text-h5 font-weight-bold">
