@@ -2,12 +2,7 @@
 import { ServerResponse, IncomingMessage } from 'http'
 import { URL } from 'url'
 import { PythonShell } from 'python-shell'
-
-function getQueryParam (url, param) {
-  const rx = new RegExp('[?&]' + param + '=([^&]+).*$')
-  const returnVal = url.match(rx)
-  return returnVal === null ? '' : returnVal[1]
-}
+import { getQueryParam } from './utils'
 
 module.exports = function (req = new IncomingMessage(), res = new ServerResponse(), next) {
   const baseURL = 'http://' + req.headers.host + '/'

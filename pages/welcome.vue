@@ -1,25 +1,10 @@
 <template>
-  <v-container
-    class="d-flex align-center welcome"
-    style="height: 100%;"
-  >
+  <v-container class="d-flex align-center welcome" style="height: 100%;">
     <ul class="circles">
-      <li
-        v-for="n in 10"
-        :key="n"
-      />
+      <li v-for="n in 10" :key="n" />
     </ul>
-    <v-card
-      class="pa-2"
-      outlined
-      tile
-      color="transparent"
-    >
-      <v-form
-        ref="form"
-        v-model="valid"
-        @submit.prevent="login"
-      >
+    <v-card class="pa-2" outlined tile color="transparent">
+      <v-form ref="form" v-model="valid" @submit.prevent="login">
         <v-row>
           <v-col cols="12">
             <v-card
@@ -29,18 +14,19 @@
               flat
               max-width="400"
             >
-              <v-card-title class="text-h4 font-weight-black" style="color: #fff;">
-                <v-icon
-                  large
-                  left
-                  dark
-                >
+              <v-card-title
+                class="text-h4 font-weight-black"
+                style="color: #fff;"
+              >
+                <v-icon large left dark>
                   mdi-music
-                </v-icon>
-                A&amp;J's B&amp;B Karaoke
+                </v-icon>A&amp;J's B&amp;B
+                Karaoke
               </v-card-title>
 
-              <v-card-text class="text-h5 font-weight-bold">
+              <v-card-text
+                class="text-h5 font-weight-bold"
+              >
                 What's your name?
               </v-card-text>
             </v-card>
@@ -48,7 +34,10 @@
               v-model="userName"
               dark
               required
-              :rules="[value => value.length >= 3 || 'Name must have at least 3 characters']"
+              :rules="[
+                (value) =>
+                  value.length >= 3 || 'Name must have at least 3 characters',
+              ]"
               solo
               height="100"
               class="text-h3 text-bold text-center"
@@ -59,6 +48,28 @@
         </v-row>
       </v-form>
     </v-card>
+    <v-dialog v-model="dialog.value" max-width="600">
+      <v-card>
+        <v-toolbar color="primary" dark>
+          First time here?
+        </v-toolbar>
+        <v-card-text>
+          <div class="pt-5">
+            We couldn't find any user called <b>{{ userName }}</b>
+            <br><br>
+            Do you want to create a new one?
+          </div>
+        </v-card-text>
+        <v-card-actions class="justify-end">
+          <v-btn text @click="dialog.value = false">
+            Try again
+          </v-btn>
+          <v-btn color="primary" @click="createUser(userName)">
+            Yes, I'm new!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -68,15 +79,47 @@ export default {
   data () {
     return {
       valid: false,
-      userName: ''
+      userName: '',
+      dialog: {
+        value: false
+      }
     }
   },
   methods: {
-    login () {
+    async login () {
       this.$refs.form.validate()
       if (this.valid) {
-        this.$store.dispatch('login', this.userName)
-        this.$router.push({ path: '/' })
+        const userExists = await this.userExists(this.userName)
+        if (userExists) {
+          // this.$store.dispatch('login', this.userName)
+          // this.$router.push({ path: '/' })
+        } else {
+          this.dialog.value = true
+        }
+      }
+    },
+    async userExists (userName) {
+      const userReq = await fetch(`/api/getUser?username=${userName}`)
+      const result = await userReq.json()
+      if (result.count === 0) {
+        return false
+      }
+      return true
+    },
+    async createUser (userName) {
+      const userReq = await fetch('/api/postUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user: userName
+        })
+      })
+      if (userReq.ok) {
+        const result = await userReq.json()
+        console.log(result)
+        return result
       }
     }
   }

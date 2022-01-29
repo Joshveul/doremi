@@ -1,12 +1,7 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
 import * as yt from 'youtube-search-api'
-
-function getQueryParam (url, param) {
-  const rx = new RegExp('[?&]' + param + '=([^&]+).*$')
-  const returnVal = url.match(rx)
-  return returnVal === null ? '' : decodeURI(returnVal[1])
-}
+import { getQueryParam } from './utils'
 
 /**
  * @param {String} title

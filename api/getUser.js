@@ -2,16 +2,16 @@
 import { ServerResponse, IncomingMessage } from 'http'
 import { getDbCollection, getQueryParam } from './utils'
 
-const songCollection = getDbCollection('songs')
+const userCollection = getDbCollection('users')
 
 module.exports = async function (req = new IncomingMessage(), res = new ServerResponse(), next) {
-  console.info('Starting getSong request...')
+  console.info('Starting getUser request...')
   const result = { count: 0, results: [] }
-  const id = getQueryParam(req.url, 'id')
+  const userName = getQueryParam(req.url, 'username')
 
-  if (id !== '') {
+  if (userName !== '') {
     if (process.env.MODE !== 'offline') {
-      result.results = await songCollection.find({ videoId: id }).toArray()
+      result.results = await userCollection.find({ name: userName }).toArray()
     } else {
       // Always return empty object to fake the video download
       const fakeRequest = new Promise(resolve => setTimeout(resolve([]), 2500))
@@ -20,10 +20,10 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
     console.log('MongoResult: ', result.results)
     result.count = result.results.length
   } else {
-    console.log('ID parameter was empty, returning empty value')
+    console.log('username parameter was empty, returning empty value')
   }
 
-  console.log('getSong result: ', result)
+  console.log('getUser result: ', result)
 
   res.statusCode = 200
   res.statusMessage = 'success'

@@ -108,6 +108,14 @@ export default {
       handler: '~/api/getSong.js'
     },
     {
+      path: '/api/getUser',
+      handler: '~/api/getUser.js'
+    },
+    {
+      path: '/api/postUser',
+      handler: '~/api/postUser.js'
+    },
+    {
       path: '/api/appState',
       handler: '~/api/appState.js'
     }
