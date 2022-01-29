@@ -5,12 +5,20 @@
 - MongoDB
 - Python 3.10
 
-Python Libraries:
+### Python Libraries:
+
+- pytube
+- pymongo
+- requests
+- wget
+
 ```
-pip install pytube
-pip install pymongo
+pip install pytube pymongo requests
 ```
-python-shell 2.0.3
+
+### NPM 
+
+ - python-shell 2.0.3
 
 **IMPORTANT: Don't update to python-shell 3.x!, shell process was made async which currently breaks the downnload flow**
 
