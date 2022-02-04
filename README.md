@@ -14,6 +14,12 @@ python-shell 2.0.3
 
 **IMPORTANT: Don't update to python-shell 3.x!, shell process was made async which currently breaks the downnload flow**.
 
+## VSCode Plugins
+
+- ESlint
+- Vetur
+- Stylelint
+
 ## MongoDB configuration
 
 The MongoDB instance must be configured as a replica set.
