@@ -1,10 +1,25 @@
 <template>
-  <v-container class="d-flex align-center welcome" style="height: 100%;">
+  <v-container
+    class="d-flex align-center welcome"
+    style="height: 100%;"
+  >
     <ul class="circles">
-      <li v-for="n in 10" :key="n" />
+      <li
+        v-for="n in 10"
+        :key="n"
+      />
     </ul>
-    <v-card class="pa-2" outlined tile color="transparent">
-      <v-form ref="form" v-model="valid" @submit.prevent="login">
+    <v-card
+      class="pa-2"
+      outlined
+      tile
+      color="transparent"
+    >
+      <v-form
+        ref="form"
+        v-model="valid"
+        @submit.prevent="login"
+      >
         <v-row>
           <v-col cols="12">
             <v-card
@@ -18,15 +33,17 @@
                 class="text-h4 font-weight-black"
                 style="color: #fff;"
               >
-                <v-icon large left dark>
+                <v-icon
+                  large
+                  left
+                  dark
+                >
                   mdi-music
                 </v-icon>A&amp;J's B&amp;B
                 Karaoke
               </v-card-title>
 
-              <v-card-text
-                class="text-h5 font-weight-bold"
-              >
+              <v-card-text class="text-h5 font-weight-bold">
                 What's your name?
               </v-card-text>
             </v-card>
@@ -48,23 +65,36 @@
         </v-row>
       </v-form>
     </v-card>
-    <v-dialog v-model="dialog.value" max-width="600">
+    <v-dialog
+      v-model="dialog.value"
+      max-width="600"
+    >
       <v-card>
-        <v-toolbar color="primary" dark>
+        <v-toolbar
+          color="primary"
+          dark
+        >
           First time here?
         </v-toolbar>
         <v-card-text>
           <div class="pt-5">
-            We couldn't find any user called <b>{{ userName }}</b>
-            <br><br>
-            Do you want to create a new one?
+            We couldn't find any user called
+            <b>{{ userName }}</b>
+            <br>
+            <br>Do you want to create a new one?
           </div>
         </v-card-text>
         <v-card-actions class="justify-end">
-          <v-btn text @click="dialog.value = false">
+          <v-btn
+            text
+            @click="dialog.value = false"
+          >
             Try again
           </v-btn>
-          <v-btn color="primary" @click="createUser(userName)">
+          <v-btn
+            color="primary"
+            @click="createUser(userName)"
+          >
             Yes, I'm new!
           </v-btn>
         </v-card-actions>

@@ -20,7 +20,81 @@ pip install pytube pymongo requests
 
  - python-shell 2.0.3
 
-**IMPORTANT: Don't update to python-shell 3.x!, shell process was made async which currently breaks the downnload flow**
+**IMPORTANT: Don't update to python-shell 3.x!, shell process was made async which currently breaks the downnload flow**.
+
+## VSCode Plugins
+
+- ESlint
+- Vetur
+- Stylelint
+
+## MongoDB configuration
+
+The MongoDB instance must be configured as a replica set.
+
+### MongoDB installed as Windows Service
+
+If Mongo was installed as a Windows service, you will need to change the configuration to initiate the replica set.
+
+1. Make sure that your Path includes an entry to the MongoDB binary files, typically `C:\Program Files\MongoDB\Server\5.0\bin`
+1. Go to Windows Services, look for `MongoDb Server (MongoDb)` and stop it
+1. Open the properties and in the `Path to executable` there should be a --config parameter pointing to a specific file path, typically `C:\Program Files\MongoDB\Server\5.0\bin\mongod.cfg`
+1. Open the config file **with admin rights** in any text editor and add the following configuration:
+```bash
+replication:
+   replSetName: "rs0"
+```
+5. Start the `MongoDb Server (MongoDb)` service again
+1. Open a terminal and connect to the Mongo instance
+```bash
+mongo
+```
+7. Initiate the replica instance
+```bash
+rs.initiate()
+```
+8. Check the replica set configuration with `rs.config()`, the configuration object should look like the following:
+```bash
+{
+        "_id" : "rs0",
+        "version" : 1,
+        "term" : 2,
+        "members" : [
+                {
+                        "_id" : 0,
+                        "host" : "127.0.0.1:27017",
+                        "arbiterOnly" : false,
+                        "buildIndexes" : true,
+                        "hidden" : false,
+                        "priority" : 1,
+                        "tags" : {
+
+                        },
+                        "secondaryDelaySecs" : NumberLong(0),
+                        "votes" : 1
+                }
+        ],
+        "protocolVersion" : NumberLong(1),
+        "writeConcernMajorityJournalDefault" : true,
+        "settings" : {
+                "chainingAllowed" : true,
+                "heartbeatIntervalMillis" : 2000,
+                "heartbeatTimeoutSecs" : 10,
+                "electionTimeoutMillis" : 10000,
+                "catchUpTimeoutMillis" : -1,
+                "catchUpTakeoverDelayMillis" : 30000,
+                "getLastErrorModes" : {
+
+                },
+                "getLastErrorDefaults" : {
+                        "w" : 1,
+                        "wtimeout" : 0
+                },
+                "replicaSetId" : ObjectId("61fda192c9fa37d09a462b6d")
+        }
+}
+```
+9. If you have multiple replicas in the same set, you can identify the primary one with `rs.status()` 
 
 ## Build Setup
 
