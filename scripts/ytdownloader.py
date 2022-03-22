@@ -5,9 +5,11 @@ from datetime import date
 from datetime import datetime
 
 # Instanciate the database
-myclient = pymongo.MongoClient("mongodb://localhost:37017/")
+print('Instantiating database')
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["doremi"]
 mycol = mydb["songs"]
+print('Database instantiated successfully')
 
 videoId = sys.argv[2]
 title = sys.argv[3]

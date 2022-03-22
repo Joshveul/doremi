@@ -121,8 +121,8 @@ export default {
       if (this.valid) {
         const userExists = await this.userExists(this.userName)
         if (userExists) {
-          // this.$store.dispatch('login', this.userName)
-          // this.$router.push({ path: '/' })
+          this.$store.dispatch('login', this.userName)
+          this.$router.push({ path: '/' })
         } else {
           this.dialog.value = true
         }

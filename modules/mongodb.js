@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
-import client from '../api/mongo'
+import mongoose from 'mongoose'
 
 export default function () {
   this.nuxt.hook('render:setupMiddleware', async () => {
     if (process.env.MODE !== 'offline') {
-      await client.connect()
-      console.info('Connected successfully to MongoDB')
+      const connectionString = process.env.MONGODB_URI + '/doremi' || 'mongodb://localhost:37017/doremi'
+      await mongoose.connect(connectionString)
+      console.info('Connected successfully to MongoDB ' + connectionString)
     }
   })
 }

@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
-import { getDbCollection } from './utils'
-
-const userCollection = getDbCollection('users')
+import User from '../db/model/user'
 
 module.exports = function (req = new IncomingMessage(), res = new ServerResponse(), next) {
   console.info('Starting getUser request...')
@@ -16,14 +14,15 @@ module.exports = function (req = new IncomingMessage(), res = new ServerResponse
     body = JSON.parse(body)
     if (typeof body !== 'undefined') {
       if (process.env.MODE !== 'offline') {
-        const user = await userCollection.findOne({
+        const user = await User.findOne({
           name: body.user
         })
         if (user === null) {
-          result = await userCollection.insertOne({
+          const newUser = new User({
             name: body.user
           })
-          console.log(`User added: ${body.user}, OID: ${result.insertedId}`)
+          result = await newUser.save()
+          console.log(`User added: ${result.name}, OID: ${result._id}`)
         }
       } else {
         // Return mock ID

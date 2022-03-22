@@ -29,6 +29,7 @@ module.exports = function (req = new IncomingMessage(), res = new ServerResponse
       res.end()
     }, 5000)
   } else {
+    console.log('Starting pyshell script ytdownloader')
     const pyshell = new PythonShell('./scripts/ytdownloader.py', {
       args: shellArgs
     })
