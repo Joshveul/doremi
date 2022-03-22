@@ -16,14 +16,20 @@ export default {
       { header: 'Current Session' },
       {
         avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        title: 'Josh',
-        subtitle: '<span class="text--primary">Ali Connors</span> &mdash; I\'ll be in your neighborhood doing errands this weekend. Do you want to hang out?'
+        title: 'Josh, Addie',
+        subtitle: '24 total songs'
+      },
+      { header: 'Other Sessions' },
+      {
+        avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+        title: 'Lespanish',
+        subtitle: 'Addie, Josh, Memo, Dahyana, Karen'
       },
       { divider: true, inset: true },
       {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-        title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-        subtitle: '<span class="text--primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I\'m out of town this weekend.'
+        avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+        title: 'Good Bois',
+        subtitle: 'Addie, Irvin, Daniel'
       }
     ]
   })

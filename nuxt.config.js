@@ -54,7 +54,8 @@ export default {
     '@nuxtjs/dotenv',
     'nuxt-socket-io',
     'cookie-universal-nuxt',
-    '~/modules/mongodb.js'
+    '~/modules/mongodb.js',
+    '~/modules/chromecast.js'
   ],
   io: {
     // module options
