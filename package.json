@@ -21,6 +21,7 @@
     "hooper": "^0.3.4",
     "hopper": "^0.2.0",
     "mongodb": "^4.2.2",
+    "mongoose": "^6.2.7",
     "nuxt": "^2.15.7",
     "nuxt-socket-io": "^2.0.0",
     "python-shell": "^2.0.3",

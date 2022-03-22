@@ -1,14 +1,9 @@
 /* eslint-disable no-console */
-import client from '../api/mongo'
-
-// Database Name
-const dbName = 'doremi'
-// Use connect method to connect to the server
-const db = client.db(dbName)
-const changeStream = db.watch()
+import mongoose from '../db/mongo'
 
 export default function (socket, io) {
   console.log('Registering mongo Change Stream')
+  const changeStream = mongoose.connection.watch()
   changeStream.on('change', (changes) => {
     // Add a event emitter
     console.log('Emitting mongo stream...')
@@ -39,4 +34,5 @@ export default function (socket, io) {
       })
     }
   })
+  // })
 }

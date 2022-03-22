@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
-import { getDbCollection, getQueryParam } from './utils'
-
-const appStateCollection = getDbCollection('appState')
+import { getQueryParam } from './utils'
 
 module.exports = function (req = new IncomingMessage(), res = new ServerResponse(), next) {
   const action = getQueryParam(req.url, 'action')

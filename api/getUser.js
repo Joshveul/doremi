@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
-import { getDbCollection, getQueryParam } from './utils'
-
-const userCollection = getDbCollection('users')
+import User from '../db/model/user'
+import { getQueryParam } from './utils'
 
 module.exports = async function (req = new IncomingMessage(), res = new ServerResponse(), next) {
   console.info('Starting getUser request...')
@@ -11,7 +10,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
 
   if (userName !== '') {
     if (process.env.MODE !== 'offline') {
-      result.results = await userCollection.find({ name: userName }).toArray()
+      result.results = await User.find({ name: userName })
     } else {
       // Always return empty object to fake the video download
       const fakeRequest = new Promise(resolve => setTimeout(resolve([]), 2500))

@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
-import { getDbCollection, getQueryParam } from './utils'
-
-const songCollection = getDbCollection('songs')
+import Song from '../db/model/song'
+import { getQueryParam } from './utils'
 
 module.exports = async function (req = new IncomingMessage(), res = new ServerResponse(), next) {
   console.info('Starting getSong request...')
@@ -11,7 +10,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
 
   if (id !== '') {
     if (process.env.MODE !== 'offline') {
-      result.results = await songCollection.find({ videoId: id }).toArray()
+      result.results = await Song.find({ videoId: id })
     } else {
       // Always return empty object to fake the video download
       const fakeRequest = new Promise(resolve => setTimeout(resolve([]), 2500))
