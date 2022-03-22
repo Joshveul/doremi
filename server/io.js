@@ -1,14 +1,9 @@
 /* eslint-disable no-console */
-import client from '../db/mongo'
-
-// Use connect method to connect to the server
-let changeStream = null
-console.log('get watcher')
-console.log('watching stream changes')
+import mongoose from '../db/mongo'
 
 export default function (socket, io) {
   console.log('Registering mongo Change Stream')
-  changeStream = client.connection.watch()
+  const changeStream = mongoose.connection.watch()
   changeStream.on('change', (changes) => {
     // Add a event emitter
     console.log('Emitting mongo stream...')
@@ -16,14 +11,14 @@ export default function (socket, io) {
   })
   return Object.freeze({
     /* Just define the methods here */
-    fn1(msg) {
+    fn1 (msg) {
       return { status: 'ok' }
     },
     // async fn2(msg) {
     //   const users = await getUsers(msg)
     //   return users
     // },
-    fn3(msg) {
+    fn3 (msg) {
       return new Promise((resolve, reject) => {
         console.log('message received: ', msg)
         let progress = 0
