@@ -1,7 +1,6 @@
-import mongoose from '../mongo'
+import { model, models } from 'mongoose'
 import userSchema from '../schema/user'
-const { model } = mongoose
 
-const User = model('User', userSchema)
+const User = models.User || model('User', userSchema)
 
 export default User

@@ -166,7 +166,7 @@ More information about the usage of this directory in [the documentation](https:
 
 ### `api`
 
-This directory contains the handled of API endpoints.
+This directory contains the handler functions of the API endpoints.
 
 To add an endopoint, create a file with an HTTP Request handler function and add its path in `nuxt.config.js` serverMiddleware
 

@@ -1,6 +1,5 @@
 import { convertTimeToSeconds, downloadVideo, getVideoData, hashString, updateRemoteQueue } from '~/modules/utils'
 import { videoArray } from '~/modules/mock'
-const host = process.env.HOST
 
 export const state = () => ({
   activeUsers: [],
@@ -101,22 +100,22 @@ export const getters = {
 }
 
 export const actions = {
-  login ({ commit }, userName) {
+  login ({ commit }, user) {
     // See if user exists in DB, otherwise add it
-    commit('setUser', { name: userName })
+    commit('setUser', { id: user._id, name: user.name })
   },
   async searchYoutube ({ commit }, query) {
-    const results = await (await fetch(`http://${host}:3000/api/search?q=${query}`)).json()
+    const results = await (await fetch(`/api/search?q=${query}`)).json()
     commit('setYtSearchResults', results.entries)
     commit('setYtNextPage', results.nextPageToken)
   },
   async fetchNextYouTubePage ({ commit, state }) {
     let results
     try {
-      const result = await fetch(`http://${host}:3000/api/search?nextPage=${JSON.stringify(state.ytNextPage)}`)
+      const result = await fetch(`/api/search?nextPage=${JSON.stringify(state.ytNextPage)}`)
       results = await result.json()
     } catch (e) {
-      throw new Error('An error ocurred while requesting Youtube Next Page')
+      throw new Error('An error ocurred while requesting Youtube Next Page', e)
     }
 
     commit('addYtSearchResults', results.entries)

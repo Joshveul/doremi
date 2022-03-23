@@ -10,7 +10,8 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
 
   if (id !== '') {
     if (process.env.MODE !== 'offline') {
-      result.results = await Song.find({ videoId: id })
+      console.log('Finding song ', id)
+      result.results = await Song.findOne({ videoId: id })
     } else {
       // Always return empty object to fake the video download
       const fakeRequest = new Promise(resolve => setTimeout(resolve([]), 2500))

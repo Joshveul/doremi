@@ -7,7 +7,7 @@ import shutil
 
 # Instanciate the database
 print('Instantiating database')
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+myclient = pymongo.MongoClient("mongodb://localhost:37017/")
 mydb = myclient["doremi"]
 mycol = mydb["songs"]
 print('Database instantiated successfully')
@@ -26,7 +26,7 @@ timesRemoved = 0
 lastPlayed = datetime.now
 
 # Set some constants
-videoDocQuery = { "id": videoId }
+videoDocQuery = { "videoId": videoId }
 staticFolderPath = './static/'
 downloadPath = 'archive'
 fileName = videoId + '.mp4'
@@ -39,7 +39,6 @@ print('Done. Record found: ', videoDoc)
 if (videoDoc):
     print('Video already exists')
     exit()
-
 
 # Store the record in the database to prevent duplicate requests for the same video
 mydict = { "videoId": videoId, "title": title, "artist": artist, "thumbnail": thumbnailPath, "channel": channel, "duration": duration, "firstAddedBy": firstAddedBy, "addedBy": addedBy, "timesAdded": timesAdded, "timesPlayed": timesPlayed, "timesRemoved": timesRemoved, 'downloading': True, 'fileLocation': downloadPath + '/' + fileName}
@@ -57,12 +56,13 @@ hqStream.download(staticFolderPath + downloadPath, fileName)
 print('Video Successfully Downloaded: ./' + downloadPath + fileName)
 
 # Download thumbnail to static archive folder
-
+print('Downloading thumbnail... ' + thumbnail)
 r = requests.get(thumbnail, stream = True)
 if r.status_code == 200:
     # Set decode_content value to True, otherwise the downloaded image file's size will be zero.
     r.raw.decode_content = True
     
+    print('Request succesfull, saving file to ' + staticFolderPath + thumbnailPath + ' ... ')
     # Open a local file with wb ( write binary ) permission.
     with open(staticFolderPath + thumbnailPath, 'wb') as f:
         shutil.copyfileobj(r.raw, f)

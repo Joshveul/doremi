@@ -9,6 +9,9 @@ export default function (socket, io) {
     console.log('Emitting mongo stream...')
     socket.emit('mongoStream', changes)
   })
+  io.once('connection', (socket) => {
+    console.log('connected: ', socket.id)
+  })
   return Object.freeze({
     /* Just define the methods here */
     fn1 (msg) {

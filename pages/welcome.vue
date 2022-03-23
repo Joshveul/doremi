@@ -78,7 +78,7 @@
         </v-toolbar>
         <v-card-text>
           <div class="pt-5">
-            We couldn't find any user called
+            We couldn't find any user with the name
             <b>{{ userName }}</b>
             <br>
             <br>Do you want to create a new one?
@@ -89,7 +89,7 @@
             text
             @click="dialog.value = false"
           >
-            Try again
+            No, try again
           </v-btn>
           <v-btn
             color="primary"
@@ -119,22 +119,22 @@ export default {
     async login () {
       this.$refs.form.validate()
       if (this.valid) {
-        const userExists = await this.userExists(this.userName)
-        if (userExists) {
-          this.$store.dispatch('login', this.userName)
+        const user = await this.getUser(this.userName)
+        if ('name' in user && user.name !== '') {
+          this.$store.dispatch('login', user)
           this.$router.push({ path: '/' })
         } else {
           this.dialog.value = true
         }
       }
     },
-    async userExists (userName) {
+    async getUser (userName) {
       const userReq = await fetch(`/api/getUser?username=${userName}`)
       const result = await userReq.json()
       if (result.count === 0) {
-        return false
+        return {}
       }
-      return true
+      return result.results[0]
     },
     async createUser (userName) {
       const userReq = await fetch('/api/postUser', {

@@ -1,7 +1,6 @@
-import mongoose from '../mongo'
+import { model, models } from 'mongoose'
 import songSchema from '../schema/song'
-const { model } = mongoose
 
-const Song = model('Song', songSchema)
+const Song = models.Song || model('Song', songSchema)
 
 export default Song
