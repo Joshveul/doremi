@@ -10,7 +10,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
 
   if (userName !== '') {
     if (process.env.MODE !== 'offline') {
-      result.results = await User.find({ name: userName })
+      result.results = await User.find({ name: userName }, '_id name avatar color')
     } else {
       // Always return empty object to fake the video download
       const fakeRequest = new Promise(resolve => setTimeout(resolve([]), 2500))

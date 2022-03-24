@@ -119,6 +119,10 @@ export default {
     {
       path: '/api/appState',
       handler: '~/api/appState.js'
+    },
+    {
+      path: '/api/addFavorite',
+      handler: '~/api/addFavorite.js'
     }
   ],
   server: {

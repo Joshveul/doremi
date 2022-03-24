@@ -1,15 +1,15 @@
 import { convertTimeToSeconds, downloadVideo, getVideoData, hashString, updateRemoteQueue } from '~/modules/utils'
-import { videoArray } from '~/modules/mock'
+// import { videoArray } from '~/modules/mock'
 
 export const state = () => ({
   activeUsers: [],
-  userData: { name: 'Josh', avatar: 'https://static-cdn.jtvnw.net/jtv_user_pictures/8081d396-3470-4717-abe0-b04c1fabd5ea-profile_image-300x300.png' },
+  userData: { },
   songOptionsOpen: false,
   selectedSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
   nowPlayingSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
   searchTerm: '',
   mongoSearchResults: [],
-  ytSearchResults: videoArray,
+  ytSearchResults: [],
   ytNextPage: {},
   selectedSessionOpen: false,
   selectedSession: {},
@@ -85,11 +85,11 @@ export const mutations = {
     state.queue = queue
   },
   setUser (state, payload) {
-    this.app.$cookies.set('username', state.userData.name, {
+    state.userData = Object.assign(state.userData, payload)
+    this.app.$cookies.set('user', state.userData, {
       path: '/',
       maxAge: 60 * 60 * 5
     })
-    state.userData = Object.assign(state.userData, payload)
   }
 }
 
@@ -102,7 +102,7 @@ export const getters = {
 export const actions = {
   login ({ commit }, user) {
     // See if user exists in DB, otherwise add it
-    commit('setUser', { id: user._id, name: user.name })
+    commit('setUser', user)
   },
   async searchYoutube ({ commit }, query) {
     const results = await (await fetch(`/api/search?q=${query}`)).json()

@@ -1,11 +1,10 @@
-import mongoose from '../mongo'
-const { Schema } = mongoose
+import { Schema, Types } from 'mongoose'
 
 const logSchema = new Schema({
-  user: mongoose.Types.ObjectId,
+  user: Types.ObjectId,
   action: String,
   schema: String,
-  oid: mongoose.Types.ObjectId
+  oid: Types.ObjectId
 })
 
 export default logSchema

@@ -3,7 +3,7 @@ import { ServerResponse, IncomingMessage } from 'http'
 import User from '../db/model/user'
 
 module.exports = function (req = new IncomingMessage(), res = new ServerResponse(), next) {
-  console.info('Starting getUser request...')
+  console.info('Starting postUser request...')
   let result = { userId: '' }
   let body = ''
   req.on('data', (chunk) => {

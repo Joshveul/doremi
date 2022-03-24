@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
-import { Types, Model } from 'mongoose'
+import { Types } from 'mongoose'
 import { getQueryParam } from './utils'
+import Song from '~/db/model/song'
 
 const pipeline = [
   { $match: { _id: Types.ObjectId('61d3937933c211eeb5f9358a') } },
@@ -10,7 +11,7 @@ const pipeline = [
 
 module.exports = async function (req = new IncomingMessage(), res = new ServerResponse(), next) {
   const action = getQueryParam(req.url, 'action')
-  const aggCursor = Model.aggregate(pipeline)
+  const aggCursor = Song.aggregate(pipeline)
   switch (action) {
     case 'updateQueue':
       // TODO DB Update

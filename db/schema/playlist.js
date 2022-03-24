@@ -1,9 +1,8 @@
-import mongoose from '../mongo'
-const { Schema } = mongoose
+import { Schema, Types } from 'mongoose'
 
 const playerStateSchema = new Schema({
-  song: mongoose.Types.ObjectId,
-  addedBy: mongoose.Types.ObjectId,
+  song: Types.ObjectId,
+  addedBy: Types.ObjectId,
   order: Number
 })
 

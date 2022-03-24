@@ -1,5 +1,4 @@
-import mongoose from '../mongo'
-const { Schema } = mongoose
+import { Schema } from 'mongoose'
 
 const sessionSchema = new Schema({
   users: Array,

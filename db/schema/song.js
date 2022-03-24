@@ -1,5 +1,4 @@
-import mongoose from '../mongo'
-const { Schema } = mongoose
+import { Schema } from 'mongoose'
 
 const songSchema = new Schema({
   title: String,

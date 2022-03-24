@@ -1,9 +1,8 @@
-import mongoose from '../mongo'
-const { Schema } = mongoose
+import { Schema, Types } from 'mongoose'
 
 const appStateSchema = new Schema({
   isSessionActive: Boolean,
-  activeSession: mongoose.Types.ObjectId
+  activeSession: Types.ObjectId
 })
 
 export default appStateSchema

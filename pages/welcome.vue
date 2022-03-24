@@ -148,7 +148,6 @@ export default {
       })
       if (userReq.ok) {
         const result = await userReq.json()
-        console.log(result)
         return result
       }
     }
