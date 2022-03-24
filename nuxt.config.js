@@ -94,7 +94,7 @@ export default {
   serverMiddleware: [
     {
       path: '/api/download',
-      handler: '~/api/download.js'
+      handler: '~/api/node-dl.js'
     },
     {
       path: '/api/search',

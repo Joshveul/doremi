@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
 import { Types } from 'mongoose'
+import { Song } from '../db/model/song'
 import { getQueryParam } from './utils'
-import Song from '~/db/model/song'
 
 const pipeline = [
   { $match: { _id: Types.ObjectId('61d3937933c211eeb5f9358a') } },

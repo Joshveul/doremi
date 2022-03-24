@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
-import Song from '../db/model/song'
+import { Song } from '../db/model/song'
 import { getQueryParam } from './utils'
 
 module.exports = async function (req = new IncomingMessage(), res = new ServerResponse(), next) {

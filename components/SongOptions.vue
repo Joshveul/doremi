@@ -26,12 +26,7 @@
             v-text="selectedSong.artist"
           />
         </div>
-        <v-btn
-          icon
-          class="ml-auto mt-2 mr-2"
-        >
-          <v-icon>mdi-star-outline</v-icon>
-        </v-btn>
+        <favorite />
       </v-card>
       <v-btn
         class="my-5"
@@ -63,16 +58,17 @@
 <script>
 import { mapState } from 'vuex'
 import MarqueeText from '~/components/MarqueeText.vue'
+import Favorite from '~/components/Favorite.vue'
 
 export default {
-  components: { MarqueeText },
+  components: { MarqueeText, Favorite },
   data () {
     return {
       maxTextSpace: 193
     }
   },
   computed: {
-    ...mapState({ songOptionsOpen: 'songOptionsOpen', selectedSong: 'selectedSong' }),
+    ...mapState({ songOptionsOpen: 'songOptionsOpen', selectedSong: 'selectedSong', userData: 'userData' }),
     isOpen: {
       set (newValue) {
         this.$store.commit('setSongOptionsOpen', newValue)

@@ -5,6 +5,7 @@ const songSchema = new Schema({
   thumbnail: String, // URL
   channel: String, // YT channel ID
   duration: String,
+  downloadProgress: Number,
   firstAddedBy: String,
   timesAdded: Number,
   timesPlayed: Number,
