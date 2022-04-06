@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
-import { Song } from '../db/model/song'
 import { getQueryParam } from './utils'
+const Song = require('../db/model/song')
 
 module.exports = async function (req = new IncomingMessage(), res = new ServerResponse(), next) {
   console.info('Starting getSong request...')
@@ -11,7 +11,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
   if (id !== '') {
     if (process.env.MODE !== 'offline') {
       console.log('Finding song ', id)
-      result.results = await Song.findOne({ videoId: id })
+      result.results = await Song.dbModel.findOne({ videoId: id })
     } else {
       // Always return empty object to fake the video download
       const fakeRequest = new Promise(resolve => setTimeout(resolve([]), 2500))
