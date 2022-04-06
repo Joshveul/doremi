@@ -6,10 +6,26 @@ import cp from 'child_process'
 import internal from 'stream'
 import ytdl from 'ytdl-core'
 import ffmpeg from 'ffmpeg-static'
+import request from 'request'
 import { getQueryParam } from './utils'
 const Song = require('../db/model/song')
 
 const archiveFolderPath = './static/archive'
+
+const download = (uri, filename) => {
+  return new Promise((resolve, reject) => {
+    request.head(uri, (err, res) => {
+      console.log('content-type:', res.headers['content-type'])
+      console.log('content-length:', res.headers['content-length'])
+
+      if (err) {
+        reject(err)
+      }
+
+      request(uri).pipe(fs.createWriteStream(filename)).on('close', resolve)
+    })
+  })
+}
 
 const combineAudioAndVideo = function (audioStream = new internal.Readable(), videoStream = new internal.Readable(), destinationPath) {
   return new Promise((resolve, reject) => {
@@ -75,7 +91,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
   console.log(item)
 
   // Get the ID of the user that requested the download from the query parameters
-  const user = getQueryParam(req.url, 'userId')
+  const userId = getQueryParam(req.url, 'userId')
 
   const videoId = item.videoId
 
@@ -91,7 +107,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
     }, 5000)
   } else {
     console.log('Song ' + videoId + '  exists?')
-    const doesSongExist = await Song.exists(videoId)
+    const doesSongExist = await Song.exists(videoId, { action: 'Search', userId })
     if (doesSongExist) {
       console.log('Yes, song ' + videoId + ' exists, skipping download...')
       res.statusCode = 200
@@ -100,6 +116,8 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
     } else {
       console.log('No, downloading...')
 
+      console.log('Video: ', await ytdl.getInfo(videoId))
+      // await download(th)
       const audioStream = ytdl('http://www.youtube.com/watch?v=' + videoId, { quality: 'highestaudio' })
       const videoStream = ytdl('http://www.youtube.com/watch?v=' + videoId, { quality: 'highestvideo' })
 

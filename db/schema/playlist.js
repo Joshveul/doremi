@@ -1,9 +1,15 @@
 import { Schema, Types } from 'mongoose'
 
-const playerStateSchema = new Schema({
-  song: Types.ObjectId,
-  addedBy: Types.ObjectId,
+const playlistSchema = new Schema({
+  song: {
+    type: Types.ObjectId,
+    ref: 'Song'
+  },
+  addedBy: {
+    type: Types.ObjectId,
+    ref: 'User'
+  },
   order: Number
 })
 
-export default playerStateSchema
+export default playlistSchema

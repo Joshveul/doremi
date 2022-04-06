@@ -1,7 +1,10 @@
 import { Schema, Types } from 'mongoose'
 
 const playerStateSchema = new Schema({
-  currentSong: Types.ObjectId, // ObjectId from Playlist collection
+  currentSong: {
+    type: Types.ObjectId,
+    ref: 'Playlist'
+  },
   playing: Boolean,
   currentSecond: Number
 })

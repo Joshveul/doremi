@@ -1,6 +1,7 @@
 import { Schema } from 'mongoose'
 
 const songSchema = new Schema({
+  ytId: String,
   title: String,
   thumbnail: String, // URL
   channel: String, // YT channel ID

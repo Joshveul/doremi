@@ -1,8 +1,14 @@
-import { Schema } from 'mongoose'
+import { Schema, Types } from 'mongoose'
 
 const sessionSchema = new Schema({
-  users: Array,
-  songs: Array,
+  users: [{
+    type: Types.ObjectId,
+    ref: 'User'
+  }],
+  songs: [{
+    type: Types.ObjectId,
+    ref: 'Song'
+  }],
   lastActive: Date
 })
 

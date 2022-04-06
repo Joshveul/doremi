@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
+import { Types } from 'mongoose'
 import { getQueryParam } from './utils'
 const Song = require('../db/model/song')
 
@@ -11,7 +12,10 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
   if (id !== '') {
     if (process.env.MODE !== 'offline') {
       console.log('Finding song ', id)
-      result.results = await Song.dbModel.findOne({ videoId: id })
+      const mongoResult = await Song.dbModel.findOne({ ytId: id })
+      if (mongoResult !== null) {
+        result.results = mongoResult
+      }
     } else {
       // Always return empty object to fake the video download
       const fakeRequest = new Promise(resolve => setTimeout(resolve([]), 2500))
