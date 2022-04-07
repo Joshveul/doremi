@@ -117,7 +117,14 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       console.log('No, downloading...')
 
       console.log('Video: ', await ytdl.getInfo(videoId))
-      // await download(th)
+
+      // Download thumbnail
+      const thumbnailUrl = decodeURIComponent(item.thumbnail)
+      console.log('Downloading thumbnail from ' + thumbnailUrl)
+      await download(thumbnailUrl, thumbnailPath)
+      console.log('Thumbnail downloaded successfully to ' + thumbnailPath)
+
+      // Get video and audio streams separately
       const audioStream = ytdl('http://www.youtube.com/watch?v=' + videoId, { quality: 'highestaudio' })
       const videoStream = ytdl('http://www.youtube.com/watch?v=' + videoId, { quality: 'highestvideo' })
 
