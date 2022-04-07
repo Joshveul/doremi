@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
-import { Types } from 'mongoose'
 import { getQueryParam } from './utils'
 const Song = require('../db/model/song')
 

@@ -10,7 +10,9 @@ import request from 'request'
 import { getQueryParam } from './utils'
 const Song = require('../db/model/song')
 
-const archiveFolderPath = './static/archive'
+const staticFolderPath = './static'
+const archiveFolderName = 'archive'
+const archiveFolderPath = staticFolderPath + '/' + archiveFolderName
 
 const download = (uri, filename) => {
   return new Promise((resolve, reject) => {
@@ -95,7 +97,8 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
 
   const videoId = item.videoId
 
-  const thumbnailPath = archiveFolderPath + '/' + videoId + '.jpg'
+  const thumbnailPath = archiveFolderName + '/' + videoId + '.jpg'
+  const thumbnailSavePath = archiveFolderPath + '/' + videoId + '.jpg'
   const videoPath = archiveFolderPath + '/' + videoId + '.mp4'
 
   if (process.env.MODE === 'offline') {
@@ -115,14 +118,28 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       res.end()
     } else {
       console.log('No, downloading...')
-
       console.log('Video: ', await ytdl.getInfo(videoId))
+
+      await Song.dbModel.create({
+        ytId: videoId,
+        title: item.title,
+        artist: item.artist,
+        thumbnail: thumbnailPath,
+        channel: '',
+        duration: '',
+        downloadProgress: 0,
+        firstAddedBy: userId,
+        timesAdded: 1,
+        timesPlayed: 0,
+        timesRemoved: 0,
+        lastAdded: Date.now()
+      })
 
       // Download thumbnail
       const thumbnailUrl = decodeURIComponent(item.thumbnail)
       console.log('Downloading thumbnail from ' + thumbnailUrl)
-      await download(thumbnailUrl, thumbnailPath)
-      console.log('Thumbnail downloaded successfully to ' + thumbnailPath)
+      await download(thumbnailUrl, thumbnailSavePath)
+      console.log('Thumbnail downloaded successfully to ' + thumbnailSavePath)
 
       // Get video and audio streams separately
       const audioStream = ytdl('http://www.youtube.com/watch?v=' + videoId, { quality: 'highestaudio' })
