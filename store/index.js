@@ -124,13 +124,13 @@ export const actions = {
     const videoData = await getVideoData(payload.item.videoId)
     payload.item.downloading = videoData === false
     payload.item.hash = hashString(payload.item.videoId)
-    payload.item.user = state.userData.name
+    payload.item.user = state.userData._id
 
     commit('addToQueue', payload)
     await updateRemoteQueue(state.queue)
 
     if (!videoData) {
-      await downloadVideo(payload.item, state.userData.name)
+      await downloadVideo(payload.item, state.userData._id)
       commit('setVideoDownloaded', payload.item)
       await updateRemoteQueue(state.queue)
     }

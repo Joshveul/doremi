@@ -1,13 +1,20 @@
-import { Schema } from 'mongoose'
+import { Schema, Types } from 'mongoose'
 
 const songSchema = new Schema({
   ytId: String,
+  originalTitle: String,
   title: String,
+  artist: String,
   thumbnail: String, // URL
   channel: String, // YT channel ID
   duration: String,
-  downloadProgress: Number,
-  firstAddedBy: String,
+  audioDownloadProgress: Number,
+  videoDownloadProgress: Number,
+  isDownloaded: Boolean,
+  firstAddedBy: {
+    type: Types.ObjectId,
+    ref: 'User'
+  },
   timesAdded: Number,
   timesPlayed: Number,
   timesRemoved: Number,
