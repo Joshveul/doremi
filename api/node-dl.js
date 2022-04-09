@@ -93,7 +93,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
   console.log(item)
 
   // Get the ID of the user that requested the download from the query parameters
-  const userId = getQueryParam(req.url, 'userId')
+  const userId = getQueryParam(req.url, 'user')
 
   const videoId = item.videoId
 
@@ -109,25 +109,20 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       res.end()
     }, 5000)
   } else {
-    console.log('Song ' + videoId + '  exists?')
-    const doesSongExist = await Song.exists(videoId, { action: 'Search', userId })
-    if (doesSongExist) {
-      console.log('Yes, song ' + videoId + ' exists, skipping download...')
-      res.statusCode = 200
-      res.statusMessage = 'Existing'
-      res.end()
-    } else {
-      console.log('No, downloading...')
-      console.log('Video: ', await ytdl.getInfo(videoId))
+    try {
+      const { videoDetails } = await ytdl.getInfo(videoId)
 
       await Song.dbModel.create({
         ytId: videoId,
+        originalTitle: videoDetails.title,
         title: item.title,
         artist: item.artist,
         thumbnail: thumbnailPath,
-        channel: '',
-        duration: '',
-        downloadProgress: 0,
+        channel: videoDetails.channelId,
+        duration: item.duration,
+        audioDownloadProgress: 0,
+        videoDownloadProgress: 0,
+        isDownloaded: false,
         firstAddedBy: userId,
         timesAdded: 1,
         timesPlayed: 0,
@@ -147,35 +142,38 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
 
       let audioDownloadProgress
 
-      audioStream.on('progress', function (length, downloaded, totalLength) {
+      audioStream.on('progress', async function (length, downloaded, totalLength) {
         const currentProgress = Math.floor((downloaded / totalLength) * 100)
         if (currentProgress % 5 === 0 && currentProgress !== audioDownloadProgress) {
           audioDownloadProgress = currentProgress
+          await Song.dbModel.updateOne({ ytId: videoId }, { audioDownloadProgress })
           console.log('Audio progress: ', audioDownloadProgress)
         }
       })
 
       let videoDownloadProgress = 0
 
-      videoStream.on('progress', (length, downloaded, totalLength) => {
+      videoStream.on('progress', async (length, downloaded, totalLength) => {
         const currentProgress = Math.floor((downloaded / totalLength) * 100)
         if (currentProgress % 5 === 0 && currentProgress !== videoDownloadProgress) {
           videoDownloadProgress = currentProgress
+          await Song.dbModel.updateOne({ ytId: videoId }, { videoDownloadProgress })
           console.log('Video progress: ', videoDownloadProgress)
         }
       })
-      try {
-        await combineAudioAndVideo(audioStream, videoStream, videoPath)
-      } catch (error) {
-        res.statusCode = 500
-        res.statusMessage = 'Error'
-        res.end()
-      }
-
-      console.log('Done')
-      res.statusCode = 200
-      res.statusMessage = 'Archived'
+      await combineAudioAndVideo(audioStream, videoStream, videoPath)
+    } catch (error) {
+      console.log('Error while downloading song: ', error)
+      await Song.dbModel.findOneAndDelete({ ytId: videoId })
+      res.statusCode = 500
+      res.statusMessage = 'Error'
       res.end()
     }
+
+    await Song.dbModel.updateOne({ ytId: videoId }, { isDownloaded: true })
+    console.log('Done')
+    res.statusCode = 200
+    res.statusMessage = 'Archived'
+    res.end()
   }
 }

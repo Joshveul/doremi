@@ -9,19 +9,19 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
   const id = getQueryParam(req.url, 'id')
 
   if (id !== '') {
-    if (process.env.MODE !== 'offline') {
-      console.log('Finding song ', id)
-      const mongoResult = await Song.dbModel.findOne({ ytId: id })
-      if (mongoResult !== null) {
-        result.results = mongoResult
-      }
-    } else {
+    if (process.env.MODE === 'offline') {
       // Always return empty object to fake the video download
       const fakeRequest = new Promise(resolve => setTimeout(resolve([]), 2500))
       result.results = await fakeRequest
+    } else {
+      console.log('Finding song ', id)
+      const mongoResult = await Song.dbModel.findOne({ ytId: id })
+      console.log('Result from MongoDB: ', mongoResult)
+      if (mongoResult !== null) {
+        result.results.push(mongoResult)
+        result.count = 1
+      }
     }
-    console.log('MongoResult: ', result.results)
-    result.count = result.results.length
   } else {
     console.log('ID parameter was empty, returning empty value')
   }
