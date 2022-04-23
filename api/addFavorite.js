@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
-import Favorite from '../db/model/favorite'
+const Favorite = require('../db/model/favorite')
 
 module.exports = function (req = new IncomingMessage(), res = new ServerResponse(), next) {
   console.info('Starting getUser request...')
@@ -12,19 +12,11 @@ module.exports = function (req = new IncomingMessage(), res = new ServerResponse
   req.on('end', async () => {
     body = JSON.parse(body)
     if (typeof body !== 'undefined') {
-      const favorite = await Favorite.findOne({
-        userId: body.userId,
-        songId: body.songId
+      const favorite = await Favorite.add({
+        user: body.userId,
+        song: body.songId
       })
-      if (favorite === null) {
-        const newFavorite = new Favorite({
-          userId: body.userId,
-          songId: body.songId,
-          dateAdded: Date.now()
-        })
-        const result = await newFavorite.save()
-        console.log(`Favorite added: ${result}, OID: ${result._id}`)
-      }
+      console.log(`Favorite added: ${favorite}, OID: ${favorite._id}`)
     } else {
       console.log('User data in body is empty')
       res.statusCode = 400

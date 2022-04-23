@@ -106,7 +106,7 @@ export default {
     },
     {
       path: '/api/getSong',
-      handler: '~/api/getSong.js'
+      handler: '~/api/getOneSongFromDb.js'
     },
     {
       path: '/api/getUser',
