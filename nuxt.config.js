@@ -32,6 +32,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     // { src: '~/plugins/register-components.js' }
+    { src: '~/plugins/vue-player.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -54,8 +55,7 @@ export default {
     '@nuxtjs/dotenv',
     'nuxt-socket-io',
     'cookie-universal-nuxt',
-    '~/modules/mongodb.js',
-    '~/modules/chromecast.js'
+    '~/modules/mongodb.js'
   ],
   io: {
     // module options
