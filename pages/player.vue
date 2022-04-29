@@ -1,8 +1,5 @@
 <template>
   <div class="fill-viewport">
-    <button style="position: absolute; z-index: 1; background: white;" @click="swapList">
-      Hello
-    </button>
     <video-player
       ref="videoPlayer"
       class="fit-container"
@@ -12,9 +9,6 @@
 </template>
 
 <script>
-
-require('videojs-playlist')
-
 export default {
   layout: 'void',
   data () {
@@ -25,12 +19,18 @@ export default {
   computed: {
     playerOptions () {
       return {
-      // videojs options
+        // videojs options
         muted: false,
         fill: true,
         language: 'en',
         playbackRates: [0.7, 1.0, 1.5, 2.0],
-        playlist: this.list,
+        sources: [
+          {
+            type: 'video/mp4',
+            src: '/archive/a5LOjg1EiAk.mp4'
+          }
+        ],
+        poster: '/archive/a5LOjg1EiAk.jpg',
         autoplay: true
       }
     },
@@ -38,36 +38,7 @@ export default {
       return this.$refs.videoPlayer.player
     }
   },
-  methods: {
-    swapList () {
-      console.log('clicked with alternate: ', this.alternate)
-      this.alternate = !this.alternate
-      if (this.alternate) {
-        this.player.playlist([{
-          sources: [{
-            type: 'video/mp4',
-            src: '/archive/wqE5j1TQWVs.mp4'
-          }],
-          poster: '/archive/wqE5j1TQWVs.jpg'
-        }, {
-          sources: [{
-            type: 'video/mp4',
-            src: '/archive/GZ8RNuV1fTo.mp4'
-          }],
-          poster: '/archive/GZ8RNuV1fTo.jpg'
-        }])
-      } else {
-        this.player.playlist([{
-          sources: [{
-            type: 'video/mp4',
-            src: '/archive/qk4pxJZBCMw.mp4'
-          }],
-          poster: '/archive/qk4pxJZBCMw.jpg'
-        }])
-      }
-      this.player.playlist.autoadvance(0)
-    }
-  }
+  methods: {}
 }
 </script>
 
