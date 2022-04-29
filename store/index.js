@@ -1,9 +1,9 @@
-import { convertTimeToSeconds, downloadVideo, getVideoData, hashString, updateRemoteQueue } from '~/modules/utils'
+import { convertTimeToSeconds, downloadVideo, getVideoDataFromDB, updateRemoteQueue } from '~/modules/utils'
 // import { videoArray } from '~/modules/mock'
 
 export const state = () => ({
   activeUsers: [],
-  userData: { },
+  userData: {},
   songOptionsOpen: false,
   selectedSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
   nowPlayingSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
@@ -121,15 +121,11 @@ export const actions = {
     commit('addYtSearchResults', results.entries)
   },
   async addToQueue ({ commit, state }, payload) {
-    const videoData = await getVideoData(payload.item.videoId)
-    payload.item.downloading = videoData === false
-    payload.item.hash = hashString(payload.item.videoId)
-    payload.item.user = state.userData._id
-
+    const videoData = await getVideoDataFromDB(payload.item.videoId, state.userData._id, true)
     commit('addToQueue', payload)
     await updateRemoteQueue(state.queue)
 
-    if (!videoData) {
+    if (!videoData.isProcessing) {
       await downloadVideo(payload.item, state.userData._id)
       commit('setVideoDownloaded', payload.item)
       await updateRemoteQueue(state.queue)

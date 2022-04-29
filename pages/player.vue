@@ -4,6 +4,7 @@
       ref="videoPlayer"
       class="fit-container"
       :options="playerOptions"
+      @ended="onPlayerEnded($event)"
     />
   </div>
 </template>
@@ -38,7 +39,12 @@ export default {
       return this.$refs.videoPlayer.player
     }
   },
-  methods: {}
+  methods: {
+    onPlayerEnded (ev) {
+      // TODO: Get get next song logic
+      this.player.play()
+    }
+  }
 }
 </script>
 

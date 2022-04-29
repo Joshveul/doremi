@@ -1,26 +1,56 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
-import { getQueryParam } from './utils'
+import ytdl from 'ytdl-core'
+import { getQueryParam, getArtistAndTitle } from './utils'
 const Song = require('../db/model/song')
 
 module.exports = async function (req = new IncomingMessage(), res = new ServerResponse(), next) {
   console.info('Starting getSong request...')
   const result = { count: 0, results: [] }
-  const id = getQueryParam(req.url, 'id')
+  const songId = getQueryParam(req.url, 'songId')
+  const userId = getQueryParam(req.url, 'userId')
 
-  if (id !== '') {
+  if (songId !== '') {
     if (process.env.MODE === 'offline') {
       // Always return empty object to fake the video download
       const fakeRequest = new Promise(resolve => setTimeout(resolve([]), 2500))
       result.results = await fakeRequest
     } else {
-      console.log('Finding song ', id)
-      const mongoResult = await Song.dbModel.findOne({ ytId: id })
+      console.log('Finding song ', songId)
+      let mongoResult = await Song.dbModel.findOne({ ytId: songId })
       console.log('Result from MongoDB: ', mongoResult)
-      if (mongoResult !== null) {
-        result.results.push(mongoResult)
-        result.count = 1
+      if (mongoResult === null) {
+        const { videoDetails } = await ytdl.getInfo(songId)
+        console.log(videoDetails)
+        let { artist, title } = getArtistAndTitle(videoDetails.title, videoDetails.ownerChannelName)
+        if (artist === title) {
+          artist = videoDetails.media.artist
+          title = videoDetails.title
+        }
+        mongoResult = await Song.dbModel.create({
+          ytId: songId,
+          originalTitle: videoDetails.title,
+          title,
+          artist,
+          thumbnail: encodeURIComponent(videoDetails.thumbnails[0].url),
+          channel: {
+            id: videoDetails.channelId,
+            name: videoDetails.ownerChannelName
+          },
+          duration: videoDetails.lengthSeconds,
+          isDownloaded: false,
+          isProcessing: false,
+          audioDownloadProgress: 0,
+          videoDownloadProgress: 0,
+          firstAddedBy: userId,
+          timesAdded: 1,
+          timesPlayed: 0,
+          timesRemoved: 0,
+          lastAdded: Date.now()
+        })
       }
+      result.results.push(mongoResult)
+      result.count = 1
     }
   } else {
     console.log('ID parameter was empty, returning empty value')

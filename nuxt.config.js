@@ -94,7 +94,7 @@ export default {
   serverMiddleware: [
     {
       path: '/api/download',
-      handler: '~/api/node-dl.js'
+      handler: '~/api/download.js'
     },
     {
       path: '/api/search',
@@ -130,5 +130,5 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: { }
+  build: {}
 }
