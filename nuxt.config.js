@@ -63,7 +63,13 @@ export default {
       name: 'main',
       default: true,
       path: '/',
-      url: `http://${host}:3000/`
+      url: `http://${host}:3000/`,
+      namespaces: {
+        '/player': {
+          emitters: ['getMessage2 + testMsg --> message2Rxd'],
+          listeners: ['chatMessage2', 'chatMessage3 --> message3Rxd']
+        }
+      }
     }]
   },
   // PWA module configuration: https://go.nuxtjs.dev/pwa

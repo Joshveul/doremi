@@ -7,7 +7,6 @@ import internal from 'stream'
 import ytdl from 'ytdl-core'
 import ffmpeg from 'ffmpeg-static'
 import request from 'request'
-import { getQueryParam } from './utils'
 const Song = require('../db/model/song')
 
 const staticFolderPath = './static'
@@ -83,17 +82,9 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
   const url = new URL(req.url, baseURL)
   const query = new URLSearchParams(url.search)
 
-  // Log the original value of the "item" parameter which contains the YT Video object
   console.log(`Incoming download request for item: ${query.get('item')}`)
-
-  // Decode the item and parse it to a usable JSON object
   const item = JSON.parse(decodeURI(query.get('item')))
-
-  // Log the parsed value
   console.log(item)
-
-  // Get the ID of the user that requested the download from the query parameters
-  const userId = getQueryParam(req.url, 'user')
 
   const videoId = item.videoId
 
@@ -158,7 +149,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       res.end()
     }
 
-    await Song.dbModel.updateOne({ ytId: videoId }, { isDownloaded: true })
+    await Song.dbModel.updateOne({ ytId: videoId }, { isDownloaded: true, isProcessing: false })
     console.log('Done')
     res.statusCode = 200
     res.statusMessage = 'Archived'

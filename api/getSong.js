@@ -24,7 +24,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
         console.log(videoDetails)
         let { artist, title } = getArtistAndTitle(videoDetails.title, videoDetails.ownerChannelName)
         if (artist === title) {
-          artist = videoDetails.media.artist
+          artist = videoDetails.media.artist || artist
           title = videoDetails.title
         }
         mongoResult = await Song.dbModel.create({

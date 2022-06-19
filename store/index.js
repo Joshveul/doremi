@@ -125,7 +125,7 @@ export const actions = {
     commit('addToQueue', payload)
     await updateRemoteQueue(state.queue)
 
-    if (!videoData.isProcessing) {
+    if (!videoData.isDownloaded) {
       await downloadVideo(payload.item, state.userData._id)
       commit('setVideoDownloaded', payload.item)
       await updateRemoteQueue(state.queue)
