@@ -1,13 +1,28 @@
 const host = process.env.HOST
 
-export const getVideoData = async function getVideoData (videoId) {
-  const songData = await (await fetch(`http://${host}:3000/api/getSong?id=${videoId}`)).json()
+/**
+ * Gets the video data from the DB.
+ * @param {String} videoId - The Youtube video ID to search for
+ * @param {String} userId - The User ID that is performing the action
+ * @param {String} lockDocument - Value that will be set to the
+ * isProcessing property of the document (useful to evaulate further operations)
+ * if the song already exists, this value is ignored
+ * @returns An object with the song document
+ */
+export const getVideoDataFromDB = async function getVideoData (videoId, userId, lockDocument) {
+  const songData = await (await fetch(`http://${host}:3000/api/getSong?songId=${videoId}&userId=${userId}&lock=${lockDocument}`)).json()
   if (songData.count > 0) {
     return songData.results[0]
   }
-  return false
+  throw new Error('Unexpected error while getting song data, please try again.')
 }
 
+/**
+ * Calls the endpoint to download a video
+ * @param {*} item
+ * @param {*} user
+ * @returns
+ */
 export const downloadVideo = async function downloadVideo (item, user) {
   const uri = `http://${host}:3000/api/download?` +
     `item=${encodeURI(JSON.stringify(item))}` +
@@ -29,20 +44,6 @@ export const updateRemoteQueue = async function updateRemoteQueue (queue) {
     return true
   }
   return false
-}
-
-export const hashString = function hashStringfunction (string) {
-  let hash = 0
-  let i, chr
-  if (string.length === 0) {
-    return hash
-  }
-  for (i = 0; i < string.length; i++) {
-    chr = string.charCodeAt(i)
-    hash = ((hash << 5) - hash) + chr - Date.now()
-    hash |= 0
-  }
-  return hash
 }
 
 export const convertTimeToSeconds = function convertTimeToSeconds (time) {

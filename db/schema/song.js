@@ -6,11 +6,12 @@ const songSchema = new Schema({
   title: String,
   artist: String,
   thumbnail: String, // URL
-  channel: String, // YT channel ID
+  channel: Object,
   duration: String,
   audioDownloadProgress: Number,
   videoDownloadProgress: Number,
   isDownloaded: Boolean,
+  isProcessing: Boolean,
   firstAddedBy: {
     type: Types.ObjectId,
     ref: 'User'
