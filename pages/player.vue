@@ -1,11 +1,13 @@
 <template>
   <div class="fill-viewport">
-    <video-player
-      ref="videoPlayer"
-      class="fit-container"
-      :options="playerOptions"
-      @ended="onPlayerEnded($event)"
-    />
+    <client-only>
+      <video-player
+        ref="videoPlayer"
+        class="fit-container"
+        :options="playerOptions"
+        @ended="onPlayerEnded($event)"
+      />
+    </client-only>
   </div>
 </template>
 
@@ -28,10 +30,10 @@ export default {
         sources: [
           {
             type: 'video/mp4',
-            src: '/archive/a5LOjg1EiAk.mp4'
+            src: '/Countdown_PreRun.mp4'
           }
         ],
-        poster: '/archive/a5LOjg1EiAk.jpg',
+        poster: '/icon.png',
         autoplay: true
       }
     },
