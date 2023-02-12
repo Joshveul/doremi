@@ -32,6 +32,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     // { src: '~/plugins/register-components.js' }
+    { src: '~/plugins/vue-player.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -54,8 +55,7 @@ export default {
     '@nuxtjs/dotenv',
     'nuxt-socket-io',
     'cookie-universal-nuxt',
-    '~/modules/mongodb.js',
-    '~/modules/chromecast.js'
+    '~/modules/mongodb.js'
   ],
   io: {
     // module options
@@ -63,7 +63,13 @@ export default {
       name: 'main',
       default: true,
       path: '/',
-      url: `http://${host}:3000/`
+      url: `http://${host}:3000/`,
+      namespaces: {
+        '/player': {
+          emitters: ['getMessage2 + testMsg --> message2Rxd'],
+          listeners: ['chatMessage2', 'chatMessage3 --> message3Rxd']
+        }
+      }
     }]
   },
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -94,7 +100,7 @@ export default {
   serverMiddleware: [
     {
       path: '/api/download',
-      handler: '~/api/node-dl.js'
+      handler: '~/api/download.js'
     },
     {
       path: '/api/search',
@@ -130,5 +136,5 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: { }
+  build: {}
 }
