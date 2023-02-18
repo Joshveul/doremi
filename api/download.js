@@ -101,9 +101,8 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
     }, 5000)
   } else {
     try {
-      const { videoDetails } = await ytdl.getInfo(videoId)
-
-      console.log(videoDetails)
+      // const { videoDetails } = await ytdl.getInfo(videoId)
+      // console.log(videoDetails)
 
       await Song.dbModel.findOneAndUpdate({ ytId: videoId }, {
         thumbnail: thumbnailPath

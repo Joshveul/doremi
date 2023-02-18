@@ -18,6 +18,24 @@ export const getVideoDataFromDB = async function getVideoData (videoId, userId, 
 }
 
 /**
+ * Gets the full list of songs available in the local Database.
+ * @returns An array with the songs
+ */
+export const getStoredSongsList = async function getStoredSongsList () {
+  const songList = await (await fetch(`http://${host}:3000/api/getStoredSongsList`)).json()
+  return songList.results
+}
+
+/**
+ * Gets the full list of songs available in the local Database.
+ * @returns An array with the songs
+ */
+export const getFavorites = async function getFavorites (user) {
+  const songData = await (await fetch(`http://${host}:3000/api/getFavorites?userId=${user}`)).json()
+  return songData.results
+}
+
+/**
  * Calls the endpoint to download a video
  * @param {*} item
  * @param {*} user

@@ -5,8 +5,9 @@ import { getQueryParam } from './utils'
 const Song = require('../db/model/song')
 
 const pipeline = [
-  { $match: { _id: Types.ObjectId('61d3937933c211eeb5f9358a') } },
-  { $lookup: { from: 'users', localField: 'firstAddedBy', foreignField: '_id', as: 'firstAddedBy' } }
+  { $match: { _id: Types.ObjectId('63f097d0f8aac3206b364b2e') } },
+  { $lookup: { from: 'users', localField: 'firstAddedBy', foreignField: '_id', as: 'firstAddedBy' } },
+  { $unwind: '$firstAddedBy' }
 ]
 
 module.exports = async function (req = new IncomingMessage(), res = new ServerResponse(), next) {

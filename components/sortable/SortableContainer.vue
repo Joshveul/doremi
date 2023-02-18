@@ -7,10 +7,17 @@
     @sort-start="sortStart"
     @sort-end="sortEnd"
   >
-    <sortable-item v-for="(e, i) in list" :key="i" :item="e" :divider="i !== 0" :index="i" />
+    <sortable-item
+      v-for="(e, i) in queue"
+      :key="i.videoId"
+      :item="e"
+      :divider="i !== 0"
+      :index="i"
+    />
   </slick-list>
 </template>
 <script>
+import { mapState } from 'vuex'
 import { SlickList } from 'vue-slicksort'
 import SortableItem from '~/components/sortable/SortableItem.vue'
 
@@ -28,6 +35,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['queue']),
     list: {
       set (val) {
         this.$store.commit('updateQueue', val)
@@ -77,5 +85,4 @@ export default {
 .helper-class .v-icon.mdi-playlist-remove {
   display: none;
 }
-
 </style>

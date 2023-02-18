@@ -21,7 +21,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       console.log('Result from MongoDB: ', mongoResult)
       if (mongoResult === null) {
         const { videoDetails } = await ytdl.getInfo(songId)
-        console.log(videoDetails)
+        // console.log(videoDetails)
         let { artist, title } = getArtistAndTitle(videoDetails.title, videoDetails.ownerChannelName)
         if (artist === title) {
           artist = videoDetails.media.artist || artist
@@ -43,11 +43,18 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
           audioDownloadProgress: 0,
           videoDownloadProgress: 0,
           firstAddedBy: userId,
+          lastAddedBy: userId,
           timesAdded: 1,
           timesPlayed: 0,
           timesRemoved: 0,
           lastAdded: Date.now()
         })
+      } else {
+        const timesAdded = mongoResult.timesAdded += 1
+        const lastAdded = Date.now()
+        const lastAddedBy = userId
+        mongoResult = await Song.dbModel.findOneAndUpdate({ ytId: songId }, { timesAdded, lastAdded, lastAddedBy })
+        console.log('after update', mongoResult)
       }
       result.results.push(mongoResult)
       result.count = 1

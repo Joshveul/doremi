@@ -1,8 +1,6 @@
 <template>
   <v-bottom-sheet v-model="isOpen">
-    <v-sheet
-      class="pa-4"
-    >
+    <v-sheet class="pa-4">
       <v-card
         :color="selectedSong.color"
         class="d-flex mb-4"
@@ -26,7 +24,10 @@
             v-text="selectedSong.artist"
           />
         </div>
-        <favorite />
+        <favorite
+          v-show="'downloading' in selectedSong"
+          :song-id="selectedSong.id"
+        />
       </v-card>
       <v-btn
         class="my-5"
@@ -68,12 +69,18 @@ export default {
     }
   },
   computed: {
-    ...mapState({ songOptionsOpen: 'songOptionsOpen', selectedSong: 'selectedSong', userData: 'userData' }),
+    ...mapState({
+      songOptionsOpen: 'songOptionsOpen',
+      selectedSong: 'selectedSong',
+      userData: 'userData'
+    }),
     isOpen: {
       set (newValue) {
         this.$store.commit('setSongOptionsOpen', newValue)
       },
-      get () { return this.songOptionsOpen }
+      get () {
+        return this.songOptionsOpen
+      }
     },
     thumbnail () {
       return decodeURIComponent(this.selectedSong.thumbnail)
@@ -90,7 +97,10 @@ export default {
       this.isOpen = false
     },
     playNext () {
-      this.$store.dispatch('addToQueue', { item: this.selectedSong, playNext: true })
+      this.$store.dispatch('addToQueue', {
+        item: this.selectedSong,
+        playNext: true
+      })
       this.isOpen = false
     }
   }

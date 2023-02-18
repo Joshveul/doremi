@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { convertTimeToSeconds, downloadVideo, getVideoDataFromDB, updateRemoteQueue } from '~/modules/utils'
 // import { videoArray } from '~/modules/mock'
 
@@ -20,7 +21,9 @@ export const state = () => ({
     currentSongIndex: 0,
     playing: false,
     time: 0
-  }
+  },
+  storedSongs: [],
+  userFavorites: []
 })
 
 export const mutations = {
@@ -54,6 +57,21 @@ export const mutations = {
   addYtSearchResults (state, results) {
     state.ytSearchResults.push(...results)
   },
+  setStoredSongs (state, storedSongsArray) {
+    state.storedSongs = storedSongsArray
+  },
+  setUserFavorites (state, favorites) {
+    state.userFavorites = favorites
+  },
+  addFavorite (state, songId) {
+    if (!state.userFavorites.includes(songId)) {
+      state.userFavorites.push(songId)
+    }
+  },
+  removeFavorite (state, songId) {
+    const index = state.userFavorites.indexOf(songId)
+    state.userFavorites.splice(index, 1)
+  },
   addToQueue (state, payload) {
     if (state.queue.length > 0 && 'playNext' in payload && payload.playNext) {
       state.queue.splice(state.queueState.currentSongIndex + 1, 0, payload.item)
@@ -72,11 +90,7 @@ export const mutations = {
     state.queueState.time -= convertTimeToSeconds(video.duration)
   },
   setVideoDownloaded (state, video) {
-    video.downloading = false
-    const existsAtIndex = state.queue.findIndex(el => el.hash === video.hash)
-    const newItem = { ...state.queue[existsAtIndex] }
-    state.queue[existsAtIndex] = newItem
-    state.queue = [...state.queue]
+    Vue.set(video, 'downloading', false)
   },
   addingToQueue (state, isAddingToqueue) {
     state.queueState.addingToQueue = isAddingToqueue
@@ -96,6 +110,11 @@ export const mutations = {
 export const getters = {
   getQueue (state) {
     return state.queue
+  },
+  getFavoritesList (state) {
+    return state.storedSongs.filter((el) => {
+      return state.userFavorites.includes(el.id)
+    })
   }
 }
 
@@ -117,11 +136,47 @@ export const actions = {
     } catch (e) {
       throw new Error('An error ocurred while requesting Youtube Next Page', e)
     }
-
     commit('addYtSearchResults', results.entries)
+  },
+  async addSongToFavorites ({ commit, state }, songId) {
+    try {
+      const favoriteReq = await fetch('/api/addFavorite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId: state.userData._id,
+          songId
+        })
+      })
+      commit('addFavorite', songId)
+      return favoriteReq
+    } catch (e) {
+      throw new Error('An error ocurred while adding favorite', e)
+    }
+  },
+  async removeSongFromFavorites ({ commit, state }, songId) {
+    try {
+      const favoriteReq = await fetch('/api/removeFavorite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId: state.userData._id,
+          songId
+        })
+      })
+      commit('removeFavorite', songId)
+      return favoriteReq
+    } catch (e) {
+      throw new Error('An error ocurred while removing favorite', e)
+    }
   },
   async addToQueue ({ commit, state }, payload) {
     const videoData = await getVideoDataFromDB(payload.item.videoId, state.userData._id, true)
+    payload.item.id = videoData._id
     commit('addToQueue', payload)
     await updateRemoteQueue(state.queue)
 
@@ -129,6 +184,8 @@ export const actions = {
       await downloadVideo(payload.item, state.userData._id)
       commit('setVideoDownloaded', payload.item)
       await updateRemoteQueue(state.queue)
+    } else {
+      commit('setVideoDownloaded', payload.item)
     }
   },
   removeFromQueue ({ commit, state }, video) {

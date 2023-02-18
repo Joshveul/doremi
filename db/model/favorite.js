@@ -4,19 +4,29 @@ const Log = require('./log')
 
 export const dbModel = models.Favorite || model('Favorite', favoriteSchema)
 
-export const add = async (object = { user: String, song: String }) => {
-  const query = { user: object.user, song: object.song }
+export const add = async (favorite = { user: String, song: String }) => {
+  const query = { user: favorite.user, song: favorite.song }
 
-  const doc = await dbModel.findByIdAndUpdate(
+  const doc = await dbModel.findOneAndUpdate(
     query,
     { ...query, dateAdded: Date.now() },
-    { upsert: true }
+    { upsert: true, new: true, setDefaultsOnInsert: true }
   )
 
-  console.log('Favorite added: ', doc)
+  Log.add(
+    favorite.user, 'Add favorite', 'Favorites', favorite.song
+  )
+
+  return doc
+}
+
+export const remove = async (favorite = { user: String, song: String }) => {
+  const query = { user: favorite.user, song: favorite.song }
+
+  const doc = await dbModel.findOneAndDelete(query)
 
   Log.add(
-    object.userId, 'Add favorite', 'Favorites', doc._id
+    favorite.user, 'Remove favorite', 'Favorites', doc._id
   )
 
   return doc

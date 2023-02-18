@@ -32,6 +32,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     // { src: '~/plugins/register-components.js' }
+    { ssr: false, src: '~plugins/setup' },
     { src: '~/plugins/vue-player.js', mode: 'client' }
   ],
 
@@ -103,6 +104,14 @@ export default {
       handler: '~/api/download.js'
     },
     {
+      path: '/api/getStoredSongsList',
+      handler: '~/api/getStoredSongsList.js'
+    },
+    {
+      path: '/api/getFavorites',
+      handler: '~/api/getFavorites.js'
+    },
+    {
       path: '/api/search',
       handler: '~/api/search.js'
     },
@@ -129,6 +138,10 @@ export default {
     {
       path: '/api/addFavorite',
       handler: '~/api/addFavorite.js'
+    },
+    {
+      path: '/api/removeFavorite',
+      handler: '~/api/removeFavorite.js'
     }
   ],
   server: {

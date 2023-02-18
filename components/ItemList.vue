@@ -3,8 +3,14 @@
     <h4 v-if="title !== ''">
       {{ title }}
     </h4>
-    <hooper style="height: auto;" :items-to-show="1.1">
-      <slide v-for="(e, i) in splitItems" :key="i">
+    <hooper
+      style="height: auto;"
+      :items-to-show="1.1"
+    >
+      <slide
+        v-for="(e, i) in splitItems"
+        :key="i"
+      >
         <song-list :items="e" />
       </slide>
     </hooper>

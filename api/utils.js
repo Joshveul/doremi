@@ -4,6 +4,16 @@ export function getQueryParam (url, param) {
   return returnVal === null ? '' : returnVal[1]
 }
 
+export const convertSecondsToTime = function convertSecondsToTime (seconds) {
+  const date = new Date(null)
+  date.setSeconds(seconds)
+  let time = date.toISOString().substr(11, 8)
+  if (time.startsWith('00:')) {
+    time = time.substring(3)
+  }
+  return time
+}
+
 /**
  * @param {String} title
  * @param {String} channel
@@ -43,6 +53,15 @@ export function getArtistAndTitle (title, channel) {
       endArtist = title.indexOf(' -')
       startTitle = endArtist + 3
       endTitle = title.indexOf(' - Karaoke')
+      return {
+        artist: title.substring(0, endArtist),
+        title: title.substring(startTitle, endTitle)
+      }
+    case 'UCIk6z4gxI5ADYK7HmNiJvNg':
+    case 'sing2piano | Piano Karaoke':
+      endArtist = title.indexOf(' -')
+      startTitle = endArtist + 3
+      endTitle = title.indexOf(' Karaoke')
       return {
         artist: title.substring(0, endArtist),
         title: title.substring(startTitle, endTitle)

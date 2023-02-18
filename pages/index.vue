@@ -9,7 +9,12 @@
       md="6"
     >
       <ItemList
-        title="Some of your favorites"
+        title="Popular"
+        source="storage"
+        :items="$store.state.storedSongs"
+      />
+      <ItemList
+        title="Current search results"
         :items="$store.state.ytSearchResults"
       />
       <ItemList
@@ -33,23 +38,22 @@ export default {
   },
   layout: 'default',
   mounted () {
-    this.socket = this.$nuxtSocket({
-      name: 'main'
-    })
-    /* Listen for events: */
-    console.log(this.socket)
-    this.socket.on('connect', (msg, cb) => {
-      console.log('connected' + msg)
-    })
-    this.socket
-      .on('progress', (msg, cb) => {
-        console.log(msg)
-      })
-
-      .on('mongoStream', (msg, cb) => {
-        console.log('From mongo:', msg)
-      })
-    this.socket.emit('fn3', { id: 'abc123' })
+    // this.socket = this.$nuxtSocket({
+    //   name: 'main'
+    // })
+    // /* Listen for events: */
+    // console.log(this.socket)
+    // this.socket.on('connect', (msg, cb) => {
+    //   console.log('connected' + msg)
+    // })
+    // this.socket
+    //   .on('progress', (msg, cb) => {
+    //     console.log(msg)
+    //   })
+    //   .on('mongoStream', (msg, cb) => {
+    //     console.log('From mongo:', msg)
+    //   })
+    // this.socket.emit('fn3', { id: 'abc123' })
   }
 }
 </script>
