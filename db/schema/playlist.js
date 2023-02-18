@@ -9,6 +9,7 @@ const playlistSchema = new Schema({
     type: Types.ObjectId,
     ref: 'User'
   },
+  hash: String,
   order: Number
 })
 

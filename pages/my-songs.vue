@@ -11,17 +11,25 @@
         sm="8"
         md="6"
       >
-        <song-list />
+        <song-list
+          :items="userFavorites"
+          source="stored"
+        />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import SongList from '~/components/SongList.vue'
+
 export default {
   components: {
     SongList
+  },
+  computed: {
+    ...mapGetters({ userFavorites: 'getFavoritesList' })
   }
 }
 </script>

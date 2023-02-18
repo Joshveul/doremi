@@ -3,7 +3,7 @@ import { ServerResponse, IncomingMessage } from 'http'
 const Favorite = require('../db/model/favorite')
 
 module.exports = function (req = new IncomingMessage(), res = new ServerResponse(), next) {
-  console.info('Starting addFavorite request...')
+  console.info('Starting addFavorite request...', req)
   let body = ''
   req.on('data', (chunk) => {
     body += chunk
@@ -12,10 +12,11 @@ module.exports = function (req = new IncomingMessage(), res = new ServerResponse
   req.on('end', async () => {
     body = JSON.parse(body)
     if (typeof body !== 'undefined') {
-      await Favorite.add({
+      const favorite = await Favorite.remove({
         user: body.userId,
         song: body.songId
       })
+      console.log(`Favorite removed: ${favorite}, OID: ${favorite._id}`)
     } else {
       console.log('User data in body is empty')
       res.statusCode = 400

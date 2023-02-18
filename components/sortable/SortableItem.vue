@@ -37,7 +37,7 @@
       <v-icon
         v-if="!simple"
         class="mr-1"
-        @click="remove = true"
+        @click="removeDialogOpen = true"
       >
         mdi-playlist-remove
       </v-icon>
@@ -45,7 +45,7 @@
         transition="scroll-x-transition"
         :absolute="true"
         :opacity=".8"
-        :value="localData.downloading"
+        :value="downloading"
       >
         <v-row
           class="fill-height"
@@ -73,7 +73,7 @@
       </v-overlay>
     </v-list-item>
     <v-dialog
-      v-model="remove"
+      v-model="removeDialogOpen"
       max-width="290"
     >
       <v-card>
@@ -86,7 +86,7 @@
           <v-btn
             color="green darken-1"
             text
-            @click="remove = false"
+            @click="removeDialogOpen = false"
           >
             Cancel
           </v-btn>
@@ -132,8 +132,7 @@ export default {
   data () {
     return {
       colors,
-      remove: false,
-      localData: this.item
+      removeDialogOpen: false
     }
   },
   computed: {
@@ -143,13 +142,14 @@ export default {
     thumbnail () {
       return decodeURIComponent(this.item.thumbnail)
     },
-    isDownloading () {
-      return this.localData.downloading
+    downloading () {
+      return this.item.downloading
     }
   },
   methods: {
     removeFromQueue () {
       this.$store.dispatch('removeFromQueue', this.item)
+      this.removeDialogOpen = false
     }
   }
 }

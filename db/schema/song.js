@@ -16,6 +16,10 @@ const songSchema = new Schema({
     type: Types.ObjectId,
     ref: 'User'
   },
+  lastAddedBy: {
+    type: Types.ObjectId,
+    ref: 'User'
+  },
   timesAdded: Number,
   timesPlayed: Number,
   timesRemoved: Number,
