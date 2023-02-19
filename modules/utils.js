@@ -36,6 +36,15 @@ export const getFavorites = async function getFavorites (user) {
 }
 
 /**
+ * Adds user to the current session.
+ * @returns An array with the songs
+ */
+export const joinSession = async function joinSession (user) {
+  const sessionData = await (await fetch(`http://${host}:3000/api/joinSession?userId=${user}`)).json()
+  return sessionData.results
+}
+
+/**
  * Calls the endpoint to download a video
  * @param {*} item
  * @param {*} user
@@ -87,4 +96,17 @@ export const convertSecondsToTime = function convertSecondsToTime (seconds) {
     time = time.substring(3)
   }
   return time
+}
+
+export const initApp = function initApp (vueContext) {
+  const userId = vueContext.$store.state.userData._id
+  joinSession(userId).then((result) => {
+    console.log('joined session: ', result)
+  })
+  getStoredSongsList().then((result) => {
+    vueContext.$store.commit('setStoredSongs', result)
+  })
+  getFavorites(userId).then((result) => {
+    vueContext.$store.commit('setUserFavorites', result)
+  })
 }

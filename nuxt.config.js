@@ -33,7 +33,8 @@ export default {
   plugins: [
     // { src: '~/plugins/register-components.js' }
     { ssr: false, src: '~plugins/setup' },
-    { src: '~/plugins/vue-player.js', mode: 'client' }
+    { src: '~/plugins/vue-player.js', mode: 'client' },
+    { src: '~/plugins/websocket.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -136,6 +137,10 @@ export default {
     {
       path: '/api/removeFavorite',
       handler: '~/api/removeFavorite.js'
+    },
+    {
+      path: '/api/joinSession',
+      handler: '~/api/joinSession.js'
     }
   ],
   server: {

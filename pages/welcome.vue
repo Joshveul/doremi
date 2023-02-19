@@ -104,6 +104,8 @@
 </template>
 
 <script>
+import { initApp } from '~/modules/utils'
+
 export default {
   layout: 'empty',
   data () {
@@ -123,6 +125,7 @@ export default {
         if ('name' in user && user.name !== '') {
           this.$store.dispatch('login', user)
           this.$router.push({ path: '/' })
+          initApp(this)
         } else {
           this.dialog.value = true
         }
