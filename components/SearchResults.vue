@@ -7,16 +7,17 @@
     />
     <v-card
       v-if="hasYtResults"
-      class="d-flex justify-space-around mt-2"
-      flat
+      class="d-flex justify-space-around pa-4 my-6"
+      @click="!loadingResults ? onIntersect() : null"
     >
       <v-progress-circular
-        v-intersect="{
-          handler: onIntersect
-        }"
+        v-if="loadingResults"
         indeterminate
         color="primary"
       />
+      <div v-else>
+        More results!
+      </div>
     </v-card>
   </v-list>
 </template>
@@ -37,6 +38,11 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      loadingResults: false
+    }
+  },
   computed: {
     ...mapState({ ytSearchResults: 'ytSearchResults' }),
     hasYtResults () {
@@ -44,9 +50,11 @@ export default {
     }
   },
   methods: {
-    onIntersect () {
+    async onIntersect () {
       if (this.hasYtResults) {
-        this.$store.dispatch('fetchNextYouTubePage')
+        this.loadingResults = true
+        await this.$store.dispatch('fetchNextYouTubePage')
+        this.loadingResults = false
       }
     }
   }

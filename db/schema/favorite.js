@@ -10,6 +10,6 @@ const favoriteSchema = new Schema({
     ref: 'Song'
   },
   dateAdded: Date
-})
+}, { timestamps: true })
 
 export default favoriteSchema

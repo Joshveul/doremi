@@ -31,6 +31,7 @@ import SearchInput from '~/components/SearchInput.vue'
 import SongQueue from '~/components/SongQueue.vue'
 
 export default {
+  name: 'Default',
   components: {
     BottomNavigation,
     SongOptions,

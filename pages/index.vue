@@ -13,7 +13,7 @@
         source="storage"
         :items="$store.state.storedSongs"
       />
-      <ItemList
+      <!-- <ItemList
         title="Current search results"
         :items="$store.state.ytSearchResults"
       />
@@ -24,7 +24,7 @@
       <ItemList
         title="Played in previous sessions with you"
         :items="$store.state.ytSearchResults"
-      />
+      /> -->
     </v-col>
   </v-row>
 </template>
@@ -36,7 +36,6 @@ export default {
   components: {
     ItemList
   },
-  layout: 'default',
   mounted () {
     // this.socket = this.$nuxtSocket({
     //   name: 'main'

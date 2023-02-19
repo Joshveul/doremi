@@ -8,6 +8,6 @@ const logSchema = new Schema({
   action: String,
   schema: String,
   oid: Types.ObjectId
-})
+}, { timestamps: true })
 
 export default logSchema

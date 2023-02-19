@@ -5,6 +5,9 @@ const playerStateSchema = new Schema({
     type: Types.ObjectId,
     ref: 'Playlist'
   },
+  playList: [{
+    type: String // An array of hashes from the playlist table
+  }],
   playing: Boolean,
   currentSecond: Number
 })

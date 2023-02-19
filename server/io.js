@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import mongoose from '../db/mongo'
+import mongoose from 'mongoose'
 
 export default function (socket, io) {
   console.log('Registering mongo Change Stream')

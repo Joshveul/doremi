@@ -9,7 +9,8 @@ const sessionSchema = new Schema({
     type: Types.ObjectId,
     ref: 'Song'
   }],
-  lastActive: Date
-})
+  sessionStartDate: Date,
+  sessionEndDate: Date
+}, { timestamps: true })
 
 export default sessionSchema

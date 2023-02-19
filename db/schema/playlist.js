@@ -9,8 +9,7 @@ const playlistSchema = new Schema({
     type: Types.ObjectId,
     ref: 'User'
   },
-  hash: String,
-  order: Number
-})
+  hash: String
+}, { timestamps: true })
 
 export default playlistSchema

@@ -12,6 +12,8 @@ const songSchema = new Schema({
   videoDownloadProgress: Number,
   isDownloaded: Boolean,
   isProcessing: Boolean,
+  startAt: Number,
+  endAt: Number,
   firstAddedBy: {
     type: Types.ObjectId,
     ref: 'User'
@@ -26,6 +28,6 @@ const songSchema = new Schema({
   lastAdded: Date,
   lastPlayed: Date,
   lastRemoved: Date
-})
+}, { timestamps: true })
 
 export default songSchema
