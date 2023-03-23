@@ -30,6 +30,15 @@ export const getStoredSongsList = async function getStoredSongsList () {
  * Gets the full list of songs available in the local Database.
  * @returns An array with the songs
  */
+export const getCurrentQueue = async function getCurrentQueue () {
+  const songList = await (await fetch(`http://${host}:3000/api/appState?action=getQueue`)).json()
+  return songList.results
+}
+
+/**
+ * Gets the full list of songs available in the local Database.
+ * @returns An array with the songs
+ */
 export const getFavorites = async function getFavorites (user) {
   const songData = await (await fetch(`http://${host}:3000/api/getFavorites?userId=${user}`)).json()
   return songData.results
@@ -108,5 +117,8 @@ export const initApp = function initApp (vueContext) {
   })
   getFavorites(userId).then((result) => {
     vueContext.$store.commit('setUserFavorites', result)
+  })
+  getCurrentQueue().then((result) => {
+    vueContext.$store.commit('updateQueue', result)
   })
 }

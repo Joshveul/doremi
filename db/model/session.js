@@ -75,4 +75,9 @@ export async function updatePlaylist (userId = '', playlist = []) {
   )
 }
 
+export async function getPlaylist () {
+  const sessionDoc = await getActiveSession()
+  return sessionDoc.playlist
+}
+
 export default Session

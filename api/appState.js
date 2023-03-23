@@ -21,25 +21,28 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
   const action = getQueryParam(req.url, 'action')
   const user = getQueryParam(req.url, 'user')
   const requestBody = await readRequestBody(req)
+  let response = { message: 'success' }
 
   switch (action) {
     case 'updateQueue':
-      console.log(requestBody)
-      // TODO DB Update
-      // Request body = { queue: [] }
+      console.log('[AppState] Updating queue...')
       await Session.updatePlaylist(user, requestBody)
-      console.log('Updating queue complete...')
+      console.log('[AppState] Updating queue complete!')
       break
     case 'play':
     case 'pause':
     case 'currentSong':
     case 'join':
     case 'leave':
-    case 'queue':
+    case 'getQueue':
+      console.log('[AppState] Getting queue...')
+      response = { results: await Session.getPlaylist() }
+      console.log('[AppState] Queue obtained!')
+      break
     case 'activeSession':
     default:
   }
   res.statusCode = 200
-  res.statusMessage = 'Existing'
-  res.end()
+  res.statusMessage = 'success'
+  res.end(JSON.stringify(response))
 }
