@@ -8,5 +8,11 @@
       "@@/*": ["./*"]
     }
   },
+  "vueCompilerOptions": {
+    "extensions": [
+      ".vue"
+    ],
+    "target": 2.7
+  },
   "exclude": ["node_modules", ".nuxt", "dist"]
 }

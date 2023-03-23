@@ -61,8 +61,8 @@ export const downloadVideo = async function downloadVideo (item, user) {
   return false
 }
 
-export const updateRemoteQueue = async function updateRemoteQueue (queue) {
-  const uri = `http://${host}:3000/api/appState?action=updateQueue`
+export const updateRemoteQueue = async function updateRemoteQueue (queue, user) {
+  const uri = `http://${host}:3000/api/appState?action=updateQueue&user=${user}`
   const result = await fetch(uri, {
     method: 'POST',
     body: JSON.stringify(queue)

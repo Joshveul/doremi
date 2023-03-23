@@ -63,7 +63,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
     console.log('ID parameter was empty, returning empty value')
   }
 
-  console.log('getSong result: ', result)
+  // console.log('getSong result: ', result)
 
   res.statusCode = 200
   res.statusMessage = 'success'

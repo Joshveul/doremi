@@ -5,9 +5,8 @@ const sessionSchema = new Schema({
     type: Types.ObjectId,
     ref: 'User'
   }],
-  songs: [{
-    type: Types.ObjectId,
-    ref: 'Song'
+  playlist: [{
+    type: Object
   }],
   sessionStartDate: Date,
   sessionEndDate: Date

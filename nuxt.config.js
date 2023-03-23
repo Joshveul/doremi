@@ -55,9 +55,9 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     '@nuxtjs/dotenv',
-    'nuxt-socket-io',
     'cookie-universal-nuxt',
-    '~/modules/mongodb.js'
+    '~/modules/mongodb.js',
+    'nuxt-socket-io'
   ],
   io: {
     // module options

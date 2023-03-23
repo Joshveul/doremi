@@ -7,13 +7,7 @@
     @sort-start="sortStart"
     @sort-end="sortEnd"
   >
-    <sortable-item
-      v-for="(e, i) in queue"
-      :key="i.videoId"
-      :item="e"
-      :divider="i !== 0"
-      :index="i"
-    />
+    <sortable-item v-for="(e, i) in queue" :key="i.videoId" :item="e" :divider="i !== 0" :index="i" />
   </slick-list>
 </template>
 <script>
@@ -37,8 +31,8 @@ export default {
   computed: {
     ...mapState(['queue']),
     list: {
-      set (val) {
-        this.$store.commit('updateQueue', val)
+      set (queue) {
+        this.$store.dispatch('updateQueue', queue)
       },
       get () {
         return this.items

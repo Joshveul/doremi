@@ -4,9 +4,22 @@ import mongoose from 'mongoose'
 export default function (socket, io) {
   console.log('Registering mongo Change Stream')
   const changeStream = mongoose.connection.watch()
+  const anotherCS = mongoose.model('Song').watch()
+  const sessionStream = mongoose.model('Session').watch()
+
+  anotherCS.on('change', (changes) => {
+    // Add a event emitter
+    // console.log('Emitting song change mongo stream...')
+    socket.emit('songsListChanged', changes)
+  })
+  sessionStream.on('change', (changes) => {
+    // Add a event emitter
+    // console.log('Emitting session change mongo stream...')
+    socket.emit('sessionChanged', changes)
+  })
   changeStream.on('change', (changes) => {
     // Add a event emitter
-    console.log('Emitting mongo stream...')
+    // console.log('Emitting mongo stream...')
     socket.emit('mongoStream', changes)
   })
   io.once('connection', (socket) => {

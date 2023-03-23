@@ -19,8 +19,8 @@
         max-width="100"
       />
       <v-list-item-content class="ml-2 item-content">
-        <v-list-item-title v-text="item.title" />
-        <v-list-item-subtitle v-text="item.artist" />
+        <v-list-item-title>{{ item.title }}</v-list-item-title>
+        <v-list-item-subtitle>{{ item.artist }}</v-list-item-subtitle>
         <v-list-item-subtitle>
           <v-icon size="15">
             mdi-timer-outline
@@ -148,7 +148,7 @@ export default {
   },
   methods: {
     removeFromQueue () {
-      this.$store.dispatch('removeFromQueue', this.item)
+      this.$store.dispatch('removeFromQueue', { item: this.item, index: this.index })
       this.removeDialogOpen = false
     }
   }

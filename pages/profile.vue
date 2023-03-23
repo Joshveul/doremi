@@ -28,16 +28,13 @@
         v-model="selectedItem"
         color="primary"
       >
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-        >
+        <v-list-item @click="logout()">
           <v-list-item-icon>
-            <v-icon v-text="item.icon" />
+            <v-icon>mdi-door</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title v-text="item.text" />
+            <v-list-item-title>Sign out</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -61,6 +58,12 @@ export default {
   }),
   computed: {
     ...mapState(['userData'])
+  },
+  methods: {
+    logout () {
+      this.$cookies.remove('user')
+      this.$router.push('welcome')
+    }
   }
 }
 </script>

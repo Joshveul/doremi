@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { model, models } from 'mongoose'
 import sessionSchema from '../schema/session'
 import * as AppState from './appState'
@@ -7,7 +8,7 @@ export const dbModel = models.Session || model('Session', sessionSchema)
 
 const Session = dbModel
 
-export const add = async (userId) => {
+export const add = async (userId = '') => {
   const doc = await Session.create({
     users: [userId],
     songs: [],
@@ -22,30 +23,56 @@ export const add = async (userId) => {
   return doc
 }
 
-export async function joinActiveSession (userId) {
-  const appState = await AppState.getAppState(userId)
-  let sessionId
-  let doc
-  if (appState !== null && 'currentSession' in appState) {
+/**
+ * @param {String} userId
+ * @returns {Session} the active session
+ */
+export async function joinActiveSession (userId = '') {
+  let sessionDoc = await getActiveSession()
+  if (sessionDoc !== null) {
     console.info(`Session found! Adding user: ${userId}`)
-    sessionId = appState.currentSession
-    doc = await Session.findById(sessionId)
     await Session.updateOne(
-      { _id: sessionId, users: { $ne: userId } },
+      { _id: sessionDoc._id, users: { $ne: userId } },
       { $push: { users: userId } }
     )
   } else {
     console.info(`Session not found! Starting one and adding user: ${userId}`)
-    doc = await add(userId)
-    sessionId = doc._id
-    await AppState.dbModel.create({ currentSession: sessionId })
+    sessionDoc = await add(userId)
+    await AppState.dbModel.create({ currentSession: sessionDoc._id })
   }
 
   Log.add(
-    userId, 'Join session', 'Sessions', sessionId
+    userId, 'Join session', 'Sessions', sessionDoc._id
   )
 
-  return doc
+  return sessionDoc
+}
+
+/**
+ * @param {String} userId
+ * @returns {import('mongoose').Document} the active session
+ */
+export async function getActiveSession () {
+  const appState = await AppState.getAppState()
+  let sessionId
+  if (appState !== null && 'currentSession' in appState) {
+    console.info(`Session found! ${appState.currentSession}`)
+    sessionId = appState.currentSession
+    return await Session.findById(sessionId)
+  }
+  return null
+}
+
+export async function updatePlaylist (userId = '', playlist = []) {
+  const sessionDoc = await getActiveSession()
+  if (sessionDoc !== null) {
+    sessionDoc.playlist = playlist
+    sessionDoc.save()
+  }
+
+  Log.add(
+    userId, 'Update session playlist', 'Sessions', sessionDoc._id
+  )
 }
 
 export default Session

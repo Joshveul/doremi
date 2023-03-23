@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import mongoose from 'mongoose'
 
+mongoose.set('strictQuery', false)
 export default function () {
   this.nuxt.hook('render:setupMiddleware', async () => {
     if (process.env.MODE !== 'offline') {

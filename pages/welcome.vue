@@ -1,43 +1,15 @@
 <template>
-  <v-container
-    class="d-flex align-center welcome"
-    style="height: 100%;"
-  >
+  <v-container class="d-flex align-center welcome" style="height: 100%;">
     <ul class="circles">
-      <li
-        v-for="n in 10"
-        :key="n"
-      />
+      <li v-for="n in 10" :key="n" />
     </ul>
-    <v-card
-      class="pa-2"
-      outlined
-      tile
-      color="transparent"
-    >
-      <v-form
-        ref="form"
-        v-model="valid"
-        @submit.prevent="login"
-      >
+    <v-card class="pa-2" outlined tile color="transparent">
+      <v-form ref="form" v-model="valid" @submit.prevent="login">
         <v-row>
           <v-col cols="12">
-            <v-card
-              class="mx-auto"
-              color="transparent"
-              dark
-              flat
-              max-width="400"
-            >
-              <v-card-title
-                class="text-h4 font-weight-black"
-                style="color: #fff;"
-              >
-                <v-icon
-                  large
-                  left
-                  dark
-                >
+            <v-card class="mx-auto" color="transparent" dark flat max-width="400">
+              <v-card-title class="text-h4 font-weight-black" style="color: #fff;">
+                <v-icon large left dark>
                   mdi-music
                 </v-icon>A&amp;J's B&amp;B
                 Karaoke
@@ -65,15 +37,9 @@
         </v-row>
       </v-form>
     </v-card>
-    <v-dialog
-      v-model="dialog.value"
-      max-width="600"
-    >
+    <v-dialog v-model="dialog.value" max-width="600">
       <v-card>
-        <v-toolbar
-          color="primary"
-          dark
-        >
+        <v-toolbar color="primary" dark>
           First time here?
         </v-toolbar>
         <v-card-text>
@@ -85,16 +51,10 @@
           </div>
         </v-card-text>
         <v-card-actions class="justify-end">
-          <v-btn
-            text
-            @click="dialog.value = false"
-          >
+          <v-btn text @click="dialog.value = false">
             No, try again
           </v-btn>
-          <v-btn
-            color="primary"
-            @click="createUser(userName)"
-          >
+          <v-btn color="primary" :disabled="processingUserCreation" @click="createUser(userName)">
             Yes, I'm new!
           </v-btn>
         </v-card-actions>
@@ -114,7 +74,8 @@ export default {
       userName: '',
       dialog: {
         value: false
-      }
+      },
+      processingUserCreation: false
     }
   },
   methods: {
@@ -124,8 +85,8 @@ export default {
         const user = await this.getUser(this.userName)
         if ('name' in user && user.name !== '') {
           this.$store.dispatch('login', user)
-          this.$router.push({ path: '/' })
           initApp(this)
+          this.$router.push({ path: '/' })
         } else {
           this.dialog.value = true
         }
@@ -140,6 +101,7 @@ export default {
       return result.results[0]
     },
     async createUser (userName) {
+      this.processingUserCreation = true
       const userReq = await fetch('/api/postUser', {
         method: 'POST',
         headers: {
@@ -150,8 +112,9 @@ export default {
         })
       })
       if (userReq.ok) {
-        const result = await userReq.json()
-        return result
+        this.dialog.value = false
+        this.processingUserCreation = false
+        this.login()
       }
     }
   }

@@ -19,10 +19,9 @@
               :max-width="maxTextSpace"
             />
           </v-card-title>
-          <v-card-subtitle
-            class="pl-0 pt-0"
-            v-text="selectedSong.artist"
-          />
+          <v-card-subtitle class="pl-0 pt-0">
+            {{ selectedSong.artist }}
+          </v-card-subtitle>
         </div>
         <favorite
           v-show="'downloading' in selectedSong"

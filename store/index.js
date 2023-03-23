@@ -1,4 +1,5 @@
-import Vue from 'vue'
+import { set } from 'vue'
+
 import { convertTimeToSeconds, downloadVideo, getVideoDataFromDB, updateRemoteQueue } from '~/modules/utils'
 // import { videoArray } from '~/modules/mock'
 
@@ -84,13 +85,12 @@ export const mutations = {
     state.queueState.time += convertTimeToSeconds(payload.item.duration)
   },
   removeFromQueue (state, video) {
-    const existsAtIndex = state.queue.findIndex(el => el.hash === video.hash)
-    state.queue.splice(existsAtIndex, 1)
+    state.queue.splice(video.index, 1)
     state.queue = [...state.queue]
-    state.queueState.time -= convertTimeToSeconds(video.duration)
+    state.queueState.time -= convertTimeToSeconds(video.item.duration)
   },
   setVideoDownloaded (state, video) {
-    Vue.set(video, 'downloading', false)
+    set(video, 'downloading', false)
   },
   addingToQueue (state, isAddingToqueue) {
     state.queueState.addingToQueue = isAddingToqueue
@@ -174,22 +174,27 @@ export const actions = {
       throw new Error('An error ocurred while removing favorite', e)
     }
   },
-  async addToQueue ({ commit, state }, payload) {
-    const videoData = await getVideoDataFromDB(payload.item.videoId, state.userData._id, true)
-    payload.item.id = videoData._id
-    commit('addToQueue', payload)
-    await updateRemoteQueue(state.queue)
+  async addToQueue ({ commit, state }, itemToAdd) {
+    const videoData = await getVideoDataFromDB(itemToAdd.item.videoId, state.userData._id, true)
+    itemToAdd.item.id = videoData._id
+    itemToAdd.item.user = state.userData._id
+    commit('addToQueue', itemToAdd)
+    await updateRemoteQueue(state.queue, state.userData._id)
 
     if (!videoData.isDownloaded) {
-      await downloadVideo(payload.item, state.userData._id)
-      commit('setVideoDownloaded', payload.item)
-      await updateRemoteQueue(state.queue)
+      await downloadVideo(itemToAdd.item, state.userData._id)
+      commit('setVideoDownloaded', itemToAdd.item)
+      await updateRemoteQueue(state.queue, state.userData._id)
     } else {
-      commit('setVideoDownloaded', payload.item)
+      commit('setVideoDownloaded', itemToAdd.item)
     }
   },
-  removeFromQueue ({ commit, state }, video) {
+  async removeFromQueue ({ commit, state }, video) {
     commit('removeFromQueue', video)
-    updateRemoteQueue(state.queue)
+    await updateRemoteQueue(state.queue, state.userData._id)
+  },
+  async updateQueue ({ commit, state }, queue) {
+    commit('updateQueue', queue)
+    await updateRemoteQueue(queue, state.userData._id)
   }
 }
