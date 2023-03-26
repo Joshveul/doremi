@@ -89,8 +89,20 @@ export const mutations = {
     state.queue = [...state.queue]
     state.queueState.time -= convertTimeToSeconds(video.item.duration)
   },
-  setVideoDownloaded (state, video) {
-    set(video, 'downloading', false)
+  setVideoUser (state, video) {
+    set(video, 'user', state.userData._id)
+  },
+  setDownloading (state, { video, value }) {
+    set(video, 'downloading', value)
+  },
+  setProcessing (state, { video, value }) {
+    set(video, 'processing', value)
+  },
+  setEncoding (state, { video, value }) {
+    set(video, 'encoding', value)
+  },
+  setProcessingProgress (state, { video, value }) {
+    set(video, 'processingProgress', value)
   },
   addingToQueue (state, isAddingToqueue) {
     state.queueState.addingToQueue = isAddingToqueue
@@ -177,16 +189,15 @@ export const actions = {
   async addToQueue ({ commit, state }, itemToAdd) {
     const videoData = await getVideoDataFromDB(itemToAdd.item.videoId, state.userData._id, true)
     itemToAdd.item.id = videoData._id
-    itemToAdd.item.user = state.userData._id
+    commit('setDownloading', { video: itemToAdd.item, value: videoData.isDownloading })
+    commit('setEncoding', { video: itemToAdd.item, value: videoData.isEncoding })
+    commit('setProcessing', { video: itemToAdd.item, value: videoData.isProcessing })
+    commit('setVideoUser', itemToAdd.item)
     commit('addToQueue', itemToAdd)
     await updateRemoteQueue(state.queue, state.userData._id)
 
-    if (!videoData.isDownloaded) {
+    if (!videoData.isDownloading && videoData.isProcessing) {
       await downloadVideo(itemToAdd.item, state.userData._id)
-      commit('setVideoDownloaded', itemToAdd.item)
-      await updateRemoteQueue(state.queue, state.userData._id)
-    } else {
-      commit('setVideoDownloaded', itemToAdd.item)
     }
   },
   async removeFromQueue ({ commit, state }, video) {

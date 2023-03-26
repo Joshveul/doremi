@@ -8,6 +8,7 @@ import ytdl from 'ytdl-core'
 import ffmpeg from 'ffmpeg-static'
 import request from 'request'
 const Song = require('../db/model/song')
+const Session = require('../db/model/session')
 
 const staticFolderPath = './static'
 const archiveFolderName = 'archive'
@@ -105,7 +106,8 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       // console.log(videoDetails)
 
       await Song.dbModel.findOneAndUpdate({ ytId: videoId }, {
-        thumbnail: thumbnailPath
+        thumbnail: thumbnailPath,
+        isDownloading: true
       })
 
       // Download thumbnail
@@ -139,7 +141,9 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
           console.log('Video progress: ', videoDownloadProgress)
         }
       })
+      await Song.dbModel.updateOne({ ytId: videoId }, { isEncoding: true })
       await combineAudioAndVideo(audioStream, videoStream, videoPath)
+      await Song.dbModel.updateOne({ ytId: videoId }, { isEncoding: false })
     } catch (error) {
       console.log('Error while downloading song: ', error)
       await Song.dbModel.findOneAndDelete({ ytId: videoId })
@@ -148,7 +152,14 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       res.end()
     }
 
-    await Song.dbModel.updateOne({ ytId: videoId }, { isDownloaded: true, isProcessing: false })
+    await Song.dbModel.updateOne({ ytId: videoId }, { isDownloading: false, isProcessing: false })
+    const filter = { 'playlist.processing': true }
+    const update = { $set: { 'playlist.$[element].downloading': false, 'playlist.$[element].encoding': false, 'playlist.$[element].processing': false } }
+    const options = {
+      arrayFilters: [{ 'element.id': item.id }]
+    }
+    await Session.dbModel.updateMany(filter, update, options)
+
     console.log('Done')
     res.statusCode = 200
     res.statusMessage = 'Archived'

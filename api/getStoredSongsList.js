@@ -20,7 +20,10 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       duration: convertSecondsToTime(e.duration),
       source: 'storage',
       id: e._id,
-      downloading: false
+      downloading: false,
+      encoding: false,
+      processing: false,
+      processingProgress: 100
     }
   })
 

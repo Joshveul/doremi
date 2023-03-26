@@ -76,7 +76,7 @@ export function getArtistAndTitle (title, channel) {
 
 export function readRequestBody (req) {
   return new Promise((resolve, reject) => {
-    let body = '{}'
+    let body = ''
 
     req.on('data', (chunk) => {
       body += chunk.toString()
@@ -87,6 +87,9 @@ export function readRequestBody (req) {
         const parsedBody = JSON.parse(body)
         resolve(parsedBody)
       } catch (error) {
+        if (error.message.indexOf('JSON')) {
+          resolve(body)
+        }
         reject(error)
       }
     })

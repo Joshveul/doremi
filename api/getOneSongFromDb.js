@@ -38,8 +38,9 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
             name: videoDetails.ownerChannelName
           },
           duration: videoDetails.lengthSeconds,
-          isDownloaded: false,
-          isProcessing: false,
+          isDownloading: false,
+          isProcessing: true,
+          isEncoding: false,
           audioDownloadProgress: 0,
           videoDownloadProgress: 0,
           firstAddedBy: userId,
@@ -54,7 +55,6 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
         const lastAdded = Date.now()
         const lastAddedBy = userId
         mongoResult = await Song.dbModel.findOneAndUpdate({ ytId: songId }, { timesAdded, lastAdded, lastAddedBy })
-        console.log('after update', mongoResult)
       }
       result.results.push(mongoResult)
       result.count = 1

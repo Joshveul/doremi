@@ -45,7 +45,7 @@
         transition="scroll-x-transition"
         :absolute="true"
         :opacity=".8"
-        :value="downloading"
+        :value="processing"
       >
         <v-row
           class="fill-height"
@@ -55,16 +55,17 @@
           <v-col
             class="text-subtitle-1 text-center pb-0"
             cols="12"
+            style="color: peachpuff;"
           >
-            Downloading...
+            {{ processingText }}
           </v-col>
           <v-col
             cols="12"
             class="pt-0"
           >
             <v-progress-linear
+              v-model="downloadProgress"
               color="blue lighten-2"
-              indeterminate
               rounded
               height="6"
             />
@@ -144,6 +145,24 @@ export default {
     },
     downloading () {
       return this.item.downloading
+    },
+    encoding () {
+      return this.item.encoding
+    },
+    processing () {
+      return this.item.processing
+    },
+    downloadProgress () {
+      return this.item.processingProgress
+    },
+    processingText () {
+      if (this.item.downloading) {
+        return 'Downloading...'
+      }
+      if (this.item.encoding) {
+        return 'Encoding...'
+      }
+      return 'Processing...'
     }
   },
   methods: {

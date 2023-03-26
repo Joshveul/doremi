@@ -38,7 +38,10 @@ export async function joinActiveSession (userId = '') {
   } else {
     console.info(`Session not found! Starting one and adding user: ${userId}`)
     sessionDoc = await add(userId)
-    await AppState.dbModel.create({ currentSession: sessionDoc._id })
+    const appState = await AppState.getAppState()
+    console.log(appState)
+    appState.currentSession = sessionDoc._id
+    await appState.save()
   }
 
   Log.add(
@@ -77,7 +80,7 @@ export async function updatePlaylist (userId = '', playlist = []) {
 
 export async function getPlaylist () {
   const sessionDoc = await getActiveSession()
-  return sessionDoc.playlist
+  return sessionDoc && 'playlist' in sessionDoc ? sessionDoc.playlist : []
 }
 
 export default Session

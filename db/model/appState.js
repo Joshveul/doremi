@@ -7,6 +7,6 @@ export const dbModel = models.AppState || model('AppState', appState)
 const AppState = dbModel
 
 export const getAppState = async () => {
-  const doc = await AppState.findOne()
+  const doc = await AppState.findOneAndUpdate({}, {}, { upsert: true, new: true })
   return doc
 }
