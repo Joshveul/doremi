@@ -70,7 +70,7 @@
 import { mapState } from 'vuex'
 import SortableContainer from '~/components/sortable/SortableContainer.vue'
 import Player from '~/components/player/Player.vue'
-import { convertSecondsToTime } from '~/modules/utils'
+import { convertSecondsToTime, convertTimeToSeconds } from '~/modules/utils'
 
 export default {
   components: {
@@ -87,8 +87,7 @@ export default {
   computed: {
     ...mapState({
       queueOpen: 'queueOpen',
-      queue: 'queue',
-      queueState: 'queueState'
+      queue: 'queue'
     }),
     isOpen: {
       set (newValue) {
@@ -99,7 +98,11 @@ export default {
       }
     },
     listDuration () {
-      return convertSecondsToTime(this.queueState.time)
+      let duration = 0
+      this.queue.forEach((element) => {
+        duration += convertTimeToSeconds(element.duration)
+      })
+      return convertSecondsToTime(duration)
     }
   },
   methods: {

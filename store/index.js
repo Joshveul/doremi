@@ -1,6 +1,6 @@
 import { set } from 'vue'
 
-import { convertTimeToSeconds, downloadVideo, getVideoDataFromDB, updateRemoteQueue } from '~/modules/utils'
+import { downloadVideo, getVideoDataFromDB, updateRemoteQueue } from '~/modules/utils'
 // import { videoArray } from '~/modules/mock'
 
 export const state = () => ({
@@ -82,12 +82,10 @@ export const mutations = {
         state.nowPlayingSong = state.queue[0]
       }
     }
-    state.queueState.time += convertTimeToSeconds(payload.item.duration)
   },
   removeFromQueue (state, video) {
     state.queue.splice(video.index, 1)
     state.queue = [...state.queue]
-    state.queueState.time -= convertTimeToSeconds(video.item.duration)
   },
   setVideoUser (state, video) {
     set(video, 'user', state.userData._id)
