@@ -108,17 +108,23 @@ export const convertSecondsToTime = function convertSecondsToTime (seconds) {
 }
 
 export const initApp = function initApp (vueContext) {
-  const userId = vueContext.$store.state.userData._id
-  joinSession(userId).then((result) => {
-    console.log('joined session: ', result)
-  })
-  getStoredSongsList().then((result) => {
-    vueContext.$store.commit('setStoredSongs', result)
-  })
-  getFavorites(userId).then((result) => {
-    vueContext.$store.commit('setUserFavorites', result)
-  })
-  getCurrentQueue().then((result) => {
-    vueContext.$store.commit('updateQueue', result)
-  })
+  if (vueContext.$router.currentRoute.name === 'player') {
+    getCurrentQueue().then((result) => {
+      vueContext.$store.commit('updateQueue', result)
+    })
+  } else {
+    const userId = vueContext.$store.state.userData._id
+    joinSession(userId).then((result) => {
+      console.log('joined session: ', result)
+    })
+    getStoredSongsList().then((result) => {
+      vueContext.$store.commit('setStoredSongs', result)
+    })
+    getFavorites(userId).then((result) => {
+      vueContext.$store.commit('setUserFavorites', result)
+    })
+    getCurrentQueue().then((result) => {
+      vueContext.$store.commit('updateQueue', result)
+    })
+  }
 }

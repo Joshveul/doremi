@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { ServerResponse, IncomingMessage } from 'http'
-import { getArtistAndTitle, convertSecondsToTime } from './utils'
+import { convertSecondsToTime } from './utils'
 const Song = require('../db/model/song')
 
 module.exports = async function (req = new IncomingMessage(), res = new ServerResponse(), next) {
@@ -10,11 +10,10 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
   const mongoResult = await Song.dbModel.find()
 
   const results = mongoResult.map((e) => {
-    const songTitle = getArtistAndTitle(e.originalTitle, e.channel.id)
     return {
       videoId: e.ytId,
-      title: songTitle.title,
-      artist: songTitle.artist,
+      title: e.title,
+      artist: e.artist,
       thumbnail: e.thumbnail,
       channel: e.channel.name,
       duration: convertSecondsToTime(e.duration),

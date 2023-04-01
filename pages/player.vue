@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   layout: 'void',
   data () {
@@ -20,6 +22,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getQueue']),
     playerOptions () {
       return {
         // videojs options
