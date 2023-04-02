@@ -45,11 +45,9 @@ export default (context) => {
         }
       }
     })
-    .on('sessionChanged', (msg, cb) => {
-      console.info('Session changed: ', msg)
-      if (msg.operationType === 'update' && 'playlist' in msg.updateDescription.updatedFields) {
-        context.store.dispatch('updateQueue', msg.updateDescription.updatedFields.playlist)
-      }
+    .on('playlistChanged', (msg, cb) => {
+      console.info('Playlist changed: ', msg)
+      context.store.dispatch('updateQueue', msg.playlist)
     })
   context.socket.emit('fn3', { id: 'abc123' })
 }

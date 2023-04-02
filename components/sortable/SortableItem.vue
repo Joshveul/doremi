@@ -28,10 +28,11 @@
           <span>
             {{ item.duration }}
           </span>
+          <!-- <v-icon size="15" :class="addedBy === 'Addie' ? 'blue--text text--lighten-2' : ''"> -->
           <v-icon size="15">
             mdi-account
           </v-icon>
-          {{ item.user }}
+          {{ addedBy }}
         </v-list-item-subtitle>
       </v-list-item-content>
       <v-icon
@@ -154,6 +155,12 @@ export default {
     },
     downloadProgress () {
       return this.item.processingProgress
+    },
+    addedBy () {
+      if (typeof this.item.username !== 'undefined') {
+        return this.item.username.name
+      }
+      return 'Loading...'
     },
     processingText () {
       if (this.item.downloading) {

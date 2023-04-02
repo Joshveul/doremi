@@ -1,6 +1,46 @@
 /* eslint-disable no-console */
 import mongoose from 'mongoose'
 
+const currentPlaylistFromSessionPipeline = [
+  {
+    $unwind: {
+      path: '$playlist'
+    }
+  }, {
+    $lookup: {
+      from: 'users',
+      let: {
+        userId: {
+          $toObjectId: '$playlist.user'
+        }
+      },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $eq: [
+                '$_id', '$$userId'
+              ]
+            }
+          }
+        }
+      ],
+      as: 'playlist.username'
+    }
+  }, {
+    $unwind: {
+      path: '$playlist.username'
+    }
+  }, {
+    $group: {
+      _id: '$_id',
+      playlist: {
+        $push: '$playlist'
+      }
+    }
+  }
+]
+
 export default function (socket, io) {
   console.log('Registering mongo Change Stream')
   const changeStream = mongoose.connection.watch()
@@ -8,14 +48,20 @@ export default function (socket, io) {
   const sessionStream = mongoose.model('Session').watch()
 
   anotherCS.on('change', (changes) => {
-    // Add a event emitter
-    // console.log('Emitting song change mongo stream...')
     socket.emit('songsListChanged', changes)
   })
-  sessionStream.on('change', (changes) => {
-    // Add a event emitter
-    // console.log('Emitting session change mongo stream...')
-    socket.emit('sessionChanged', changes)
+  sessionStream.on('change', async (change) => {
+    try {
+      if (change.operationType === 'update' && 'playlist' in change.updateDescription.updatedFields) {
+        console.log('Playlist changed, aggregating results...')
+        const aggregatedResults = await mongoose.model('Session').aggregate([
+          ...currentPlaylistFromSessionPipeline
+        ]).exec()
+        socket.emit('playlistChanged', aggregatedResults[0])
+      }
+    } catch (error) {
+      console.log('An error occurred', error)
+    }
   })
   changeStream.on('change', (changes) => {
     // Add a event emitter
