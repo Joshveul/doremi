@@ -129,6 +129,7 @@ export default {
 .welcome input {
   line-height: 70px;
   padding: 35px 10px;
+  max-height: fit-content;
 }
 
 .welcome .v-messages__message {

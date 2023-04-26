@@ -18,7 +18,7 @@ export default {
   layout: 'void',
   data () {
     return {
-      alternate: true
+      playingIndex: 0
     }
   },
   computed: {
@@ -33,21 +33,33 @@ export default {
         sources: [
           {
             type: 'video/mp4',
-            src: '/Countdown_PreRun.mp4'
+            src: this.currentSong.video || '/Countdown_PreRun.mp4'
           }
         ],
-        poster: '/icon.png',
+        poster: this.currentSong.thumbnail || '/icon.png',
         autoplay: true
       }
     },
     player () {
       return this.$refs.videoPlayer.player
+    },
+    currentSong () {
+      const playingSong = this.getQueue[this.playingIndex]
+      if (playingSong) {
+        return {
+          video: `/archive/${playingSong.videoId}.mp4`,
+          tumbnail: playingSong.thumbnail
+        }
+      }
+      return {
+        video: '/Countdown_PreRun.mp4',
+        tumbnail: '/archive/icon.png'
+      }
     }
   },
   methods: {
     onPlayerEnded (ev) {
-      // TODO: Get get next song logic
-      this.player.play()
+      this.playingIndex++
     }
   }
 }
