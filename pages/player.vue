@@ -18,11 +18,14 @@ export default {
   layout: 'void',
   data () {
     return {
-      playingIndex: 0
+      currentSong: {
+        video: '/Countdown_PreRun.mp4',
+        tumbnail: '/archive/icon.png'
+      }
     }
   },
   computed: {
-    ...mapGetters(['getQueue']),
+    ...mapGetters(['getQueue', 'getNowPlayingSongIndex']),
     playerOptions () {
       return {
         // videojs options
@@ -42,24 +45,35 @@ export default {
     },
     player () {
       return this.$refs.videoPlayer.player
-    },
-    currentSong () {
-      const playingSong = this.getQueue[this.playingIndex]
-      if (playingSong) {
-        return {
+    }
+  },
+  watch: {
+    getNowPlayingSongIndex (newVal) {
+      if (typeof newVal !== 'undefined' && !this.currentSong.video.includes(this.getQueue[newVal].videoId)) {
+        const playingSong = this.getQueue[newVal]
+        this.currentSong = {
           video: `/archive/${playingSong.videoId}.mp4`,
           tumbnail: playingSong.thumbnail
         }
-      }
-      return {
-        video: '/Countdown_PreRun.mp4',
-        tumbnail: '/archive/icon.png'
       }
     }
   },
   methods: {
     onPlayerEnded (ev) {
-      this.playingIndex++
+      let nextSongIndex
+      if (this.getQueue.length - 1 > this.getNowPlayingSongIndex) {
+        nextSongIndex = this.getNowPlayingSongIndex + 1
+      } else {
+        nextSongIndex = 0
+      }
+      if (this.currentSong.video.includes(this.getQueue[nextSongIndex].videoId)) {
+        const playingSong = this.getQueue[nextSongIndex]
+        this.currentSong = {
+          video: `/archive/${playingSong.videoId}.mp4`,
+          tumbnail: playingSong.thumbnail
+        }
+      }
+      this.$store.dispatch('updateNowPlayingSong', { nowPlayingIndex: nextSongIndex, wasPlayingIndex: this.getNowPlayingSongIndex })
     }
   }
 }

@@ -3,22 +3,23 @@ export default (context) => {
     name: 'main'
   })
   /* Listen for events coming from the server: */
-  console.log(context.socket)
-  context.socket.on('connect', (msg, cb) => {
-    console.log('connected' + msg)
+  context.socket.on('connect', () => {
+    console.log('connected: ' + context.socket.id)
   })
+  if (context.route.name === 'player') {
+    context.socket.emit('fn3', { id: 'abc123' })
+    context.socket
+      .on('progress', (msg, cb) => {
+        console.log(msg)
+      })
+  }
   context.socket
-    .on('progress', (msg, cb) => {
-      console.log(msg)
-    })
     .on('songsListChanged', (msg, cb) => {
-      console.log('Song list changed: ', msg)
       if (msg.operationType === 'update') {
         if ('isProcessing' in msg.updateDescription.updatedFields) {
           context.store.getters.getQueue.forEach((e) => {
             if (e.id === msg.documentKey._id) {
               context.store.commit('setProcessing', { video: e, value: msg.updateDescription.updatedFields.isProcessing })
-              console.log('Processing song !')
             }
           })
         }
@@ -46,8 +47,17 @@ export default (context) => {
       }
     })
     .on('playlistChanged', (msg, cb) => {
-      console.info('Playlist changed: ', msg)
+      console.log('playlist changed', msg.playlist)
       context.store.dispatch('updateQueue', msg.playlist)
     })
-  context.socket.emit('fn3', { id: 'abc123' })
+    .on('playingSongChanged', (msg, cb) => {
+      console.log('playlist changed playingSongChanged', msg)
+      const firstDotInMsg = msg.indexOf('.')
+      const lastDotInMsg = msg.lastIndexOf('.')
+      const indexOfPlayingSong = msg.substring(firstDotInMsg + 1, lastDotInMsg)
+      console.log('indexOfPlayingSong playingSongChanged 2', indexOfPlayingSong)
+      context.store.commit('updateNowPlayingSongArray', { nowPlayingIndex: indexOfPlayingSong })
+    })
+    .on('mongoStream', (msg, cb) => {
+    })
 }

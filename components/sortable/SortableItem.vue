@@ -19,7 +19,7 @@
         max-width="100"
       />
       <v-list-item-content class="ml-2 item-content">
-        <v-list-item-title>{{ item.title }}</v-list-item-title>
+        <v-list-item-title>{{ item.title }}{{ item.playing ? ' (playing)' : '' }}</v-list-item-title>
         <v-list-item-subtitle>{{ item.artist }}</v-list-item-subtitle>
         <v-list-item-subtitle>
           <v-icon size="15">

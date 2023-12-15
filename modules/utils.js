@@ -125,6 +125,8 @@ export const initApp = function initApp (vueContext) {
     })
     getCurrentQueue().then((result) => {
       vueContext.$store.commit('updateQueue', result)
+      const nowPlayingSongIndex = vueContext.$store.getters.getNowPlayingSongIndex
+      vueContext.$store.commit('setNowPlayingSong', result[nowPlayingSongIndex])
     })
   }
 }

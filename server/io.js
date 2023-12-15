@@ -44,32 +44,45 @@ const currentPlaylistFromSessionPipeline = [
 export default function (socket, io) {
   console.log('Registering mongo Change Stream')
   const changeStream = mongoose.connection.watch()
-  const anotherCS = mongoose.model('Song').watch()
+  const songStream = mongoose.model('Song').watch()
   const sessionStream = mongoose.model('Session').watch()
 
-  anotherCS.on('change', (changes) => {
+  songStream.on('change', (changes) => {
     socket.emit('songsListChanged', changes)
   })
   sessionStream.on('change', async (change) => {
     try {
-      if (change.operationType === 'update' && 'playlist' in change.updateDescription.updatedFields) {
-        console.log('Playlist changed, aggregating results...')
-        const aggregatedResults = await mongoose.model('Session').aggregate([
-          ...currentPlaylistFromSessionPipeline
-        ]).exec()
-        socket.emit('playlistChanged', aggregatedResults[0])
+      if (change.operationType === 'update') {
+        if ('playlist' in change.updateDescription.updatedFields) {
+          console.log('Playlist changed, aggregating results...')
+          const aggregatedResults = await mongoose.model('Session').aggregate([
+            ...currentPlaylistFromSessionPipeline
+          ]).exec()
+          socket.emit('playlistChanged', aggregatedResults[0])
+          return
+        }
+        const isPlayingSongChange = Object.keys(change.updateDescription.updatedFields).find((element) => {
+          if (element.indexOf('.playing') > 0) {
+            return change.updateDescription.updatedFields[element] === true
+          }
+          return false
+        })
+        if (typeof isPlayingSongChange !== 'undefined') {
+          socket.emit('playingSongChanged', isPlayingSongChange)
+        }
       }
     } catch (error) {
       console.log('An error occurred', error)
     }
   })
   changeStream.on('change', (changes) => {
-    // Add a event emitter
-    // console.log('Emitting mongo stream...')
     socket.emit('mongoStream', changes)
   })
   io.once('connection', (socket) => {
     console.log('connected: ', socket.id)
+    socket.on('disconnect', (reason) => {
+      console.log(`disconnected: ${socket.id} because ${reason}`)
+    })
   })
   return Object.freeze({
     /* Just define the methods here */

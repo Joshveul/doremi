@@ -3,11 +3,23 @@ import { set } from 'vue'
 import { downloadVideo, getVideoDataFromDB, updateRemoteQueue } from '~/modules/utils'
 // import { videoArray } from '~/modules/mock'
 
+function getNowPlayingSongIndex (state) {
+  let songIndex = -1
+  state.queue.find((e, i) => {
+    if (e.playing) {
+      songIndex = i
+    }
+    return e.playing
+  })
+  return songIndex
+}
+
 export const state = () => ({
   activeUsers: [],
   userData: {},
   songOptionsOpen: false,
   selectedSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
+  nowPlayingSongIndex: -1,
   nowPlayingSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
   searchTerm: '',
   mongoSearchResults: [],
@@ -19,7 +31,6 @@ export const state = () => ({
   queue: [],
   queueState: {
     addingToQueue: false,
-    currentSongIndex: 0,
     playing: false,
     time: 0
   },
@@ -43,8 +54,14 @@ export const mutations = {
   setQueueOpen (state, isOpen) {
     state.queueOpen = isOpen
   },
+  updateNowPlayingSongArray (state, { nowPlayingIndex, wasPlayingIndex }) {
+    state.queue[nowPlayingIndex].playing = true
+    if (typeof wasPlayingIndex !== 'undefined') {
+      state.queue[wasPlayingIndex].playing = false
+    }
+  },
   setNowPlayingSong (state, songData) {
-    state.NowPlayingSong = songData
+    state.nowPlayingSong = songData
   },
   setSearchTerm (state, searchTerm) {
     state.searchTerm = searchTerm
@@ -75,7 +92,7 @@ export const mutations = {
   },
   addToQueue (state, payload) {
     if (state.queue.length > 0 && 'playNext' in payload && payload.playNext) {
-      state.queue.splice(state.queueState.currentSongIndex + 1, 0, payload.item)
+      state.queue.splice(getNowPlayingSongIndex(state) + 1, 0, payload.item)
     } else {
       state.queue.push(payload.item)
       if (state.queue.length === 1) {
@@ -125,6 +142,9 @@ export const getters = {
     return state.storedSongs.filter((el) => {
       return state.userFavorites.includes(el.id)
     })
+  },
+  getNowPlayingSongIndex (state) {
+    return getNowPlayingSongIndex(state)
   }
 }
 
@@ -205,5 +225,9 @@ export const actions = {
   async updateQueue ({ commit, state }, queue) {
     commit('updateQueue', queue)
     await updateRemoteQueue(queue, state.userData._id)
+  },
+  async updateNowPlayingSong ({ commit, state, dispatch }, payload) {
+    commit('updateNowPlayingSongArray', payload)
+    await dispatch('updateQueue', state.queue)
   }
 }

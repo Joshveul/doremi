@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import SortableContainer from '~/components/sortable/SortableContainer.vue'
 import Player from '~/components/player/Player.vue'
 import { convertSecondsToTime, convertTimeToSeconds } from '~/modules/utils'
@@ -88,6 +88,9 @@ export default {
     ...mapState({
       queueOpen: 'queueOpen',
       queue: 'queue'
+    }),
+    ...mapGetters({
+      getNowPlayingSongIndex: 'getNowPlayingSongIndex'
     }),
     isOpen: {
       set (newValue) {
