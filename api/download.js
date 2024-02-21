@@ -120,8 +120,8 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       const audioStream = ytdl('http://www.youtube.com/watch?v=' + videoId, { quality: 'highestaudio' })
       const videoStream = ytdl('http://www.youtube.com/watch?v=' + videoId, { quality: 'highestvideo' })
 
+      // Process audio stream synchronously
       let audioDownloadProgress
-
       audioStream.on('progress', async function (length, downloaded, totalLength) {
         const currentProgress = Math.floor((downloaded / totalLength) * 100)
         if (currentProgress % 5 === 0 && currentProgress !== audioDownloadProgress) {
@@ -131,8 +131,8 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
         }
       })
 
+      // Process video stream synchronously
       let videoDownloadProgress = 0
-
       videoStream.on('progress', async (length, downloaded, totalLength) => {
         const currentProgress = Math.floor((downloaded / totalLength) * 100)
         if (currentProgress % 5 === 0 && currentProgress !== videoDownloadProgress) {
@@ -141,9 +141,29 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
           console.log('Video progress: ', videoDownloadProgress)
         }
       })
+
+      // Combine and encode the video with the audio
       await Song.dbModel.updateOne({ ytId: videoId }, { isEncoding: true })
       await combineAudioAndVideo(audioStream, videoStream, videoPath)
       await Song.dbModel.updateOne({ ytId: videoId }, { isEncoding: false })
+
+      // At this point everything is done downloading and the song is available
+      await Song.dbModel.updateOne({ ytId: videoId }, { isDownloading: false, isProcessing: false })
+      console.log('Done downloading ' + item.title + item.id)
+
+      // Prepare update to include the song in the session
+      const filter = {
+        sessionEndDate: null
+      }
+      const update = { $set: { 'playlist.$[element].downloading': false, 'playlist.$[element].encoding': false, 'playlist.$[element].processingProgress': 100, 'playlist.$[element].processing': false } }
+      const options = {
+        arrayFilters: [{ 'element.id': item.id }]
+      }
+      const result = await Session.dbModel.updateOne(filter, update, options)
+      console.log('Done with:', JSON.stringify(result))
+      res.statusCode = 200
+      res.statusMessage = 'Archived'
+      res.end()
     } catch (error) {
       console.log('Error while downloading song: ', error)
       await Song.dbModel.findOneAndDelete({ ytId: videoId })
@@ -151,18 +171,5 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       res.statusMessage = 'Error'
       res.end()
     }
-
-    await Song.dbModel.updateOne({ ytId: videoId }, { isDownloading: false, isProcessing: false })
-    const filter = { 'playlist.processing': true }
-    const update = { $set: { 'playlist.$[element].downloading': false, 'playlist.$[element].encoding': false, 'playlist.$[element].processing': false } }
-    const options = {
-      arrayFilters: [{ 'element.id': item.id }]
-    }
-    await Session.dbModel.updateMany(filter, update, options)
-
-    console.log('Done')
-    res.statusCode = 200
-    res.statusMessage = 'Archived'
-    res.end()
   }
 }

@@ -14,15 +14,11 @@
       >
         <v-img class="ma-2" width="80" :src="thumbnail" />
         <div class="flex-grow-1">
-          <v-card-subtitle
-            class="px-0 pt-2 pb-0"
-          >
-            <marquee-text :text="nowPlayingSong.title" :max-width="maxTextSpace" />
+          <v-card-subtitle class="px-0 pt-2 pb-0">
+            <marquee-text :text="songTitle" :max-width="maxTextSpace" />
           </v-card-subtitle>
-          <v-card-subtitle
-            class="px-0 py-0"
-          >
-            <marquee-text :text="nowPlayingSong.artist" :max-width="maxTextSpace" />
+          <v-card-subtitle class="px-0 py-0">
+            <marquee-text :text="songArtist" :max-width="maxTextSpace" />
           </v-card-subtitle>
         </div>
         <player-controls />
@@ -46,7 +42,22 @@ export default {
   computed: {
     ...mapState({ nowPlayingSong: 'nowPlayingSong' }),
     thumbnail () {
-      return decodeURIComponent(this.nowPlayingSong.thumbnail)
+      if (typeof this.nowPlayingSong !== 'undefined') {
+        return decodeURIComponent(this.nowPlayingSong.thumbnail)
+      }
+      return ''
+    },
+    songTitle () {
+      if (typeof this.nowPlayingSong !== 'undefined') {
+        return this.nowPlayingSong.title
+      }
+      return ''
+    },
+    songArtist () {
+      if (typeof this.nowPlayingSong !== 'undefined') {
+        return this.nowPlayingSong.artist
+      }
+      return ''
     }
   },
   mounted () {

@@ -1,8 +1,5 @@
 <template>
-  <v-card
-    tile
-    flat
-  >
+  <v-card tile flat>
     <v-card-title>
       <p class="text-h6 mx-auto line-height-20 text-center mb-1">
         {{ title }}
@@ -10,18 +7,13 @@
     </v-card-title>
     <v-card-subtitle class="pb-0">
       <p class="mx-auto line-height-20 text-center mb-0">
-        {{ nowPlayingSong.artist }}
+        {{ artist }}
       </p>
     </v-card-subtitle>
-    <v-slider
-      class="mx-5"
-      max="50"
-      min="0"
-      hide-details
-    />
+    <v-slider class="mx-5" max="50" min="0" hide-details />
     <v-container class="py-0 d-flex justify-space-between text-caption">
       <span class="justify-start">00:00</span>
-      <span class="justify-end">{{ nowPlayingSong.duration || '00:00' }}</span>
+      <span class="justify-end">{{ duration }}</span>
     </v-container>
     <v-container class="py-0">
       <player-controls class="justify-center pt-0" />
@@ -38,10 +30,25 @@ export default {
   computed: {
     ...mapState(['nowPlayingSong']),
     title () {
-      if (this.nowPlayingSong.title === this.nowPlayingSong.artist) {
-        return ''
+      if (typeof this.nowPlayingSong !== 'undefined') {
+        if (this.nowPlayingSong.title === this.nowPlayingSong.artist) {
+          return ''
+        }
+        return this.nowPlayingSong.title
       }
-      return this.nowPlayingSong.title
+      return ''
+    },
+    artist () {
+      if (typeof this.nowPlayingSong !== 'undefined') {
+        return this.nowPlayingSong.artist
+      }
+      return ''
+    },
+    duration () {
+      if (typeof this.nowPlayingSong !== 'undefined') {
+        return this.nowPlayingSong.duration || '00:00'
+      }
+      return ''
     }
   }
 }
