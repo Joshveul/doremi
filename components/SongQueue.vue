@@ -13,7 +13,7 @@
       <v-toolbar
         class="header-bar bg bg-gradient"
         dark
-        max-height="15vh"
+        max-height="7vh"
       >
         <v-btn
           icon
@@ -29,7 +29,7 @@
         <v-divider />
         <v-container class="py-1 d-flex justify-space-between">
           <div class="justify-start">
-            <v-icon size="18">
+            <v-icon size="18" @click.prevent="">
               mdi-playlist-play
             </v-icon>
             <span class="text-caption">
@@ -57,7 +57,8 @@
           v-scroll.self="onScroll"
           :items="queue"
           class="sort-container"
-          style="max-height: 54vh; overflow: scroll;"
+          style="max-height: 54vh;"
+          :style="{overflow: sorting ? 'hidden': 'scroll'}"
           @sort-start="sortStart"
           @sort-end="sortEnd"
         />
@@ -81,7 +82,9 @@ export default {
     return {
       scrollPosition: 0,
       sorting: false,
-      swiping: false
+      swiping: false,
+      wheelOpt: false,
+      wheelEvent: 'wheel'
     }
   },
   computed: {

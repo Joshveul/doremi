@@ -1,18 +1,22 @@
 <template>
   <div class="fill-viewport">
+    <div class="static-bar">
+      <button @click="player.play()">
+        <v-icon style="color: antiquewhite;">
+          mdi-play
+        </v-icon>
+      </button>
+      {{ label }}
+    </div>
     <client-only>
-      <video-player
-        ref="videoPlayer"
-        class="fit-container"
-        :options="playerOptions"
-        @ended="onPlayerEnded($event)"
-      />
+      <video-player ref="videoPlayer" class="fit-container" :options="playerOptions" @ended="onPlayerEnded($event)" />
     </client-only>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
+import { playNext } from '../modules/utils'
 
 export default {
   layout: 'void',
@@ -21,11 +25,38 @@ export default {
       currentSong: {
         video: '/Countdown_PreRun.mp4',
         tumbnail: '/archive/icon.png'
-      }
+      },
+      nowPlayingInfo: {}
     }
   },
   computed: {
+    ...mapState(['isPlayerPlaying']),
     ...mapGetters(['getQueue', 'getNowPlayingSongIndex']),
+    label () {
+      let username = '[loading...]'
+      let nextUser = '[loading...]'
+      let nextLabel = ''
+      const nextSong = this.getQueue[this.nextSongIndex]
+      if (typeof this.nowPlayingInfo.username !== 'undefined') {
+        username = this.nowPlayingInfo.username.name
+        nextUser = nextSong.username.name
+      }
+      if (this.nextSongIndex === 0) {
+        nextLabel = 'WARNING: THIS IS THE LAST SONG! - The list will repeat from the beginning.'
+      } else {
+        nextLabel = `${nextSong.artist} - ${nextSong.title} added by ${nextUser}`
+      }
+      return `Now Playing: ${this.nowPlayingInfo.artist} - ${this.nowPlayingInfo.title} added by ${username} *** Up next: ${nextLabel}`
+    },
+    nowPlaying () {
+      return this.getQueue[this.getNowPlayingSongIndex]
+    },
+    nextSongIndex () {
+      if (this.getQueue.length - 1 > this.getNowPlayingSongIndex) {
+        return this.getNowPlayingSongIndex + 1
+      }
+      return 0
+    },
     playerOptions () {
       return {
         // videojs options
@@ -55,17 +86,22 @@ export default {
           video: `/archive/${playingSong.videoId}.mp4`,
           tumbnail: playingSong.thumbnail
         }
+        this.nowPlayingInfo = playingSong
+      }
+    },
+    isPlayerPlaying (isPlaying) {
+      if (isPlaying) {
+        this.player.play()
+      } else {
+        this.player.pause()
       }
     }
   },
   methods: {
     onPlayerEnded (ev) {
-      let nextSongIndex
-      if (this.getQueue.length - 1 > this.getNowPlayingSongIndex) {
-        nextSongIndex = this.getNowPlayingSongIndex + 1
-      } else {
-        nextSongIndex = 0
-      }
+      const queue = this.getQueue
+      const nowPlayingSongIndex = this.getNowPlayingSongIndex
+      const nextSongIndex = playNext(this, queue, nowPlayingSongIndex)
       if (this.currentSong.video.includes(this.getQueue[nextSongIndex].videoId)) {
         const playingSong = this.getQueue[nextSongIndex]
         this.currentSong = {
@@ -73,13 +109,23 @@ export default {
           tumbnail: playingSong.thumbnail
         }
       }
-      this.$store.dispatch('updateNowPlayingSong', { nowPlayingIndex: nextSongIndex, wasPlayingIndex: this.getNowPlayingSongIndex })
     }
   }
 }
 </script>
 
 <style scoped>
+.static-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  opacity: 0.6;
+  background-color: maroon;
+  color: antiquewhite;
+  font-size: larger;
+  z-index: 1;
+}
+
 .fill-viewport {
   height: 100vh;
   width: 100vw;

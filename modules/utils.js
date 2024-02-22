@@ -82,6 +82,54 @@ export const updateRemoteQueue = async function updateRemoteQueue (queue, user) 
   return false
 }
 
+export const playKaraoke = async function playKaraoke (user) {
+  const uri = `http://${host}:3000/api/appState?action=play&user=${user}`
+  const result = await fetch(uri, {
+    method: 'POST',
+    body: JSON.stringify({ value: true })
+  })
+  if (result.ok) {
+    return true
+  }
+  return false
+}
+
+export const pauseKaraoke = async function pauseKaraoke (user) {
+  const uri = `http://${host}:3000/api/appState?action=pause&user=${user}`
+  const result = await fetch(uri, {
+    method: 'POST',
+    body: JSON.stringify({ value: false })
+  })
+  if (result.ok) {
+    return true
+  }
+  return false
+}
+
+export const playNext = function playNext (vueContext, queue, nowPlayingSongIndex) {
+  let nextSongIndex
+  if (queue.length - 1 > nowPlayingSongIndex) {
+    nextSongIndex = nowPlayingSongIndex + 1
+  } else {
+    nextSongIndex = 0
+  }
+  vueContext.$store.dispatch('updateNowPlayingSong', { nowPlayingIndex: nextSongIndex, wasPlayingIndex: nowPlayingSongIndex })
+  vueContext.$store.commit('setNowPlayingSong', queue[nextSongIndex])
+  return nextSongIndex
+}
+
+export const playPrevious = function playPrevious (vueContext, queue, nowPlayingSongIndex) {
+  let previousSongIndex
+  if (nowPlayingSongIndex > 0) {
+    previousSongIndex = nowPlayingSongIndex - 1
+  } else {
+    previousSongIndex = 0
+  }
+  vueContext.$store.dispatch('updateNowPlayingSong', { nowPlayingIndex: previousSongIndex, wasPlayingIndex: nowPlayingSongIndex })
+  vueContext.$store.commit('setNowPlayingSong', queue[previousSongIndex])
+  return previousSongIndex
+}
+
 export const convertTimeToSeconds = function convertTimeToSeconds (time) {
   const hms = time
   const a = hms.split(':')
@@ -125,7 +173,11 @@ export const initApp = function initApp (vueContext) {
     })
     getCurrentQueue().then((result) => {
       vueContext.$store.commit('updateQueue', result)
-      const nowPlayingSongIndex = vueContext.$store.getters.getNowPlayingSongIndex
+      let nowPlayingSongIndex = vueContext.$store.getters.getNowPlayingSongIndex
+      if (nowPlayingSongIndex < 0) {
+        nowPlayingSongIndex = 0
+        vueContext.$store.dispatch('updateNowPlayingSong', { nowPlayingIndex: 0 })
+      }
       vueContext.$store.commit('setNowPlayingSong', result[nowPlayingSongIndex])
     })
   }

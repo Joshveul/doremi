@@ -1,6 +1,6 @@
 import { set } from 'vue'
 
-import { downloadVideo, getVideoDataFromDB, updateRemoteQueue } from '~/modules/utils'
+import { downloadVideo, getVideoDataFromDB, updateRemoteQueue, playKaraoke, pauseKaraoke } from '~/modules/utils'
 // import { videoArray } from '~/modules/mock'
 
 function getNowPlayingSongIndex (state) {
@@ -19,7 +19,6 @@ export const state = () => ({
   userData: {},
   songOptionsOpen: false,
   selectedSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
-  nowPlayingSongIndex: -1,
   nowPlayingSong: { videoId: '', title: '', artist: '', thumbnail: '', channel: '', duration: '' },
   searchTerm: '',
   mongoSearchResults: [],
@@ -29,11 +28,8 @@ export const state = () => ({
   selectedSession: {},
   queueOpen: false,
   queue: [],
-  queueState: {
-    addingToQueue: false,
-    playing: false,
-    time: 0
-  },
+  isPlayerPlaying: false,
+  time: 0,
   storedSongs: [],
   userFavorites: []
 })
@@ -119,8 +115,8 @@ export const mutations = {
   setProcessingProgress (state, { video, value }) {
     set(video, 'processingProgress', value)
   },
-  addingToQueue (state, isAddingToqueue) {
-    state.queueState.addingToQueue = isAddingToqueue
+  updateIsPlaying (state, isPlaying) {
+    state.isPlayerPlaying = isPlaying
   },
   updateQueue (state, queue) {
     state.queue = queue
@@ -229,5 +225,13 @@ export const actions = {
   async updateNowPlayingSong ({ commit, state, dispatch }, payload) {
     commit('updateNowPlayingSongArray', payload)
     await dispatch('updateQueue', state.queue)
+  },
+  async updateIsPlaying ({ commit, state }, isPlaying) {
+    commit('updateIsPlaying', isPlaying)
+    if (isPlaying) {
+      await playKaraoke(state.userData._id)
+    } else {
+      await pauseKaraoke(state.userData._id)
+    }
   }
 }

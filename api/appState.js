@@ -3,6 +3,7 @@ import { ServerResponse, IncomingMessage } from 'http'
 // import { Types } from 'mongoose'
 import { getQueryParam, readRequestBody } from './utils'
 const Session = require('../db/model/session')
+const AppState = require('../db/model/appState')
 // const Song = require('../db/model/song')
 
 // const pipeline = [
@@ -30,7 +31,15 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       console.log('[AppState] Updating queue complete!')
       break
     case 'play':
+      console.log('[AppState] Play karaoke...')
+      await AppState.setPlay(user, requestBody.value)
+      console.log('[AppState] Karaoke played complete!')
+      break
     case 'pause':
+      console.log('[AppState] Pause karaoke...')
+      await AppState.setPlay(user, requestBody.value)
+      console.log('[AppState] Karaoke paused complete!')
+      break
     case 'currentSong':
     case 'join':
     case 'leave':

@@ -46,9 +46,17 @@ export default function (socket, io) {
   const changeStream = mongoose.connection.watch()
   const songStream = mongoose.model('Song').watch()
   const sessionStream = mongoose.model('Session').watch()
+  const appStateStream = mongoose.model('AppState').watch()
 
   songStream.on('change', (changes) => {
     socket.emit('songsListChanged', changes)
+  })
+  appStateStream.on('change', (change) => {
+    if (change.operationType === 'update') {
+      if ('play' in change.updateDescription.updatedFields) {
+        socket.emit('playStateChanged', change.updateDescription.updatedFields.play)
+      }
+    }
   })
   sessionStream.on('change', async (change) => {
     try {

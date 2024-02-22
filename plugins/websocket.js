@@ -54,9 +54,16 @@ export default (context) => {
       console.log('playlist changed playingSongChanged', msg)
       const firstDotInMsg = msg.indexOf('.')
       const lastDotInMsg = msg.lastIndexOf('.')
-      const indexOfPlayingSong = msg.substring(firstDotInMsg + 1, lastDotInMsg)
+      let indexOfPlayingSong = msg.substring(firstDotInMsg + 1, lastDotInMsg)
+      if (indexOfPlayingSong < 0) {
+        indexOfPlayingSong = 0
+      }
       console.log('indexOfPlayingSong playingSongChanged 2', indexOfPlayingSong)
       context.store.commit('updateNowPlayingSongArray', { nowPlayingIndex: indexOfPlayingSong })
+      context.store.commit('setNowPlayingSong', context.store.getters.getQueue[indexOfPlayingSong])
+    })
+    .on('playStateChanged', (msg, cb) => {
+      context.store.commit('updateIsPlaying', msg)
     })
     .on('mongoStream', (msg, cb) => {
     })
