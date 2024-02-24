@@ -33,7 +33,7 @@
     "vue-video-player": "^5.0.2",
     "vuetify": "^2.5.5",
     "youtube-search": "^1.1.6",
-    "youtube-search-api": "^1.0.11",
+    "youtube-search-api": "^1.2.1",
     "youtube-search-without-api-key": "^1.0.7",
     "ytdl-core": "^4.11.2"
   },

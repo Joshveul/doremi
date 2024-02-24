@@ -182,3 +182,14 @@ export const initApp = function initApp (vueContext) {
     })
   }
 }
+
+export const getNowPlayingSongIndex = function getNowPlayingSongIndex (queue) {
+  let songIndex = -1
+  queue.find((e, i) => {
+    if (e.playing) {
+      songIndex = i
+    }
+    return e.playing
+  })
+  return songIndex
+}

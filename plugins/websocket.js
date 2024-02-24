@@ -1,3 +1,5 @@
+import { getNowPlayingSongIndex } from '~/modules/utils'
+
 export default (context) => {
   context.socket = context.$nuxtSocket({
     name: 'main'
@@ -47,8 +49,14 @@ export default (context) => {
       }
     })
     .on('playlistChanged', (msg, cb) => {
-      console.log('playlist changed', msg.playlist)
+      console.log('playlist changeds', msg.playlist)
+      const localyPlayingIndex = getNowPlayingSongIndex(context.store.state.queue)
+      const remotePlayingIndex = getNowPlayingSongIndex(msg.playlist)
       context.store.dispatch('updateQueue', msg.playlist)
+      if (localyPlayingIndex !== remotePlayingIndex) {
+        context.store.commit('updateNowPlayingSongArray', { nowPlayingIndex: remotePlayingIndex })
+        context.store.commit('setNowPlayingSong', context.store.getters.getQueue[remotePlayingIndex])
+      }
     })
     .on('playingSongChanged', (msg, cb) => {
       console.log('playlist changed playingSongChanged', msg)
@@ -66,5 +74,6 @@ export default (context) => {
       context.store.commit('updateIsPlaying', msg)
     })
     .on('mongoStream', (msg, cb) => {
+      console.log('mongoStream', msg)
     })
 }

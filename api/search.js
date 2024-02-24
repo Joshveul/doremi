@@ -7,7 +7,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
   console.log('Incoming search request with params: ', req.url)
 
   const nextPageParam = getQueryParam(req.url, 'nextPage')
-  const query = getQueryParam(req.url, 'q')
+  const query = decodeURIComponent(getQueryParam(req.url, 'q'))
   const nextPage = nextPageParam === '' ? null : JSON.parse(decodeURIComponent(nextPageParam))
 
   let videos = []

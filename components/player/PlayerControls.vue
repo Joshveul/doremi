@@ -1,6 +1,6 @@
 <template>
   <v-card-actions>
-    <v-btn ref="prev" icon @click.stop.prevent="playPrevious">
+    <v-btn ref="prev" icon :disabled="getNowPlayingSongIndex < 1" @click.stop.prevent="playPrevious">
       <v-icon>mdi-skip-previous</v-icon>
     </v-btn>
     <v-btn ref="playpause" icon @click.stop.prevent="updatePlayStatus">

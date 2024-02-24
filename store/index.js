@@ -1,18 +1,7 @@
 import { set } from 'vue'
 
-import { downloadVideo, getVideoDataFromDB, updateRemoteQueue, playKaraoke, pauseKaraoke } from '~/modules/utils'
-// import { videoArray } from '~/modules/mock'
-
-function getNowPlayingSongIndex (state) {
-  let songIndex = -1
-  state.queue.find((e, i) => {
-    if (e.playing) {
-      songIndex = i
-    }
-    return e.playing
-  })
-  return songIndex
-}
+import { downloadVideo, getVideoDataFromDB, updateRemoteQueue, playKaraoke, pauseKaraoke, getNowPlayingSongIndex } from '~/modules/utils'
+// import { videoArray } from '~/modules/mock'`
 
 export const state = () => ({
   activeUsers: [],
@@ -57,6 +46,7 @@ export const mutations = {
     }
   },
   setNowPlayingSong (state, songData) {
+    console.log('setNowPlayingSong', songData)
     state.nowPlayingSong = songData
   },
   setSearchTerm (state, searchTerm) {
@@ -88,7 +78,7 @@ export const mutations = {
   },
   addToQueue (state, payload) {
     if (state.queue.length > 0 && 'playNext' in payload && payload.playNext) {
-      state.queue.splice(getNowPlayingSongIndex(state) + 1, 0, payload.item)
+      state.queue.splice(getNowPlayingSongIndex(state.queue) + 1, 0, payload.item)
     } else {
       state.queue.push(payload.item)
       if (state.queue.length === 1) {
@@ -140,7 +130,7 @@ export const getters = {
     })
   },
   getNowPlayingSongIndex (state) {
-    return getNowPlayingSongIndex(state)
+    return getNowPlayingSongIndex(state.queue)
   }
 }
 
