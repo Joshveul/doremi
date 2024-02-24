@@ -2,7 +2,7 @@
   <div class="fill-viewport">
     <div class="static-bar">
       <button @click="player.play()">
-        <v-icon style="color: antiquewhite;">
+        <v-icon style="color: black;">
           mdi-play
         </v-icon>
       </button>
@@ -44,7 +44,7 @@ export default {
       if (this.nextSongIndex === 0) {
         nextLabel = 'WARNING: THIS IS THE LAST SONG! - The list will repeat from the beginning.'
       } else {
-        nextLabel = `${nextSong.artist} - ${nextSong.title} added by ${nextUser}`
+        nextLabel = `${nextSong.title} added by ${nextUser}`
       }
       return `Now Playing: ${this.nowPlayingInfo.artist} - ${this.nowPlayingInfo.title} added by ${username} *** Up next: ${nextLabel}`
     },
@@ -120,8 +120,8 @@ export default {
   top: 0;
   width: 100%;
   opacity: 0.6;
-  background-color: maroon;
-  color: antiquewhite;
+  background-color: aquamarine;
+  color: black;
   font-size: larger;
   z-index: 1;
 }
