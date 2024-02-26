@@ -41,7 +41,7 @@ export const mutations = {
   },
   updateNowPlayingSongArray (state, { nowPlayingIndex, wasPlayingIndex }) {
     state.queue[nowPlayingIndex].playing = true
-    if (typeof wasPlayingIndex !== 'undefined') {
+    if (typeof wasPlayingIndex !== 'undefined' && typeof state.queue[wasPlayingIndex] !== 'undefined') {
       state.queue[wasPlayingIndex].playing = false
     }
   },

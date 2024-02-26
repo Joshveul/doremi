@@ -80,7 +80,7 @@ export default {
   },
   watch: {
     getNowPlayingSongIndex (newVal) {
-      if (typeof newVal !== 'undefined' && !this.currentSong.video.includes(this.getQueue[newVal].videoId)) {
+      if (typeof newVal !== 'undefined' && typeof this.getQueue[newVal] !== 'undefined' && !this.currentSong.video.includes(this.getQueue[newVal].videoId)) {
         const playingSong = this.getQueue[newVal]
         this.currentSong = {
           video: `/archive/${playingSong.videoId}.mp4`,
