@@ -20,6 +20,7 @@
               </v-card-text>
             </v-card>
             <v-text-field
+              ref="userText"
               v-model="userName"
               dark
               required
@@ -33,6 +34,9 @@
               style="backdrop-filter: blur(5px);"
               background-color="transparent"
             />
+            <v-btn type="submit" elevation="24" x-large class="float-right" style="background-color: rgba(255, 255, 255, 0.317); color: white;">
+              Join
+            </v-btn>
           </v-col>
         </v-row>
       </v-form>
@@ -51,7 +55,7 @@
           </div>
         </v-card-text>
         <v-card-actions class="justify-end">
-          <v-btn text @click="dialog.value = false">
+          <v-btn text @click="tryAgain()">
             No, try again
           </v-btn>
           <v-btn color="primary" :disabled="processingUserCreation" @click="createUser(userName)">
@@ -91,6 +95,12 @@ export default {
           this.dialog.value = true
         }
       }
+    },
+    tryAgain () {
+      this.dialog.value = false
+      this.$nextTick(() => {
+        this.$refs.userText.focus()
+      })
     },
     async getUser (userName) {
       const userReq = await fetch(`/api/getUser?username=${userName}`)

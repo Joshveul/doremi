@@ -1,4 +1,4 @@
-import { getNowPlayingSongIndex } from '~/modules/utils'
+import { getNowPlayingSongIndex, getStoredSongsList } from '~/modules/utils'
 
 export default (context) => {
   context.socket = context.$nuxtSocket({
@@ -18,34 +18,9 @@ export default (context) => {
   context.socket
     .on('songsListChanged', (msg, cb) => {
       if (msg.operationType === 'update') {
-        if ('isProcessing' in msg.updateDescription.updatedFields) {
-          context.store.getters.getQueue.forEach((e) => {
-            if (e.id === msg.documentKey._id) {
-              context.store.commit('setProcessing', { video: e, value: msg.updateDescription.updatedFields.isProcessing })
-            }
-          })
-        }
-        if ('isDownloading' in msg.updateDescription.updatedFields) {
-          context.store.getters.getQueue.forEach((e) => {
-            if (e.id === msg.documentKey._id) {
-              context.store.commit('setDownloading', { video: e, value: msg.updateDescription.updatedFields.isDownloading })
-            }
-          })
-        }
-        if ('isEncoding' in msg.updateDescription.updatedFields) {
-          context.store.getters.getQueue.forEach((e) => {
-            if (e.id === msg.documentKey._id) {
-              context.store.commit('setEncoding', { video: e, value: msg.updateDescription.updatedFields.isEncoding })
-            }
-          })
-        }
-        if ('videoDownloadProgress' in msg.updateDescription.updatedFields) {
-          context.store.getters.getQueue.forEach((e) => {
-            if (e.id === msg.documentKey._id) {
-              context.store.commit('setProcessingProgress', { video: e, value: msg.updateDescription.updatedFields.videoDownloadProgress })
-            }
-          })
-        }
+        getStoredSongsList().then((result) => {
+          context.store.commit('setStoredSongs', result)
+        })
       }
     })
     .on('playlistChanged', (msg, cb) => {
