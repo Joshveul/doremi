@@ -1,10 +1,6 @@
 <template>
   <v-container>
-    <v-bottom-navigation
-      color="primary"
-      app
-      grow
-    >
+    <v-bottom-navigation color="primary" app grow>
       <v-btn to="/">
         <span>Home</span>
         <v-icon>mdi-home</v-icon>
@@ -17,9 +13,9 @@
         <span>Sessions</span>
         <v-icon>mdi-history</v-icon>
       </v-btn>
-      <v-btn to="/profile">
-        <span>Profile</span>
-        <v-icon>mdi-account-circle-outline</v-icon>
+      <v-btn to="/settings">
+        <span>Settings</span>
+        <v-icon>mdi-cog</v-icon>
       </v-btn>
     </v-bottom-navigation>
   </v-container>

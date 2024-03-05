@@ -48,7 +48,11 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       response = { results: await Session.getPlaylist() }
       console.log('[AppState] Queue obtained!')
       break
-    case 'activeSession':
+    case 'terminateSession':
+      console.log('[AppState] Terminating session...')
+      await Session.terminateCurrentSession(user)
+      console.log('[AppState] Session terminated!')
+      break
     default:
   }
   res.statusCode = 200

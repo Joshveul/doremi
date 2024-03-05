@@ -20,12 +20,16 @@ export const state = () => ({
   isPlayerPlaying: false,
   time: 0,
   storedSongs: [],
-  userFavorites: []
+  userFavorites: [],
+  sessionTerminatedDialog: false
 })
 
 export const mutations = {
   setSongOptionsOpen (state, isOpen) {
     state.songOptionsOpen = isOpen
+  },
+  setSessionTerminatedDialog (state, isOpen) {
+    state.sessionTerminatedDialog = isOpen
   },
   setSelectedSong (state, songData) {
     state.selectedSong = songData
@@ -40,9 +44,13 @@ export const mutations = {
     state.queueOpen = isOpen
   },
   updateNowPlayingSongArray (state, { nowPlayingIndex, wasPlayingIndex }) {
-    state.queue[nowPlayingIndex].playing = true
-    if (typeof wasPlayingIndex !== 'undefined' && typeof state.queue[wasPlayingIndex] !== 'undefined') {
-      state.queue[wasPlayingIndex].playing = false
+    if (typeof state.queue[nowPlayingIndex] !== 'undefined') {
+      state.queue[nowPlayingIndex].playing = true
+      if (typeof wasPlayingIndex !== 'undefined' && typeof state.queue[wasPlayingIndex] !== 'undefined') {
+        state.queue[wasPlayingIndex].playing = false
+      }
+    } else {
+      console.info('State Info: No song to play')
     }
   },
   setNowPlayingSong (state, songData) {

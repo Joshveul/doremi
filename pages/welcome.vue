@@ -34,7 +34,13 @@
               style="backdrop-filter: blur(5px);"
               background-color="transparent"
             />
-            <v-btn type="submit" elevation="24" x-large class="float-right" style="background-color: rgba(255, 255, 255, 0.317); color: white;">
+            <v-btn
+              type="submit"
+              elevation="24"
+              x-large
+              class="float-right"
+              style="background-color: rgba(255, 255, 255, 0.317); color: white;"
+            >
               Join
             </v-btn>
           </v-col>
@@ -51,7 +57,7 @@
             We couldn't find any user with the name
             <b>{{ userName }}</b>
             <br>
-            <br>Do you want to create a new one?
+            <br>Is this your first time?
           </div>
         </v-card-text>
         <v-card-actions class="justify-end">
@@ -59,7 +65,29 @@
             No, try again
           </v-btn>
           <v-btn color="primary" :disabled="processingUserCreation" @click="createUser(userName)">
-            Yes, I'm new!
+            Yes, first time!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="sessionTerminatedDialog"
+      persistent
+      max-width="550"
+    >
+      <v-card>
+        <v-card-title class="text-h6">
+          Karaoke session terminated
+        </v-card-title>
+        <v-card-text>You have been logged out because the session was terminated.</v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="blue"
+            text
+            @click="$store.commit('setSessionTerminatedDialog', false)"
+          >
+            OK
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -68,6 +96,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { initApp } from '~/modules/utils'
 
 export default {
@@ -82,12 +111,16 @@ export default {
       processingUserCreation: false
     }
   },
+  computed: {
+    ...mapState(['sessionTerminatedDialog'])
+  },
   methods: {
     async login () {
       this.$refs.form.validate()
       if (this.valid) {
         const user = await this.getUser(this.userName)
         if ('name' in user && user.name !== '') {
+          this.$store.commit('setSessionTerminatedDialog', false)
           this.$store.dispatch('login', user)
           initApp(this)
           this.$router.push({ path: '/' })

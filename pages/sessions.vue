@@ -15,19 +15,19 @@ export default {
     items: [
       { header: 'Current Session' },
       {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        avatar: '/img/group.png',
         title: 'Josh, Addie',
         subtitle: '24 total songs'
       },
       { header: 'Other Sessions' },
       {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+        avatar: '/img/group.png',
         title: 'Lespanish',
         subtitle: 'Addie, Josh, Memo, Dahyana, Karen'
       },
       { divider: true, inset: true },
       {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+        avatar: '/img/group.png',
         title: 'Good Bois',
         subtitle: 'Addie, Irvin, Daniel'
       }

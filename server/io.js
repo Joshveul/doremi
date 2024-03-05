@@ -61,6 +61,11 @@ export default function (socket, io) {
   sessionStream.on('change', async (change) => {
     try {
       if (change.operationType === 'update') {
+        if ('sessionEndDate' in change.updateDescription.updatedFields && change.updateDescription.updatedFields.sessionEndDate !== null) {
+          console.log('Session terminated')
+          socket.emit('sessionTerminated')
+          return
+        }
         if ('playlist' in change.updateDescription.updatedFields) {
           console.log('Playlist changed, aggregating results...')
           const aggregatedResults = await mongoose.model('Session').aggregate([

@@ -155,6 +155,18 @@ export const convertSecondsToTime = function convertSecondsToTime (seconds) {
   return time
 }
 
+export const terminateCurrentSession = async function terminateCurrentSession (queue, user) {
+  const uri = `http://${host}:3000/api/appState?action=terminateSession&user=${user}`
+  const result = await fetch(uri, {
+    method: 'POST',
+    body: JSON.stringify(queue)
+  })
+  if (result.ok) {
+    return true
+  }
+  return false
+}
+
 export const initApp = function initApp (vueContext) {
   if (vueContext.$router.currentRoute.name === 'player') {
     getCurrentQueue().then((result) => {

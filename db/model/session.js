@@ -52,7 +52,6 @@ export async function joinActiveSession (userId = '') {
 }
 
 /**
- * @param {String} userId
  * @returns {import('mongoose').Document} the active session
  */
 export async function getActiveSession () {
@@ -63,6 +62,27 @@ export async function getActiveSession () {
     sessionId = appState.currentSession
     return await Session.findById(sessionId)
   }
+  return null
+}
+
+/**
+ * @param {String} userId - ID of the user that terminated the session to record the log
+ */
+export async function terminateCurrentSession (userId = '') {
+  const sessionDoc = await getActiveSession()
+  const appState = await AppState.getAppState()
+  if (sessionDoc !== null) {
+    await Session.updateOne(
+      { _id: sessionDoc._id },
+      { sessionEndDate: Date.now() }
+    )
+    appState.currentSession = null
+    await appState.save()
+  }
+
+  Log.add(
+    userId, 'Terminated session', 'Sessions', sessionDoc._id
+  )
   return null
 }
 

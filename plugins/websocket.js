@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { getNowPlayingSongIndex, getStoredSongsList } from '~/modules/utils'
 
 export default (context) => {
@@ -47,6 +48,12 @@ export default (context) => {
     })
     .on('playStateChanged', (msg, cb) => {
       context.store.commit('updateIsPlaying', msg)
+    })
+    .on('sessionTerminated', (msg, cb) => {
+      console.log('sessionTerminated', context)
+      context.$cookies.remove('user')
+      context.app.router.push('welcome')
+      context.store.commit('setSessionTerminatedDialog', true)
     })
     .on('mongoStream', (msg, cb) => {
       console.log('mongoStream', msg)
