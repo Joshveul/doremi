@@ -55,6 +55,7 @@
     </v-dialog>
   </slick-item>
 </template>
+
 <script>
 import colors from 'vuetify/es5/util/colors'
 import { SlickItem, HandleDirective } from 'vue-slicksort'
@@ -140,7 +141,7 @@ export default {
       if (this.item.encoding) {
         return 'Encoding...'
       }
-      return 'Processing...'
+      return 'Preparing...'
     }
   },
   methods: {

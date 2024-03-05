@@ -21,6 +21,7 @@ export const state = () => ({
   time: 0,
   storedSongs: [],
   userFavorites: [],
+  sessions: [],
   sessionTerminatedDialog: false
 })
 
@@ -79,6 +80,9 @@ export const mutations = {
     if (!state.userFavorites.includes(songId)) {
       state.userFavorites.push(songId)
     }
+  },
+  setSessionList (state, sessionList) {
+    state.sessions = sessionList
   },
   removeFavorite (state, songId) {
     const index = state.userFavorites.indexOf(songId)

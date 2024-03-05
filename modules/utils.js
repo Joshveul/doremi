@@ -36,12 +36,21 @@ export const getCurrentQueue = async function getCurrentQueue () {
 }
 
 /**
- * Gets the full list of songs available in the local Database.
+ * Gets the list of songs marked as favorite by the given user.
  * @returns An array with the songs
  */
 export const getFavorites = async function getFavorites (user) {
   const songData = await (await fetch(`http://${host}:3000/api/getFavorites?userId=${user}`)).json()
   return songData.results
+}
+
+/**
+ * Gets the list of all sessions.
+ * @returns An array with the Sessions
+ */
+export const getSessions = async function getFavorites (user) {
+  const sessionData = await (await fetch(`http://${host}:3000/api/getSessions?userId=${user}`)).json()
+  return sessionData.results
 }
 
 /**
@@ -167,14 +176,14 @@ export const terminateCurrentSession = async function terminateCurrentSession (q
   return false
 }
 
-export const initApp = function initApp (vueContext) {
+export const initApp = async function initApp (vueContext) {
   if (vueContext.$router.currentRoute.name === 'player') {
     getCurrentQueue().then((result) => {
       vueContext.$store.commit('updateQueue', result)
     })
   } else {
     const userId = vueContext.$store.state.userData._id
-    joinSession(userId).then((result) => {
+    await joinSession(userId).then((result) => {
       console.log('joined session: ', result)
     })
     getStoredSongsList().then((result) => {
@@ -182,6 +191,9 @@ export const initApp = function initApp (vueContext) {
     })
     getFavorites(userId).then((result) => {
       vueContext.$store.commit('setUserFavorites', result)
+    })
+    getSessions(userId).then((result) => {
+      vueContext.$store.commit('setSessionList', result)
     })
     getCurrentQueue().then((result) => {
       vueContext.$store.commit('updateQueue', result)

@@ -25,24 +25,24 @@
     </v-list>
     <v-divider />
     <v-list nav dense>
-      <v-subheader>Session</v-subheader>
+      <v-subheader>Advanced</v-subheader>
       <v-list-item @click="confirmTerminateSession()">
         <v-list-item-icon>
-          <v-icon>mdi-close-octagon</v-icon>
+          <v-icon color="red">mdi-close-octagon</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title>Terminate</v-list-item-title>
+          <v-list-item-title>End Karaoke for the Day</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
     <v-dialog v-model="terminateDialog.value" max-width="600">
       <v-card>
         <v-toolbar class="text-h6" color="error" dark>
-          Terminate session?
+          End karaoke for the day?
         </v-toolbar>
         <v-card-text>
           <div class="pt-5 text-subtitle-1">
-            Are you sure you want to terminate the current session?
+            Are you sure you want to terminate the current karaoke for everyone?
           </div>
         </v-card-text>
         <v-card-actions class="justify-end">

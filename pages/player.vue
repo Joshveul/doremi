@@ -102,6 +102,7 @@ export default {
       const queue = this.getQueue
       const nowPlayingSongIndex = this.getNowPlayingSongIndex
       const nextSongIndex = playNext(this, queue, nowPlayingSongIndex)
+      console.log('nextSongIndex', nextSongIndex)
       if (this.currentSong.video.includes(this.getQueue[nextSongIndex].videoId)) {
         const playingSong = this.getQueue[nextSongIndex]
         this.currentSong = {

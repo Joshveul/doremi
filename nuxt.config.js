@@ -141,6 +141,10 @@ export default {
     {
       path: '/api/joinSession',
       handler: '~/api/joinSession.js'
+    },
+    {
+      path: '/api/getSessions',
+      handler: '~/api/getSessions.js'
     }
   ],
   server: {

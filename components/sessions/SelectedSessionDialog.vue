@@ -28,9 +28,6 @@
         v-scroll.self="onScroll"
       >
         <song-list />
-        <song-list />
-        <song-list />
-        <song-list />
       </v-card-text>
     </v-card>
   </v-dialog>

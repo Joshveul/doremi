@@ -40,9 +40,6 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       await AppState.setPlay(user, requestBody.value)
       console.log('[AppState] Karaoke paused complete!')
       break
-    case 'currentSong':
-    case 'join':
-    case 'leave':
     case 'getQueue':
       console.log('[AppState] Getting queue...')
       response = { results: await Session.getPlaylist() }

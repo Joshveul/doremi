@@ -5,33 +5,29 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import SessionList from '~/components/sessions/SessionList.vue'
 
 export default {
   components: {
     SessionList
   },
-  data: () => ({
-    items: [
-      { header: 'Current Session' },
-      {
-        avatar: '/img/group.png',
-        title: 'Josh, Addie',
-        subtitle: '24 total songs'
-      },
-      { header: 'Other Sessions' },
-      {
-        avatar: '/img/group.png',
-        title: 'Lespanish',
-        subtitle: 'Addie, Josh, Memo, Dahyana, Karen'
-      },
-      { divider: true, inset: true },
-      {
-        avatar: '/img/group.png',
-        title: 'Good Bois',
-        subtitle: 'Addie, Irvin, Daniel'
-      }
-    ]
-  })
+  computed: {
+    ...mapState(['sessions']),
+    items () {
+      return [
+        { header: 'Current Session' },
+        this.currentSession,
+        { header: 'Previous Sessions' },
+        ...this.previousSessions
+      ]
+    },
+    currentSession () {
+      return this.sessions.find(session => session.sessionEndDate === null) || { title: 'No current session' }
+    },
+    previousSessions () {
+      return this.sessions.filter(session => session.sessionEndDate !== null)
+    }
+  }
 }
 </script>

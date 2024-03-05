@@ -2,7 +2,7 @@
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
       <h3 v-if="userName !== ''">
-        Welcome {{ userName }}
+        Welcome, {{ userName }}
       </h3>
       <ItemList title="All time history" source="storage" :items="$store.state.storedSongs" />
       <!-- <ItemList
