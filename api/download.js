@@ -8,7 +8,6 @@ import ytdl from 'ytdl-core'
 import ffmpeg from 'ffmpeg-static'
 import request from 'request'
 const Song = require('../db/model/song')
-const Session = require('../db/model/session')
 
 const staticFolderPath = './static'
 const archiveFolderName = 'archive'

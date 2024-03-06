@@ -55,7 +55,7 @@ export default (context) => {
       context.app.router.push('welcome')
       context.store.commit('setSessionTerminatedDialog', true)
     })
-    .on('mongoStream', (msg, cb) => {
-      console.log('mongoStream', msg)
-    })
+  // .on('mongoStream', (msg, cb) => {
+  //   console.log('mongoStream', msg)
+  // })
 }

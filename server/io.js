@@ -3,6 +3,11 @@ import mongoose from 'mongoose'
 
 const currentPlaylistFromSessionPipeline = [
   {
+    $match: {
+      sessionEndDate: null
+    }
+  },
+  {
     $unwind: {
       path: '$playlist'
     }

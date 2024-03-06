@@ -56,10 +56,9 @@ export async function joinActiveSession (userId = '') {
  */
 export async function getActiveSession () {
   const appState = await AppState.getAppState()
-  let sessionId
   if (appState !== null && 'currentSession' in appState) {
     console.info(`Session found! ${appState.currentSession}`)
-    sessionId = appState.currentSession
+    const sessionId = appState.currentSession
     return await Session.findById(sessionId)
   }
   return null
