@@ -61,7 +61,7 @@ export default {
     MiniPlayer,
     SearchInput
   },
-  middleware: ['auth'],
+  middleware: ['auth', 'route-guard'],
   data () {
     return {
       searchFocused: true
