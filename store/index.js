@@ -43,6 +43,9 @@ export const mutations = {
   },
   setQueueOpen (state, isOpen) {
     state.queueOpen = isOpen
+    if (isOpen) {
+      history.pushState(null, null, '/songQueue')
+    }
   },
   updateNowPlayingSongArray (state, { nowPlayingIndex, wasPlayingIndex }) {
     if (typeof state.queue[nowPlayingIndex] !== 'undefined') {
@@ -152,6 +155,8 @@ export const actions = {
     commit('setUser', user)
   },
   async searchYoutube ({ commit }, query) {
+    query = query.replace(/karaoke\s*/gi, '').trim()
+    query = query + ' karaoke'
     const results = await (await fetch(`/api/search?q=${query}`)).json()
     commit('setYtSearchResults', results.entries)
     commit('setYtNextPage', results.nextPageToken)

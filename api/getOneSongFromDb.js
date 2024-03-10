@@ -3,6 +3,7 @@ import { ServerResponse, IncomingMessage } from 'http'
 import ytdl from 'ytdl-core'
 import { getQueryParam, getArtistAndTitle } from './utils'
 const Song = require('../db/model/song')
+const Log = require('../db/model/log')
 
 module.exports = async function (req = new IncomingMessage(), res = new ServerResponse(), next) {
   console.info('Starting getSong request...')
@@ -56,6 +57,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
         const lastAddedBy = userId
         mongoResult = await Song.dbModel.findOneAndUpdate({ ytId: songId }, { timesAdded, lastAdded, lastAddedBy })
       }
+      Log.add(userId, 'add', 'Song', mongoResult._id)
       result.results.push(mongoResult)
       result.count = 1
     }

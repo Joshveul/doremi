@@ -5,4 +5,10 @@ window.onNuxtReady((context) => {
   if (userData || context.$router.currentRoute.name === 'player') {
     initApp(context)
   }
+  window.onpopstate = () => {
+    context.$store.commit('setQueueOpen', false)
+  }
+  window.onbeforeunload = () => {
+    return 'Are you sure you want to leave?'
+  }
 })

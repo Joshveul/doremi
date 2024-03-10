@@ -28,7 +28,9 @@
       <v-subheader>Advanced</v-subheader>
       <v-list-item @click="confirmTerminateSession()">
         <v-list-item-icon>
-          <v-icon color="red">mdi-close-octagon</v-icon>
+          <v-icon color="red">
+            mdi-close-octagon
+          </v-icon>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>End Karaoke for the Day</v-list-item-title>
