@@ -20,7 +20,6 @@
               </v-card-text>
             </v-card>
             <v-text-field
-              ref="userText"
               v-model="userName"
               dark
               required
@@ -61,7 +60,7 @@
           </div>
         </v-card-text>
         <v-card-actions class="justify-end">
-          <v-btn text @click="tryAgain()">
+          <v-btn text @click="dialog.value = false">
             No, try again
           </v-btn>
           <v-btn color="primary" :disabled="processingUserCreation" @click="createUser(userName)">
@@ -128,12 +127,6 @@ export default {
           this.dialog.value = true
         }
       }
-    },
-    tryAgain () {
-      this.dialog.value = false
-      this.$nextTick(() => {
-        this.$refs.userText.focus()
-      })
     },
     async getUser (userName) {
       const userReq = await fetch(`/api/getUser?username=${userName}`)

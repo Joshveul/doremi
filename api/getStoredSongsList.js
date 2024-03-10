@@ -19,11 +19,10 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       duration: convertSecondsToTime(e.duration),
       source: 'storage',
       id: e._id,
-      downloading: e.isDownloading || false,
-      encoding: e.isEncoding || false,
-      processing: e.isProcessing || false,
-      audioDownloadProgress: e.audioDownloadProgress || 100,
-      videoDownloadProgress: e.videoDownloadProgress || 100
+      downloading: false,
+      encoding: false,
+      processing: false,
+      processingProgress: 100
     }
   })
 

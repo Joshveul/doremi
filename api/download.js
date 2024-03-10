@@ -150,6 +150,16 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       await Song.dbModel.updateOne({ ytId: videoId }, { isDownloading: false, isProcessing: false })
       console.log('Done downloading ' + item.title + item.id)
 
+      // Prepare update to include the song in the session
+      // const filter = {
+      //   sessionEndDate: null
+      // }
+      // const update = { $set: { 'playlist.$[element].downloading': false, 'playlist.$[element].encoding': false, 'playlist.$[element].processingProgress': 100, 'playlist.$[element].processing': false } }
+      // const options = {
+      //   arrayFilters: [{ 'element.id': item.id }]
+      // }
+      // const result = await Session.dbModel.updateOne(filter, update, options)
+      // console.log('Done with:', JSON.stringify(result))
       res.statusCode = 200
       res.statusMessage = 'Archived'
       res.end()

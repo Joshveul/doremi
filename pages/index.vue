@@ -13,7 +13,7 @@
         title="From past sessions"
         :items="$store.state.ytSearchResults"
       /> -->
-      <ItemList title="Current search results" :items="$store.state.ytSearchResults" />
+      <ItemList v-if="$store.state.ytSearchResults.length > 0" title="Current search results" :items="$store.state.ytSearchResults" />
     </v-col>
   </v-row>
 </template>
