@@ -71,7 +71,7 @@ export const mutations = {
     state.ytSearchResults.push(...results)
   },
   setStoredSongs (state, storedSongsArray) {
-    state.storedSongs = [...storedSongsArray]
+    state.storedSongs = storedSongsArray
   },
   setUserFavorites (state, favorites) {
     state.userFavorites = favorites
@@ -113,6 +113,9 @@ export const mutations = {
   },
   setEncoding (state, { video, value }) {
     set(video, 'encoding', value)
+  },
+  setProcessingProgress (state, { video, value }) {
+    set(video, 'processingProgress', value)
   },
   updateIsPlaying (state, isPlaying) {
     state.isPlayerPlaying = isPlaying
@@ -202,6 +205,9 @@ export const actions = {
   async addToQueue ({ commit, state }, itemToAdd) {
     const videoData = await getVideoDataFromDB(itemToAdd.item.videoId, state.userData._id, true)
     itemToAdd.item.id = videoData._id
+    commit('setDownloading', { video: itemToAdd.item, value: videoData.isDownloading })
+    commit('setEncoding', { video: itemToAdd.item, value: videoData.isEncoding })
+    commit('setProcessing', { video: itemToAdd.item, value: videoData.isProcessing })
     commit('setVideoUser', itemToAdd.item)
     commit('addToQueue', itemToAdd)
     await updateRemoteQueue(state.queue, state.userData._id)
