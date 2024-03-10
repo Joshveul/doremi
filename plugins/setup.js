@@ -7,6 +7,7 @@ window.onNuxtReady((context) => {
   }
   window.onpopstate = () => {
     context.$store.commit('setQueueOpen', false)
+    context.$store.commit('setSelectedSessionOpen', false)
   }
   window.onbeforeunload = () => {
     return 'Are you sure you want to leave?'

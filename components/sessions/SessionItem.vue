@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     openSessionDialog () {
-      this.$store.commit('setSelectedSession', this.session)
+      this.$store.commit('setSelectedSession', this.item)
       this.$store.commit('setSelectedSessionOpen', true)
     }
   }

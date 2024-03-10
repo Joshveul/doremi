@@ -37,6 +37,9 @@ export const mutations = {
   },
   setSelectedSessionOpen (state, isOpen) {
     state.selectedSessionOpen = isOpen
+    if (isOpen) {
+      history.pushState(null, null, '/session-detail')
+    }
   },
   setSelectedSession (state, songData) {
     state.selectedSession = songData
@@ -44,7 +47,7 @@ export const mutations = {
   setQueueOpen (state, isOpen) {
     state.queueOpen = isOpen
     if (isOpen) {
-      history.pushState(null, null, '/songQueue')
+      history.pushState(null, null, '/song-queue')
     }
   },
   updateNowPlayingSongArray (state, { nowPlayingIndex, wasPlayingIndex }) {

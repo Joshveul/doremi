@@ -1,19 +1,11 @@
 <template>
   <v-app id="back">
     <v-app-bar app>
-      <v-btn
-        icon
-        @click="$router.go(-1)"
-      >
+      <v-btn icon @click="$router.go(-1)">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
 
-      <search-input
-        ref="searchInput"
-        class="flex-grow-1"
-        @blur="showMagnifier"
-        @focus="hideMagnifier"
-      />
+      <search-input ref="searchInput" class="flex-grow-1" @blur="showMagnifier" @focus="hideMagnifier" />
 
       <v-btn icon>
         <v-icon>mdi-dots-vertical</v-icon>
@@ -24,17 +16,8 @@
         <nuxt />
       </v-container>
       <v-fab-transition>
-        <v-btn
-          v-if="inSearchPage && !searchFocused"
-          fab
-          large
-          dark
-          bottom
-          right
-          fixed
-          class="x-mb-fixed mr-2"
-          @click="focusSearch"
-        >
+        <v-btn v-if="inSearchPage && !searchFocused" fab large dark bottom right fixed class="x-mb-fixed mr-2"
+          @click="focusSearch">
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
       </v-fab-transition>
@@ -61,7 +44,7 @@ export default {
     MiniPlayer,
     SearchInput
   },
-  middleware: ['auth', 'route-guard'],
+  middleware: ['auth'],
   data () {
     return {
       searchFocused: true

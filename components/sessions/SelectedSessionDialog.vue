@@ -1,6 +1,5 @@
 <template>
   <v-dialog
-    id="test"
     v-model="isOpen"
     scrollable
     fullscreen
@@ -27,7 +26,7 @@
       <v-card-text
         v-scroll.self="onScroll"
       >
-        <song-list />
+        <item-list title="Songs" :long-list="true" :items="items" />
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -35,20 +34,14 @@
 
 <script>
 import { mapState } from 'vuex'
-import SongList from '~/components/SongList.vue'
+import ItemList from '~/components/ItemList.vue'
 
 export default {
-  components: { SongList },
+  components: { ItemList },
   props: {
     title: {
       type: String,
-      default: ''
-    },
-    items: {
-      type: Array,
-      default () {
-        return []
-      }
+      default: 'Session Details'
     }
   },
   data () {
@@ -63,6 +56,9 @@ export default {
         this.$store.commit('setSelectedSessionOpen', newValue)
       },
       get () { return this.selectedSessionOpen }
+    },
+    items () {
+      return this.selectedSession.playlist
     }
   },
   methods: {

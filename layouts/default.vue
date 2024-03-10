@@ -40,6 +40,6 @@ export default {
     SelectedSessionDialog,
     SongQueue
   },
-  middleware: ['auth', 'route-guard']
+  middleware: ['auth']
 }
 </script>
