@@ -49,7 +49,11 @@ export default (context) => {
       }
     })
     .on('playlistChanged', (msg, cb) => {
-      console.log('playlist changeds', msg.playlist)
+      if (msg === null) {
+        context.store.dispatch('updateQueue', [])
+        return
+      }
+      console.log('playlist changed', msg.playlist)
       const localyPlayingIndex = getNowPlayingSongIndex(context.store.state.queue)
       const remotePlayingIndex = getNowPlayingSongIndex(msg.playlist)
       context.store.dispatch('updateQueue', msg.playlist)
