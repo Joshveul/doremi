@@ -19,7 +19,8 @@ module.exports = function (req = new IncomingMessage(), res = new ServerResponse
         })
         if (user === null) {
           const newUser = new User({
-            name: body.user
+            name: body.user,
+            avatar: body.avatar || '/img/default_avatar.png'
           })
           result = await newUser.save()
           console.log(`User added: ${result.name}, OID: ${result._id}`)

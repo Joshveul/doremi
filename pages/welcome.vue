@@ -14,7 +14,6 @@
                 </v-icon>A&amp;J's B&amp;B
                 Karaoke
               </v-card-title>
-
               <v-card-text class="text-h5 font-weight-bold">
                 What's your name?
               </v-card-text>
@@ -49,22 +48,21 @@
     <v-dialog v-model="dialog.value" max-width="600">
       <v-card>
         <v-toolbar color="primary" dark>
-          First time here?
+          New user
         </v-toolbar>
         <v-card-text>
           <div class="pt-5">
-            We couldn't find any user with the name
-            <b>{{ userName }}</b>
-            <br>
-            <br>Is this your first time?
+            Welcome,
+            <b>{{ userName }}</b>! We're excited to have you here. Please select an avatar:
+            <avatar-select v-model="avatar" class="mt-2 pt-2" />
           </div>
         </v-card-text>
         <v-card-actions class="justify-end">
           <v-btn text @click="dialog.value = false">
-            No, try again
+            I already have a user
           </v-btn>
-          <v-btn color="primary" :disabled="processingUserCreation" @click="createUser(userName)">
-            Yes, first time!
+          <v-btn color="primary" :disabled="processingUserCreation" @click="createUser(userName, avatar)">
+            Let's go!
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -96,9 +94,13 @@
 
 <script>
 import { mapState } from 'vuex'
+import AvatarSelect from '~/components/AvatarSelect.vue'
 import { initApp } from '~/modules/utils'
 
 export default {
+  components: {
+    AvatarSelect
+  },
   layout: 'empty',
   data () {
     return {
@@ -107,7 +109,8 @@ export default {
       dialog: {
         value: false
       },
-      processingUserCreation: false
+      processingUserCreation: false,
+      avatar: ''
     }
   },
   computed: {
@@ -136,7 +139,7 @@ export default {
       }
       return result.results[0]
     },
-    async createUser (userName) {
+    async createUser (userName, avatar) {
       this.processingUserCreation = true
       const userReq = await fetch('/api/postUser', {
         method: 'POST',
@@ -144,7 +147,8 @@ export default {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          user: userName
+          user: userName,
+          avatar
         })
       })
       if (userReq.ok) {

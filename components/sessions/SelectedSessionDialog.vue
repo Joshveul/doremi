@@ -26,6 +26,21 @@
       <v-card-text
         v-scroll.self="onScroll"
       >
+        <v-container>
+          <h4>
+            Singers
+          </h4>
+          <div class="d-flex flex-wrap">
+            <v-chip
+              v-for="user in selectedSession.users"
+              :key="user._id"
+              class="mx-1 mt-4 pa-2"
+            >
+              <v-img :src="user.avatar" height="22" width="22" class="mr-2" />
+              {{ user.name }}
+            </v-chip>
+          </div>
+        </v-container>
         <item-list title="Songs" :long-list="true" :items="items" />
       </v-card-text>
     </v-card>
