@@ -16,9 +16,7 @@ export default {
     ...mapState(['sessions']),
     items () {
       return [
-        { header: 'Current Session' },
-        this.currentSession,
-        { header: 'Previous Sessions' },
+        { header: 'Past Karaoke Nights' },
         ...this.previousSessions
       ]
     },

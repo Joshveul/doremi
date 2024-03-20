@@ -4,7 +4,7 @@
       <h3 v-if="userName !== ''">
         Welcome, {{ userName }}
       </h3>
-      <ItemList v-if="$store.state.storedSongs.length > 0" title="A window to the past" source="storage" :items="$store.state.storedSongs" />
+      <ItemList v-if="$store.state.storedSongs.length > 0" title="From past nights" source="storage" :items="$store.state.storedSongs" />
       <!-- <ItemList
         title="Current search results"
         :items="$store.state.ytSearchResults"

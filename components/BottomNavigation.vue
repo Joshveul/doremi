@@ -7,16 +7,16 @@
       </v-btn>
       <v-btn to="/my-songs">
         <span>Favorites</span>
-        <v-icon>mdi-star-outline</v-icon>
+        <v-icon>mdi-heart-outline</v-icon>
       </v-btn>
       <v-btn to="/sessions">
-        <span>Sessions</span>
+        <span>Karaoke nights</span>
         <v-icon>mdi-history</v-icon>
       </v-btn>
-      <v-btn to="/settings">
+      <!-- <v-btn to="/settings">
         <span>Settings</span>
         <v-icon>mdi-cog</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-bottom-navigation>
   </v-container>
 </template>

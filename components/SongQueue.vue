@@ -29,7 +29,7 @@
         <v-divider />
         <v-container class="py-1 d-flex justify-space-between">
           <div class="justify-start">
-            <v-icon size="18" @click.prevent="">
+            <v-icon size="18">
               mdi-playlist-play
             </v-icon>
             <span class="text-caption">

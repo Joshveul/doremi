@@ -9,7 +9,7 @@ window.onNuxtReady((context) => {
     context.$store.commit('setQueueOpen', false)
     context.$store.commit('setSelectedSessionOpen', false)
   }
-  window.onbeforeunload = () => {
-    return 'Are you sure you want to leave?'
-  }
+  // window.onbeforeunload = () => {
+  //   return 'Are you sure you want to leave?'
+  // }
 })

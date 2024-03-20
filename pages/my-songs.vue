@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <span class="subtitle-1">My songs</span>
+    <span class="subtitle-1">Favorites</span>
     <v-divider class="my-1" />
     <v-row
       justify="center"

@@ -66,6 +66,31 @@ export function getArtistAndTitle (title, channel) {
         artist: title.substring(0, endArtist),
         title: title.substring(startTitle, endTitle)
       }
+    case 'Musisi Karaoke':
+    case 'Karaoke Piano':
+      endTitle = title.indexOf(' -')
+      startArtist = endTitle + 3
+      endArtist = title.indexOf(' (')
+      return {
+        artist: title.substring(startArtist, endArtist),
+        title: title.substring(0, endTitle)
+      }
+    case 'EdKara':
+      endTitle = title.indexOf(' -')
+      startArtist = endTitle + 3
+      endArtist = title.indexOf(' Karaoke')
+      return {
+        artist: title.substring(startArtist, endArtist),
+        title: title.substring(0, endTitle)
+      }
+    case 'CC Karaoke':
+      endArtist = title.indexOf(' •')
+      startTitle = endArtist + 3
+      endTitle = title.indexOf(' (CC')
+      return {
+        artist: title.substring(0, endArtist),
+        title: title.substring(startTitle, endTitle)
+      }
     default:
       return {
         artist: title,

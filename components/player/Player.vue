@@ -10,11 +10,11 @@
         {{ artist }}
       </p>
     </v-card-subtitle>
-    <v-slider class="mx-5" max="50" min="0" hide-details />
-    <v-container class="py-0 d-flex justify-space-between text-caption">
+    <!-- <v-slider class="mx-5" max="50" min="0" hide-details /> -->
+    <!-- <v-container class="py-0 d-flex justify-space-between text-caption">
       <span class="justify-start">00:00</span>
       <span class="justify-end">{{ duration }}</span>
-    </v-container>
+    </v-container> -->
     <v-container class="py-0">
       <player-controls class="justify-center pt-0" />
     </v-container>

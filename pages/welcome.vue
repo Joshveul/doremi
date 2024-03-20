@@ -14,28 +14,26 @@
                 </v-icon>A&amp;J's B&amp;B
                 Karaoke
               </v-card-title>
-              <v-card-text class="text-h5 font-weight-bold">
-                What's your name?
-              </v-card-text>
             </v-card>
             <v-text-field
               v-model="userName"
               dark
+              placeholder="Your name"
               required
               :rules="[
                 (value) =>
                   value.length >= 3 || 'Name must have at least 3 characters',
               ]"
               solo
-              height="100"
-              class="text-h3 text-bold text-center"
+              height="70"
+              class="text-h5 text-bold text-center"
               style="backdrop-filter: blur(5px);"
               background-color="transparent"
             />
             <v-btn
               type="submit"
               elevation="24"
-              x-large
+              large
               class="float-right"
               style="background-color: rgba(255, 255, 255, 0.317); color: white;"
             >

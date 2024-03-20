@@ -1,67 +1,49 @@
 <template>
   <v-bottom-sheet v-model="isOpen">
-    <v-sheet class="pa-4">
-      <v-card
-        :color="selectedSong.color"
-        class="d-flex mb-4"
-      >
-        <v-avatar
-          class="ma-3"
-          size="105"
-          tile
-        >
-          <v-img :src="thumbnail" />
-        </v-avatar>
-        <div class="">
-          <v-card-title class="px-0">
-            <marquee-text
-              :text="selectedSong.title"
-              :max-width="maxTextSpace"
-            />
-          </v-card-title>
-          <v-card-subtitle class="pl-0 pt-0">
-            {{ selectedSong.artist }}
-          </v-card-subtitle>
-        </div>
-        <favorite
-          v-show="'downloading' in selectedSong"
-          :song-id="selectedSong.id"
-        />
-      </v-card>
-      <v-btn
-        class="my-5"
-        block
-        large
-        color="primary"
-        @click="addToQueue"
-      >
-        <v-icon left>
-          mdi-playlist-plus
-        </v-icon>
-        Add to queue
-      </v-btn>
-      <v-btn
-        class="my-2 text-left"
-        block
-        text
-        @click="playNext"
-      >
-        <v-icon left>
-          mdi-playlist-play
-        </v-icon>
-        Play next
-      </v-btn>
-    </v-sheet>
+    <v-card>
+      <v-img height="100" class="white--text darker-image" :src="thumbnail">
+        <v-card-title>
+          <marquee-text :text="selectedSong.title" :max-width="maxTextSpace" />
+        </v-card-title>
+        <v-card-subtitle class="pt-0">
+          {{ selectedSong.artist }}
+        </v-card-subtitle>
+      </v-img>
+    </v-card>
+    <v-list dense>
+      <v-list-item @click="addToQueue">
+        <v-list-item-icon>
+          <v-icon>mdi-playlist-plus</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Add to queue
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item @click="playNext">
+        <v-list-item-icon>
+          <v-icon>mdi-playlist-play</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Play next
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider class="my-2" />
+      <favorite v-show="'downloading' in selectedSong" :show-text="true" :song-id="selectedSong.id" />
+    </v-list>
   </v-bottom-sheet>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import MarqueeText from '~/components/MarqueeText.vue'
-import Favorite from '~/components/Favorite.vue'
+// import MarqueeText from '~/components/MarqueeText.vue'
+// import Favorite from '~/components/Favorite.vue'
 
 export default {
-  components: { MarqueeText, Favorite },
+  // components: { MarqueeText, Favorite },
   data () {
     return {
       maxTextSpace: 193
@@ -87,7 +69,7 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
-      this.maxTextSpace = document.body.clientWidth - 205
+      this.maxTextSpace = document.body.clientWidth
     })
   },
   methods: {
@@ -105,3 +87,8 @@ export default {
   }
 }
 </script>
+<style>
+.darker-image .v-image__image {
+  filter: brightness(25%);
+}
+</style>
