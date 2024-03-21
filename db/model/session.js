@@ -91,10 +91,6 @@ export async function updatePlaylist (userId = '', playlist = []) {
     sessionDoc.playlist = playlist
     sessionDoc.save()
   }
-
-  Log.add(
-    userId, 'Update session playlist', 'Sessions', sessionDoc._id
-  )
 }
 
 export async function getPlaylist () {

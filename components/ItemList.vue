@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <h4 v-if="title !== ''">
       {{ title }}
     </h4>
@@ -9,7 +9,7 @@
       </slide>
     </hooper>
     <song-list v-else :items="items" />
-  </v-container>
+  </div>
 </template>
 
 <script>

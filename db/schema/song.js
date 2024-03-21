@@ -28,7 +28,9 @@ const songSchema = new Schema({
   timesRemoved: Number,
   lastAdded: Date,
   lastPlayed: Date,
-  lastRemoved: Date
+  lastRemoved: Date,
+  genre: [String],
+  style: [String]
 }, { timestamps: true })
 
 export default songSchema

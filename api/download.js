@@ -7,6 +7,8 @@ import internal from 'stream'
 import ytdl from 'ytdl-core'
 import ffmpeg from 'ffmpeg-static'
 import request from 'request'
+import sanitize from 'sanitize-filename'
+import { queryDiscogsData } from './utils'
 const Song = require('../db/model/song')
 
 const staticFolderPath = './static'
@@ -86,11 +88,13 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
   const item = JSON.parse(decodeURI(query.get('item')))
   console.log(item)
 
-  const videoId = item.videoId
+  const { videoId, artist, title } = item
 
-  const thumbnailPath = archiveFolderName + '/' + videoId + '.jpg'
-  const thumbnailSavePath = archiveFolderPath + '/' + videoId + '.jpg'
-  const videoPath = archiveFolderPath + '/' + videoId + '.mp4'
+  const fileName = sanitize(artist + ' - ' + title + ' - ' + videoId)
+
+  const thumbnailPath = archiveFolderName + '/' + fileName + '.jpg'
+  const thumbnailSavePath = archiveFolderPath + '/' + fileName + '.jpg'
+  const videoPath = archiveFolderPath + '/' + fileName + '.mp4'
 
   if (process.env.MODE === 'offline') {
     console.info('MODE=offline. Mocking successful download of video ', videoId)
@@ -104,9 +108,22 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       // const { videoDetails } = await ytdl.getInfo(videoId)
       // console.log(videoDetails)
 
+      // Get metadata from Discogs
+      const discogsData = await queryDiscogsData(artist + ' ' + title)
+
+      if (discogsData) {
+        item.genre = discogsData.genre || []
+        item.style = discogsData.style || []
+        // if ('cover_image' in discogsData && discogsData.cover_image !== '') {
+        //   item.thumbnail = discogsData.cover_image
+        // }
+      }
+
       await Song.dbModel.findOneAndUpdate({ ytId: videoId }, {
         thumbnail: thumbnailPath,
-        isDownloading: true
+        isDownloading: true,
+        genre: item.genre,
+        style: item.style
       })
 
       // Download thumbnail

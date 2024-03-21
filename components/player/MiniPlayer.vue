@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="mini-player" style="width: 100%;">
+  <v-layout class="mini-player" style="width: 100%; height: 80px;">
     <v-card
       v-touch="{
         up: () => openQueue()

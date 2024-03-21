@@ -145,6 +145,18 @@ export default {
     {
       path: '/api/getSessions',
       handler: '~/api/getSessions.js'
+    },
+    {
+      path: '/api/getAddedSongs',
+      handler: '~/api/getAddedSongs.js'
+    },
+    {
+      path: '/no-api/utils',
+      handler: '~/api/utils.js'
+    },
+    {
+      path: '/no-api/songsByUser',
+      handler: '~/api/aggregation-schemas/songsByUser.js'
     }
   ],
   server: {

@@ -1,4 +1,4 @@
-import { getNowPlayingSongIndex } from '~/modules/utils'
+import { getNowPlayingSongIndex, getStoredSongsList } from '~/modules/utils'
 
 export default (context) => {
   context.socket = context.$nuxtSocket({
@@ -46,6 +46,11 @@ export default (context) => {
             }
           })
         }
+      }
+      if (msg.operationType === 'insert') {
+        getStoredSongsList().then((result) => {
+          context.store.commit('setStoredSongs', result)
+        })
       }
     })
     .on('playlistChanged', (msg, cb) => {

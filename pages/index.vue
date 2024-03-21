@@ -4,16 +4,10 @@
       <h3 v-if="userName !== ''">
         Welcome, {{ userName }}
       </h3>
-      <ItemList v-if="$store.state.storedSongs.length > 0" title="From past nights" source="storage" :items="$store.state.storedSongs" />
-      <!-- <ItemList
-        title="Current search results"
-        :items="$store.state.ytSearchResults"
-      />
-      <ItemList
-        title="From past sessions"
-        :items="$store.state.ytSearchResults"
-      /> -->
-      <ItemList v-if="$store.state.ytSearchResults.length > 0" title="Current search results" :items="$store.state.ytSearchResults" />
+      <ItemList v-if="$store.state.ytSearchResults.length > 0" title="Current search results" :items="$store.state.ytSearchResults.slice(0, 15)" />
+      <ItemList v-if="$store.state.storedSongs.length > 0" title="All-time history" source="storage" :items="$store.state.storedSongs.slice(0, 12)" />
+      <ItemList v-if="userAddedSongs.count > 0" title="Previously added by you" :items="userAddedSongs.results.slice(0, 21)" source="storage" />
+      <div style="height: 43px;" />
     </v-col>
   </v-row>
 </template>
@@ -25,10 +19,22 @@ export default {
   components: {
     ItemList
   },
+  data () {
+    return {
+      userAddedSongs: {
+        count: 0,
+        results: []
+      }
+    }
+  },
   computed: {
     userName () {
       return this.$store.state.userData.name
     }
+  },
+  async mounted () {
+    const result = await fetch('/api/getAddedSongs?userId=' + this.$store.state.userData._id)
+    this.userAddedSongs = await result.json()
   }
 }
 </script>

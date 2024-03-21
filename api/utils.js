@@ -1,3 +1,5 @@
+import { mergeWith, isArray } from 'lodash'
+
 export function getQueryParam (url, param) {
   const rx = new RegExp('[?&]' + param + '=([^&]+).*$')
   const returnVal = url.match(rx)
@@ -24,6 +26,7 @@ export function getArtistAndTitle (title, channel) {
   let endTitle
   let startArtist
   let endArtist
+  console.log(`Cleaning title by Channel: ${channel} Title is: ${title}`)
   switch (channel) {
     case 'Sing King':
     case 'Stingray Karaoke':
@@ -35,12 +38,20 @@ export function getArtistAndTitle (title, channel) {
         title: title.substring(startTitle, endTitle)
       }
     case 'KaraFun Karaoke':
-      endTitle = title.indexOf(' -')
-      startArtist = endTitle + 3
-      endArtist = title.indexOf(' | Karaoke')
+      if (title.includes(' Karaoke')) {
+        startTitle = 0
+        endTitle = title.indexOf(' -')
+        startArtist = endTitle + 3
+        endArtist = title.indexOf(' | Karaoke')
+      } else {
+        startTitle = 8
+        endTitle = title.indexOf(' -')
+        startArtist = endTitle + 3
+        endArtist = title.indexOf(' *')
+      }
       return {
         artist: title.substring(startArtist, endArtist),
-        title: title.substring(0, endTitle)
+        title: title.substring(startTitle, endTitle)
       }
     case 'Piano Backing Tracks':
       endTitle = title.indexOf('oke)') + 4
@@ -123,4 +134,24 @@ export function readRequestBody (req) {
       reject(error)
     })
   })
+}
+
+export async function queryDiscogsData (query) {
+  query = encodeURIComponent(query)
+  const key = process.env.DISCOGS_API_KEY
+  const secret = process.env.DISCOGS_API_SECRET
+  console.log('Querying Discogs for ', query)
+  const response = await fetch(`https://api.discogs.com/database/search?q=${query}&per_page=2&key=${key}&secret=${secret}`)
+  const result = await response.json()
+  console.log('Discogs result', result)
+  if (result.results.length === 0) {
+    return null
+  } else if (result.results.length === 2) {
+    return mergeWith(result.results[1], result.results[0], (objValue, srcValue) => {
+      if (isArray(objValue)) {
+        return [...new Set([...objValue, ...srcValue])]
+      }
+    })
+  }
+  return result.results[0]
 }

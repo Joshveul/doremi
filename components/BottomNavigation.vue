@@ -10,23 +10,27 @@
         <v-icon>mdi-heart-outline</v-icon>
       </v-btn>
       <v-btn to="/sessions">
-        <span>Karaoke nights</span>
+        <span>Past nights</span>
         <v-icon>mdi-history</v-icon>
       </v-btn>
-      <!-- <v-btn to="/settings">
-        <span>Settings</span>
-        <v-icon>mdi-cog</v-icon>
-      </v-btn> -->
+      <v-btn v-if="showQueueInNavigation" to="/queue">
+        <span>Queue</span>
+        <v-icon>mdi-playlist-play</v-icon>
+      </v-btn>
     </v-bottom-navigation>
   </v-container>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapState({ nowPlayingSong: 'nowPlayingSong' })
+    ...mapState(['nowPlayingSong']),
+    ...mapGetters(['getSettings']),
+    showQueueInNavigation () {
+      return this.getSettings.includes('queueInNavigation')
+    }
   }
 }
 </script>

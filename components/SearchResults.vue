@@ -6,8 +6,8 @@
       :item="item"
     />
     <v-card
-      v-if="hasYtResults"
-      class="d-flex justify-space-around pa-4 my-6"
+      v-if="hasYtResults && ytNextPage !== ''"
+      class="d-flex justify-space-around pa-4 ma-2"
       @click="!loadingResults ? onIntersect() : null"
     >
       <v-progress-circular
@@ -19,6 +19,7 @@
         More results!
       </div>
     </v-card>
+    <div style="height: 43px;" />
   </v-list>
 </template>
 
@@ -44,7 +45,7 @@ export default {
     }
   },
   computed: {
-    ...mapState({ ytSearchResults: 'ytSearchResults' }),
+    ...mapState(['ytSearchResults', 'ytNextPage']),
     hasYtResults () {
       return this.ytSearchResults.length
     }

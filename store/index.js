@@ -22,7 +22,8 @@ export const state = () => ({
   storedSongs: [],
   userFavorites: [],
   sessions: [],
-  sessionTerminatedDialog: false
+  sessionTerminatedDialog: false,
+  settings: []
 })
 
 export const mutations = {
@@ -135,6 +136,9 @@ export const mutations = {
       path: '/',
       maxAge: 60 * 60 * 5
     })
+  },
+  setSettings (state, settings) {
+    state.settings = settings
   }
 }
 
@@ -149,6 +153,9 @@ export const getters = {
   },
   getNowPlayingSongIndex (state) {
     return getNowPlayingSongIndex(state.queue)
+  },
+  getSettings (state) {
+    return state.settings || []
   }
 }
 
@@ -157,9 +164,11 @@ export const actions = {
     // See if user exists in DB, otherwise add it
     commit('setUser', user)
   },
-  async searchYoutube ({ commit }, query) {
-    query = query.replace(/karaoke\s*/gi, '').trim()
-    query = query + ' karaoke'
+  async searchYoutube ({ commit, state }, query) {
+    if (!state.settings.includes('removeKaraokeSearch')) {
+      query = query.replace(/karaoke\s*/gi, '').trim()
+      query = query + ' karaoke'
+    }
     const results = await (await fetch(`/api/search?q=${query}`)).json()
     commit('setYtSearchResults', results.entries)
     commit('setYtNextPage', results.nextPageToken)
@@ -172,6 +181,7 @@ export const actions = {
     } catch (e) {
       throw new Error('An error ocurred while requesting Youtube Next Page', e)
     }
+    commit('setYtNextPage', results.nextPageToken)
     commit('addYtSearchResults', results.entries)
   },
   async addSongToFavorites ({ commit, state }, songId) {

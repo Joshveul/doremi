@@ -1,15 +1,6 @@
 <template>
-  <v-list-item
-    :key="item.title"
-    class="song-item"
-    ripple
-    @click="onClick"
-  >
-    <v-img
-      max-width="120"
-      class="mr-2"
-      :src="thumbnail"
-    />
+  <v-list-item :key="item.title" class="song-item" ripple @click="onClick">
+    <v-img max-width="120" class="mr-2" :src="thumbnail" />
 
     <v-list-item-content>
       <v-list-item-title v-text="item.title" />

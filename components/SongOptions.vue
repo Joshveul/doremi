@@ -31,8 +31,8 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-divider class="my-2" />
-      <favorite v-show="'downloading' in selectedSong" :show-text="true" :song-id="selectedSong.id" />
+      <v-divider v-show="'id' in selectedSong" class="my-2" />
+      <favorite v-show="'id' in selectedSong" :show-text="true" :song-id="selectedSong.id" />
     </v-list>
   </v-bottom-sheet>
 </template>

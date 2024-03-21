@@ -177,6 +177,7 @@ export const terminateCurrentSession = async function terminateCurrentSession (q
 }
 
 export const initApp = async function initApp (vueContext) {
+  vueContext.$store.commit('setSettings', JSON.parse(localStorage.getItem('settings')))
   if (vueContext.$router.currentRoute.name === 'player') {
     getCurrentQueue().then((result) => {
       vueContext.$store.commit('updateQueue', result)

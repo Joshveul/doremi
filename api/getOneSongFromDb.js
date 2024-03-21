@@ -57,7 +57,7 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
         const lastAddedBy = userId
         mongoResult = await Song.dbModel.findOneAndUpdate({ ytId: songId }, { timesAdded, lastAdded, lastAddedBy })
       }
-      Log.add(userId, 'add', 'Song', mongoResult._id)
+      Log.add(userId, 'Add Song', 'Song', mongoResult._id)
       result.results.push(mongoResult)
       result.count = 1
     }

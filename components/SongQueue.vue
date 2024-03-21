@@ -50,15 +50,14 @@
       <v-card-text
         ref="queueContent"
         class="queue-content px-0"
-        style="max-height: 50vh;"
+        :style="{ height: listHeight + 'px' }"
       >
         <sortable-container
           ref="sortContainer"
           v-scroll.self="onScroll"
           :items="queue"
           class="sort-container"
-          style="max-height: 54vh;"
-          :style="{overflow: sorting ? 'hidden': 'scroll'}"
+          :style="{ overflow: sorting ? 'hidden': 'scroll', height: listHeight + 'px' }"
           @sort-start="sortStart"
           @sort-end="sortEnd"
         />
@@ -84,7 +83,8 @@ export default {
       sorting: false,
       swiping: false,
       wheelOpt: false,
-      wheelEvent: 'wheel'
+      wheelEvent: 'wheel',
+      listHeight: 50
     }
   },
   computed: {
@@ -107,6 +107,9 @@ export default {
       })
       return convertSecondsToTime(duration)
     }
+  },
+  mounted () {
+    this.listHeight = document.body.clientHeight - 326 - 33 + 80 + 50
   },
   methods: {
     swipeDown () {

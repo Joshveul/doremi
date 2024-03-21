@@ -5,9 +5,6 @@
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
       <search-input ref="searchInput" class="flex-grow-1" @blur="showMagnifier" @focus="hideMagnifier" />
-      <!-- <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn> -->
     </v-app-bar>
     <v-main>
       <v-container>
@@ -44,6 +41,7 @@ import SearchInput from '~/components/SearchInput.vue'
 import SongQueue from '~/components/SongQueue.vue'
 
 export default {
+  name: 'BackArrow',
   components: {
     BottomNavigation,
     SongOptions,
