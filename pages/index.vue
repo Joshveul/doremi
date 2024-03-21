@@ -1,9 +1,6 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
-      <h3 v-if="userName !== ''">
-        Welcome, {{ userName }}
-      </h3>
       <ItemList v-if="$store.state.ytSearchResults.length > 0" title="Current search results" :items="$store.state.ytSearchResults.slice(0, 15)" />
       <ItemList v-if="$store.state.storedSongs.length > 0" title="All-time history" source="storage" :items="$store.state.storedSongs.slice(0, 12)" />
       <ItemList v-if="userAddedSongs.count > 0" title="Previously added by you" :items="userAddedSongs.results.slice(0, 21)" source="storage" />
@@ -25,11 +22,6 @@ export default {
         count: 0,
         results: []
       }
-    }
-  },
-  computed: {
-    userName () {
-      return this.$store.state.userData.name
     }
   },
   async mounted () {

@@ -2,8 +2,8 @@
   <v-container>
     <v-bottom-navigation color="primary" app grow>
       <v-btn to="/">
-        <span>Home</span>
-        <v-icon>mdi-home</v-icon>
+        <span>Discover</span>
+        <v-icon>mdi-music-box-outline</v-icon>
       </v-btn>
       <v-btn to="/my-songs">
         <span>Favorites</span>
