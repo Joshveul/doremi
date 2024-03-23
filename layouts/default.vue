@@ -25,6 +25,9 @@
 
     <mini-player />
     <bottom-navigation />
+    <div v-if="settings.includes('debug')" class="status-bar" :class="{ 'connected': connected }">
+      {{ connectionStatusMessage }} {{ socketId }}
+    </div>
     <song-options />
     <selected-session-dialog />
     <song-queue />
@@ -32,6 +35,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import BottomNavigation from '~/components/BottomNavigation.vue'
 import SelectedSessionDialog from '~/components/sessions/SelectedSessionDialog.vue'
 import MiniPlayer from '~/components/player/MiniPlayer.vue'
@@ -49,6 +53,28 @@ export default {
     SelectedSessionDialog,
     SongQueue
   },
-  middleware: ['auth']
+  middleware: ['auth'],
+  computed: {
+    ...mapState(['connected', 'socketId', 'settings']),
+    connectionStatusMessage () {
+      return this.connected ? 'Connected' : 'Disconnected'
+    }
+  }
 }
 </script>
+
+<style scoped>
+.status-bar {
+  /* height: 5px; */
+  min-height: 5px;
+  background-color: red;
+  width: 100vw;
+  z-index: 4;
+  position: fixed;
+  bottom: 0;
+}
+
+.connected {
+  background-color: green;
+}
+</style>

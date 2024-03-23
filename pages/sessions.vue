@@ -1,7 +1,17 @@
 <template>
-  <v-container>
-    <session-list :items="items" />
-  </v-container>
+  <div>
+    <span class="subtitle-1">Archive</span>
+    <v-divider class="my-1 pb-4" />
+    <div v-if="previousSessions.length === 0">
+      <p class="text-center">
+        The archive is empty
+      </p>
+      <h5 class="text-center">
+        Seems like tonight is the first night!
+      </h5>
+    </div>
+    <session-list v-else :items="items" />
+  </div>
 </template>
 
 <script>

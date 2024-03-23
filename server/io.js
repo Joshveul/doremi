@@ -97,6 +97,7 @@ export default function (socket, io) {
     socket.emit('mongoStream', changes)
   })
   io.once('connection', (socket) => {
+    console.log(' %s sockets connected', io.engine.clientsCount)
     console.log('connected: ', socket.id)
     socket.on('disconnect', (reason) => {
       console.log(`disconnected: ${socket.id} because ${reason}`)

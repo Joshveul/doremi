@@ -7,6 +7,11 @@ export default (context) => {
   /* Listen for events coming from the server: */
   context.socket.on('connect', () => {
     console.log('connected: ' + context.socket.id)
+    context.store.commit('setConnected', { connected: true, socketId: context.socket.id })
+  })
+  context.socket.on('disconnect', () => {
+    console.log('disconnected ' + context.socket.id)
+    context.store.commit('setConnected', { connected: false })
   })
   if (context.route.name === 'player') {
     context.socket.emit('fn3', { id: 'abc123' })

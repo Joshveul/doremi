@@ -23,12 +23,18 @@ export const state = () => ({
   userFavorites: [],
   sessions: [],
   sessionTerminatedDialog: false,
-  settings: []
+  settings: [],
+  connected: false,
+  socketId: ''
 })
 
 export const mutations = {
   setSongOptionsOpen (state, isOpen) {
     state.songOptionsOpen = isOpen
+  },
+  setConnected (state, { connected, socketId }) {
+    state.connected = connected
+    state.socketId = socketId
   },
   setSessionTerminatedDialog (state, isOpen) {
     state.sessionTerminatedDialog = isOpen
@@ -138,7 +144,7 @@ export const mutations = {
     })
   },
   setSettings (state, settings) {
-    state.settings = settings
+    state.settings = settings || []
   }
 }
 

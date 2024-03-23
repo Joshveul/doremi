@@ -22,44 +22,63 @@
       </v-list-item>
     </v-list>
     <v-list flat subheader three-line>
-      <v-subheader>Interface</v-subheader>
-
       <v-list-item-group v-model="settings" multiple active-class="">
-        <v-list-item value="queueInNavigation">
-          <template #default="{ active }">
-            <v-list-item-action>
-              <v-checkbox :input-value="active" />
-            </v-list-item-action>
+        <v-list>
+          <v-subheader>Interface</v-subheader>
+          <v-list-item value="queueInNavigation">
+            <template #default="{ active }">
+              <v-list-item-action>
+                <v-checkbox :input-value="active" />
+              </v-list-item-action>
 
-            <v-list-item-content>
-              <v-list-item-title>Show Queue in bottom navigation</v-list-item-title>
-              <v-list-item-subtitle>
-                The queue will be available as an additional item in the bottom navigation
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </template>
-        </v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Show Queue in bottom navigation</v-list-item-title>
+                <v-list-item-subtitle>
+                  The queue will be available as an additional item in the bottom navigation
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </template>
+          </v-list-item>
 
-        <v-list-item value="removeKaraokeSearch">
-          <template #default="{ active }">
-            <v-list-item-action>
-              <v-checkbox :input-value="active" />
-            </v-list-item-action>
+          <v-list-item value="removeKaraokeSearch">
+            <template #default="{ active }">
+              <v-list-item-action>
+                <v-checkbox :input-value="active" />
+              </v-list-item-action>
 
-            <v-list-item-content>
-              <v-list-item-title>Search non-karaoke videos</v-list-item-title>
-              <v-list-item-subtitle>
-                Allow searching for videos without the keyword "karaoke" in it
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </template>
-        </v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Search non-karaoke videos</v-list-item-title>
+                <v-list-item-subtitle>
+                  Allow searching for videos without the keyword "karaoke" in it
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </template>
+          </v-list-item>
+        </v-list>
+
+        <v-list>
+          <v-subheader>Developer options</v-subheader>
+          <v-list-item value="debug">
+            <template #default="{ active }">
+              <v-list-item-action>
+                <v-checkbox :input-value="active" />
+              </v-list-item-action>
+
+              <v-list-item-content>
+                <v-list-item-title>Enable debugging</v-list-item-title>
+                <v-list-item-subtitle>
+                  Show debug messages and other developer options
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </template>
+          </v-list-item>
+        </v-list>
       </v-list-item-group>
     </v-list>
     <div v-if="userData.name.match(/(Irvin|Josh|Addie)/)">
       <v-divider />
       <v-list nav dense>
-        <v-subheader>Advanced</v-subheader>
+        <v-subheader>Admin</v-subheader>
         <v-list-item @click="confirmTerminateSession()">
           <v-list-item-icon>
             <v-icon color="red">

@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <span class="subtitle-1">Favorites</span>
     <v-divider class="my-1" />
     <v-row justify="center" align="center">
@@ -15,7 +15,7 @@
         </div>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>

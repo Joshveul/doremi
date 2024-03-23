@@ -110,6 +110,11 @@ export default {
   },
   mounted () {
     this.listHeight = document.body.clientHeight - 326 - 33 + 80 + 50
+    document.addEventListener('touchmove', (e) => {
+      if (this.isOpen || this.sorting) {
+        e.preventDefault()
+      }
+    }, { passive: false })
   },
   methods: {
     swipeDown () {

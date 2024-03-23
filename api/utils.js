@@ -32,7 +32,7 @@ export function getArtistAndTitle (title, channel) {
     case 'Stingray Karaoke':
       endArtist = title.indexOf(' -')
       startTitle = endArtist + 3
-      endTitle = title.indexOf(' (Karaoke')
+      endTitle = title.lastIndexOf(' (')
       return {
         artist: title.substring(0, endArtist),
         title: title.substring(startTitle, endTitle)

@@ -22,7 +22,9 @@ module.exports = async function (req = new IncomingMessage(), res = new ServerRe
       downloading: false,
       encoding: false,
       processing: false,
-      processingProgress: 100
+      processingProgress: 100,
+      genre: e.genre,
+      style: e.style
     }
   })
 
